@@ -1198,14 +1198,14 @@
 
     // ── Access gate ────────────────────────────────────────────────────────
     const ACCESS_CODE = "PHIL2026";
-    const SESSION_KEY = "hcp_demo_auth";
+    const SESSION_KEY = "hcp_demo_auth"; // localStorage so iframes on same origin inherit it
 
     function AccessGate({ onUnlock }) {
       const [code, setCode] = useState("");
       const [error, setError] = useState(false);
       const submit = () => {
         if (code.trim().toUpperCase() === ACCESS_CODE) {
-          sessionStorage.setItem(SESSION_KEY, "1");
+          localStorage.setItem(SESSION_KEY, "1");
           onUnlock();
         } else {
           setError(true);
@@ -1237,51 +1237,59 @@
     }
 
     // ── Device preview frame ────────────────────────────────────────────────
-    // URL param ?view=mobile|tablet shows a device frame for presentation
+    // URL param ?view=mobile|tablet wraps the demo in a device bezel via iframe
+    // The iframe loads the same page without ?view so it renders normally + scrolls
     function DeviceFrame({ children }) {
       const params = new URLSearchParams(window.location.search);
-      const view = params.get("view"); // "mobile" | "tablet" | null
+      const view = params.get("view");
       if (!view) return children;
 
       const frames = {
-        mobile: { width: 390, height: 844, label: "iPhone 14", scale: 0.75 },
-        tablet: { width: 768, height: 1024, label: "iPad", scale: 0.7 },
+        mobile: { w: 390, h: 844, label: "iPhone 14", radius: "44px" },
+        tablet: { w: 768, h: 1024, label: "iPad",     radius: "20px" },
       };
       const f = frames[view];
       if (!f) return children;
 
-      const scaledW = f.width * f.scale;
-      const scaledH = f.height * f.scale;
+      // iframe src = same page without ?view param (renders the real app)
+      const baseUrl = window.location.origin + window.location.pathname;
+      // Compute scale so device fits within viewport with padding
+      const vw = window.innerWidth  - 80;
+      const vh = window.innerHeight - 120;
+      const scale = Math.min(vw / f.w, vh / f.h, 1);
+      const bw = Math.round(f.w * scale);
+      const bh = Math.round(f.h * scale);
 
       return (
-        <div style={{minHeight:"100vh",background:"#1a1a2e",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"24px",gap:"16px"}}>
-          <div style={{color:"#aaa",fontSize:"13px",display:"flex",gap:"20px"}}>
-            <span style={{color:"white",fontWeight:600}}>📱 {f.label}</span>
-            <a href="?" style={{color:"#aaa",textDecoration:"none"}}>Desktop ↗</a>
-            {view !== "mobile" && <a href="?view=mobile" style={{color:"#aaa",textDecoration:"none"}}>Mobile ↗</a>}
-            {view !== "tablet" && <a href="?view=tablet" style={{color:"#aaa",textDecoration:"none"}}>Tablet ↗</a>}
+        <div style={{minHeight:"100vh",background:"#1a1a2e",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px",gap:"14px"}}>
+          <div style={{display:"flex",gap:"16px",alignItems:"center"}}>
+            <span style={{color:"white",fontWeight:700,fontSize:"14px"}}>📱 {f.label}</span>
+            <a href={baseUrl} style={{color:"#888",textDecoration:"none",fontSize:"13px"}}>Desktop ↗</a>
+            {view !== "mobile" && <a href={`${baseUrl}?view=mobile`} style={{color:"#888",textDecoration:"none",fontSize:"13px"}}>Mobile ↗</a>}
+            {view !== "tablet" && <a href={`${baseUrl}?view=tablet`} style={{color:"#888",textDecoration:"none",fontSize:"13px"}}>Tablet ↗</a>}
           </div>
           <div style={{
-            width: scaledW, height: scaledH,
-            border: "10px solid #333", borderRadius: view==="mobile" ? "44px" : "20px",
-            boxShadow: "0 0 0 2px #555, 0 20px 60px rgba(0,0,0,0.6)",
-            overflow: "hidden", position: "relative", background: "white",
+            width: bw + 20, height: bh + 20,
+            border: "10px solid #2a2a2a",
+            borderRadius: f.radius,
+            boxShadow: "0 0 0 2px #444, 0 24px 64px rgba(0,0,0,0.7)",
+            overflow: "hidden",
+            background: "white",
+            flexShrink: 0,
           }}>
-            <div style={{
-              width: f.width, height: f.height,
-              transform: `scale(${f.scale})`,
-              transformOrigin: "top left",
-              overflow: "hidden",
-            }}>
-              {children}
-            </div>
+            <iframe
+              src={baseUrl}
+              style={{ width: f.w, height: f.h, border: "none", transform: `scale(${scale})`, transformOrigin: "top left", display: "block" }}
+              title={`${f.label} Preview`}
+            />
           </div>
+          <p style={{color:"#555",fontSize:"11px",margin:0}}>Scroll inside the device frame to navigate</p>
         </div>
       );
     }
 
     function Root() {
-      const [authed, setAuthed] = useState(!!sessionStorage.getItem(SESSION_KEY));
+      const [authed, setAuthed] = useState(!!localStorage.getItem(SESSION_KEY));
       if (!authed) return <AccessGate onUnlock={() => setAuthed(true)} />;
       return <DeviceFrame><App /></DeviceFrame>;
     }
