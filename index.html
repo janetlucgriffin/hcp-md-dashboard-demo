@@ -1237,53 +1237,50 @@
     }
 
     // ── Device preview frame ────────────────────────────────────────────────
-    // URL param ?view=mobile|tablet wraps the demo in a device bezel via iframe
-    // The iframe loads the same page without ?view so it renders normally + scrolls
+    // URL param ?view=mobile|tablet wraps an iframe in a device bezel.
+    // The iframe is at 1:1 (no CSS scaling) so clicks and scroll work correctly.
+    // The outer dark page scrolls vertically if the device is taller than the screen.
     function DeviceFrame({ children }) {
       const params = new URLSearchParams(window.location.search);
       const view = params.get("view");
       if (!view) return children;
 
       const frames = {
-        mobile: { w: 390, h: 844, label: "iPhone 14", radius: "44px" },
-        tablet: { w: 768, h: 1024, label: "iPad",     radius: "20px" },
+        mobile: { w: 390, h: 844, label: "iPhone 14", radius: "44px", icon: "📱" },
+        tablet: { w: 768, h: 1024, label: "iPad",     radius: "20px", icon: "📲" },
       };
       const f = frames[view];
       if (!f) return children;
 
-      // iframe src = same page without ?view param (renders the real app)
       const baseUrl = window.location.origin + window.location.pathname;
-      // Compute scale so device fits within viewport with padding
-      const vw = window.innerWidth  - 80;
-      const vh = window.innerHeight - 120;
-      const scale = Math.min(vw / f.w, vh / f.h, 1);
-      const bw = Math.round(f.w * scale);
-      const bh = Math.round(f.h * scale);
 
       return (
-        <div style={{minHeight:"100vh",background:"#1a1a2e",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"20px",gap:"14px"}}>
-          <div style={{display:"flex",gap:"16px",alignItems:"center"}}>
-            <span style={{color:"white",fontWeight:700,fontSize:"14px"}}>📱 {f.label}</span>
-            <a href={baseUrl} style={{color:"#888",textDecoration:"none",fontSize:"13px"}}>Desktop ↗</a>
-            {view !== "mobile" && <a href={`${baseUrl}?view=mobile`} style={{color:"#888",textDecoration:"none",fontSize:"13px"}}>Mobile ↗</a>}
-            {view !== "tablet" && <a href={`${baseUrl}?view=tablet`} style={{color:"#888",textDecoration:"none",fontSize:"13px"}}>Tablet ↗</a>}
+        <div style={{background:"#1a1a2e",minHeight:"100vh",padding:"24px 20px 40px",display:"flex",flexDirection:"column",alignItems:"center",gap:"16px"}}>
+          {/* Nav bar */}
+          <div style={{display:"flex",gap:"20px",alignItems:"center",flexShrink:0,flexWrap:"wrap",justifyContent:"center"}}>
+            <span style={{color:"white",fontWeight:700,fontSize:"14px"}}>{f.icon} {f.label}</span>
+            <a href={baseUrl} style={{color:"#888",textDecoration:"none",fontSize:"13px",border:"1px solid #444",borderRadius:"4px",padding:"4px 10px"}}>🖥 Desktop</a>
+            {view !== "mobile" && <a href={`${baseUrl}?view=mobile`} style={{color:"#888",textDecoration:"none",fontSize:"13px",border:"1px solid #444",borderRadius:"4px",padding:"4px 10px"}}>📱 Mobile</a>}
+            {view !== "tablet" && <a href={`${baseUrl}?view=tablet`} style={{color:"#888",textDecoration:"none",fontSize:"13px",border:"1px solid #444",borderRadius:"4px",padding:"4px 10px"}}>📲 Tablet</a>}
           </div>
+          {/* Device bezel — iframe at native resolution, no scaling */}
           <div style={{
-            width: bw + 20, height: bh + 20,
-            border: "10px solid #2a2a2a",
+            width: f.w + 24,
+            border: "12px solid #2a2a2a",
             borderRadius: f.radius,
-            boxShadow: "0 0 0 2px #444, 0 24px 64px rgba(0,0,0,0.7)",
+            boxShadow: "0 0 0 2px #444, 0 28px 72px rgba(0,0,0,0.75)",
             overflow: "hidden",
-            background: "white",
+            background: "#000",
             flexShrink: 0,
           }}>
             <iframe
               src={baseUrl}
-              style={{ width: f.w, height: f.h, border: "none", transform: `scale(${scale})`, transformOrigin: "top left", display: "block" }}
+              width={f.w}
+              height={f.h}
+              style={{display:"block",border:"none"}}
               title={`${f.label} Preview`}
             />
           </div>
-          <p style={{color:"#555",fontSize:"11px",margin:0}}>Scroll inside the device frame to navigate</p>
         </div>
       );
     }
