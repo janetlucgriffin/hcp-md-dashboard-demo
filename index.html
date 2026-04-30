@@ -977,15 +977,13 @@
 
       const rx = _RX[selectedMed];
       const tabCounts = {
-        "action-required": rx.actionRequired.length,
+        "action-required": rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length,
         "pending-patient": rx.pendingPatient.length,
         "in-process":      rx.inProcess.length,
         "shipped":         rx.shipped.length,
         "transferred":     rx.transferred.length,
         "canceled":        rx.canceled.length,
       };
-
-      const allTabs = [...PRESCRIPTION_TABS, ...EXTRA_TABS];
 
       return (
         <div>
@@ -1064,7 +1062,7 @@
                   </div>
                   <div className="stats-row" style={{display:"flex",gap:"12px",flexWrap:"wrap"}}>
                     {[
-                      { label: "Need Action", count: rx.actionRequired.length, color: "#e05c5c", tab: "action-required" },
+                      { label: "Need Action", count: rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length, color: "#e05c5c", tab: "action-required" },
                       { label: "Pending",     count: rx.pendingPatient.length,  color: "#f5a623", tab: "pending-patient" },
                       { label: "In Process",  count: rx.inProcess.length,       color: "#5b9bd5", tab: "in-process" },
                       { label: "Shipped",     count: rx.shipped.length,         color: "#3a8a84", tab: "shipped" },
