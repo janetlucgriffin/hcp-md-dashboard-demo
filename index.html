@@ -771,7 +771,7 @@
 
     const PRESCRIPTION_TABS = [
       { id: "action-required",  label: "Action Required" },
-      { id: "pending-patient",  label: "Pending Patient Actions" },
+      { id: "pending-patient",  label: "Pending Actions" },
       { id: "in-process",       label: "Prescriptions in Process" },
       { id: "shipped",          label: "Successfully Shipped Prescriptions" },
       { id: "transferred",      label: "Transferred Prescriptions" },
@@ -924,6 +924,9 @@
       // Track resolved action-required rows (optimistic UI)
       const [resolvedPatients, setResolvedPatients] = useState(new Set());
       const markResolved = (name) => setResolvedPatients(prev => new Set([...prev, name]));
+      // Track followed-up pending items (physician-action rows — Insurance Verification, Prior Auth Required)
+      const [followedUp, setFollowedUp] = useState(new Set());
+      const markFollowedUp = (name) => setFollowedUp(prev => new Set([...prev, name]));
 
       // Scroll to a section and highlight its tab
       const scrollToSection = (id) => {
@@ -976,9 +979,10 @@
       ];
 
       const rx = _RX[selectedMed];
+      const PHYSICIAN_ACTION_REASONS = new Set(["Insurance Verification", "Prior Auth Required"]);
       const tabCounts = {
         "action-required": rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length,
-        "pending-patient": rx.pendingPatient.length,
+        "pending-patient": rx.pendingPatient.filter(r => !followedUp.has(r.name)).length,
         "in-process":      rx.inProcess.length,
         "shipped":         rx.shipped.length,
         "transferred":     rx.transferred.length,
@@ -1063,7 +1067,7 @@
                   <div className="stats-row" style={{display:"flex",gap:"12px",flexWrap:"wrap"}}>
                     {[
                       { label: "Need Action", count: rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length, color: "#e05c5c", tab: "action-required" },
-                      { label: "Pending",     count: rx.pendingPatient.length,  color: "#f5a623", tab: "pending-patient" },
+                      { label: "Pending",     count: rx.pendingPatient.filter(r => !followedUp.has(r.name)).length, color: "#f5a623", tab: "pending-patient" },
                       { label: "In Process",  count: rx.inProcess.length,       color: "#5b9bd5", tab: "in-process" },
                       { label: "Shipped",     count: rx.shipped.length,         color: "#3a8a84", tab: "shipped" },
                     ].map(s => (
@@ -1107,7 +1111,12 @@
                                 <td data-label="Status"><div className="status-badge">{r.status}</div><div className="pending-text">Pending: {r.pending}</div></td>
                                 <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
                                 <td data-label="Medication">{medLabel(r)}</td>
-                                <td data-label="Action"><button className="enter-btn" onClick={() => setPhoneModalPatient(r)}>Update Number</button></td>
+                                <td data-label="Action">
+                                  {r.status === "Incorrect Number"
+                                    ? <button className="enter-btn" onClick={() => setPhoneModalPatient(r)}>Update Number</button>
+                                    : <button className="enter-btn" onClick={() => { trackEvent("1234567890", "action_taken", { patient: r.name, status: r.status }); markResolved(r.name); }}>Take Action</button>
+                                  }
+                                </td>
                               </tr>
                             ))}
                           </tbody>
@@ -1117,23 +1126,40 @@
                   </div>
 
                   <div id="section-pending-patient" className="section">
-                    <h3>Pending Patient Actions</h3>
-                    <p style={{fontSize:"12px",color:"#3a8a84",marginBottom:"12px"}}>We recommend reaching out to the patient for additional information.</p>
-                    {rx.pendingPatient.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
+                    <h3>Pending Actions</h3>
+                    <p style={{fontSize:"12px",color:"#3a8a84",marginBottom:"12px"}}>Items awaiting patient enrollment, payment, or practice follow-up.</p>
+                    {(() => {
+                      const visiblePending = rx.pendingPatient.filter(r => !followedUp.has(r.name));
+                      return visiblePending.length === 0
+                        ? <p className="empty-text" style={{color:"#3a8a84"}}>✓ No pending items require attention.</p>
+                        : (
                       <table className="rx-table">
-                        <thead><tr><th>Reason</th><th>Patient Info</th><th>Medication</th><th>Additional Details</th></tr></thead>
+                        <thead><tr><th>Reason</th><th>Patient Info</th><th>Medication</th><th>Additional Details</th><th>Action</th></tr></thead>
                         <tbody>
-                          {rx.pendingPatient.map((r, i) => (
-                            <tr key={i}>
-                              <td data-label="Reason"><div className="cell-title">{r.reason}</div></td>
+                          {visiblePending.map((r, i) => {
+                            const needsPhysicianAction = PHYSICIAN_ACTION_REASONS.has(r.reason);
+                            return (
+                            <tr key={i} style={needsPhysicianAction ? {background:"#fffbf0",borderLeft:"3px solid #f5a623"} : {}}>
+                              <td data-label="Reason">
+                                <div className="cell-title" style={needsPhysicianAction ? {color:"#b07000",fontWeight:700} : {}}>{r.reason}</div>
+                                {needsPhysicianAction && <div style={{fontSize:"10px",color:"#b07000",marginTop:"2px",fontWeight:600}}>PRACTICE ACTION NEEDED</div>}
+                              </td>
                               <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
                               <td data-label="Medication">{medLabel(r)}</td>
                               <td data-label="Details"><div className="cell-title">{r.detail}</div>{r.sub && <div className="cell-detail">{r.sub}</div>}</td>
+                              <td data-label="Action">
+                                {needsPhysicianAction && (
+                                  <button className="enter-btn" style={{background:"#e07a00",whiteSpace:"nowrap"}}
+                                    onClick={() => { trackEvent("1234567890", "follow_up", { patient: r.name, reason: r.reason }); markFollowedUp(r.name); }}>
+                                    {r.reason === "Insurance Verification" ? "Contact Insurance" : "Submit PA"}
+                                  </button>
+                                )}
+                              </td>
                             </tr>
-                          ))}
+                          );})}
                         </tbody>
                       </table>
-                    )}
+                    );})()}
                   </div>
 
                   <div id="section-in-process" className="section">
