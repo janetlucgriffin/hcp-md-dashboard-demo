@@ -29,7 +29,9 @@
     .tab:hover { color: #3a8a84; }
     .tab.active { color: #3a8a84; border-bottom-color: #3a8a84; font-weight: 500; }
     .tab-badge { background: #e05c5c; color: white; border-radius: 10px; padding: 1px 6px; font-size: 11px; font-weight: 700; line-height: 1.4; }
-    .tab.active .tab-badge { background: #3a8a84; }
+    .tab-divider { width: 1px; background: #e0e0e0; margin: 8px 6px; align-self: stretch; flex-shrink: 0; }
+    .tab.tab-utility { color: #666; font-size: 12px; border-left: none; }
+    .tab.tab-utility.active { color: #3a8a84; border-bottom-color: #3a8a84; }
 
     /* Page content */
     .page { max-width: 900px; margin: 0 auto; padding: 20px 16px 40px; }
@@ -90,6 +92,7 @@
     .stars { display: flex; gap: 6px; }
     .star { font-size: 28px; cursor: pointer; color: #ddd; transition: color 0.1s; line-height: 1; }
     .star.filled { color: #f5a623; }
+    .star:focus { outline: 2px solid #3a8a84; border-radius: 3px; outline-offset: 2px; }
 
     /* Chips */
     .chips { display: flex; flex-wrap: wrap; gap: 7px; }
@@ -101,6 +104,7 @@
     .nps-row { display: flex; gap: 4px; flex-wrap: wrap; }
     .nps-btn { width: 38px; height: 38px; border: 1.5px solid #d5d5d5; border-radius: 4px; background: white; font-size: 13px; cursor: pointer; color: #555; transition: all 0.15s; }
     .nps-btn:hover { border-color: #3a8a84; color: #3a8a84; }
+    .nps-btn:focus { outline: 2px solid #3a8a84; outline-offset: 2px; }
     .nps-btn.selected { background: #3a8a84; border-color: #3a8a84; color: white; font-weight: 600; }
     .nps-labels { display: flex; justify-content: space-between; max-width: 454px; margin-top: 5px; }
     .nps-label { font-size: 11px; color: #999; }
@@ -286,12 +290,7 @@
       { key: "hcp_summary", label: "HCP Summary Communications", desc: "Enter the email or fax number(s) where this practice should receive summary communications (e.g. HCP Summary Fax)." },
     ];
 
-    const emptyMethods = () => [
-      { method: "fax", value: "" },
-      { method: "", value: "" },
-      { method: "", value: "" },
-      { method: "", value: "" },
-    ];
+    const emptyMethods = () => [{ method: "fax", value: "" }];
 
     function CommSection({ category, data, onChange, showError }) {
       const updateRow = (i, field, val) => {
@@ -312,7 +311,6 @@
                 <select
                   className="method-select"
                   value={row.method}
-                  disabled={false}
                   onChange={e => updateRow(i, "method", e.target.value)}
                 >
                   <option value="">Select ↓</option>
@@ -327,12 +325,23 @@
                   disabled={!row.method}
                   onChange={e => updateRow(i, "value", e.target.value)}
                 />
+                {data.rows.length > 1 && (
+                  <button onClick={() => onChange({ ...data, rows: data.rows.filter((_, idx) => idx !== i) })}
+                    style={{background:"none",border:"none",color:"#bbb",cursor:"pointer",fontSize:"16px",padding:"0 2px",lineHeight:1,flexShrink:0}}
+                    aria-label="Remove method">✕</button>
+                )}
               </div>
               {isInvalid && i === 0 && (
                 <p className="comms-error-msg">At least one delivery method is required.</p>
               )}
             </div>
           ))}
+          {data.rows.length < 4 && (
+            <button onClick={() => onChange({ ...data, rows: [...data.rows, { method: "", value: "" }] })}
+              style={{background:"none",border:"none",color:"#3a8a84",fontSize:"12px",cursor:"pointer",padding:"4px 0",marginTop:"2px",fontWeight:600}}>
+              + Add Method
+            </button>
+          )}
         </div>
       );
     }
@@ -416,10 +425,10 @@
       const buildInitialPrefs = () => {
         const base = Object.fromEntries(COMM_CATEGORIES.map(c => [c.key, { rows: emptyMethods(), optOut: false }]));
         if (hcpSummaryPref) {
-          const rows = emptyMethods();
-          let idx = 0;
-          if (hcpSummaryPref.fax) { rows[idx] = { method: "fax", value: "" }; idx++; }
-          if (hcpSummaryPref.wantEmail && hcpSummaryPref.email) { rows[idx] = { method: "email", value: hcpSummaryPref.email }; }
+          const rows = [];
+          if (hcpSummaryPref.fax) rows.push({ method: "fax", value: "" });
+          if (hcpSummaryPref.wantEmail && hcpSummaryPref.email) rows.push({ method: "email", value: hcpSummaryPref.email });
+          if (rows.length === 0) rows.push({ method: "fax", value: "" });
           base.hcp_summary = { rows, optOut: false };
         }
         return base;
@@ -467,7 +476,7 @@
             throw new Error(err.error || `Server error ${res.status}`);
           }
         } catch (e) {
-          setSaveError(`Could not save preferences: ${e.message}. Please try again or call HCP Support at (800) 553-2406.`);
+          setSaveError(`Could not save preferences: ${e.message}. Please try again or call HCP Support.`);
           setSaving(false);
           return;
         }
@@ -503,7 +512,7 @@
               Changes take effect immediately and will update your preferences in the Phil HCP Portal.
             </p>
             <p style={{fontSize:"13px",color:"#555",margin:"10px 0 0",lineHeight:"1.6"}}>
-              For special or complex communication requests, please call Phil HCP Support at <strong>(800) 553-2406</strong>.
+              For special or complex communication requests, please call Phil HCP Support at <strong><a href="tel:8005532406" style={{color:"#2d7070"}}>(800) 553-2406</a></strong>.
             </p>
           </div>
           <div className="npi-context">
@@ -519,7 +528,7 @@
                 {saving ? "Saving…" : "Save"}
               </button>
             </div>
-            {saveError && <p style={{fontSize:"12px",color:"#e05c5c",marginTop:"8px",textAlign:"right"}}>{saveError}</p>}
+            {saveError && <p style={{fontSize:"12px",color:"#e05c5c",marginTop:"8px",textAlign:"right"}}>{saveError} <a href="tel:8005532406" style={{color:"#e05c5c"}}>(800) 553-2406</a></p>}
             {saved && <p className="comms-saved-msg">✓ Preferences saved for NPI 1234567890.</p>}
           </div>
         </div>
@@ -670,6 +679,11 @@
                     onMouseEnter={() => setHovered(n)}
                     onMouseLeave={() => setHovered(0)}
                     onClick={() => setRating(n)}
+                    onKeyDown={e => (e.key === "Enter" || e.key === " ") && setRating(n)}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`Rate ${n} star${n > 1 ? "s" : ""}`}
+                    aria-pressed={rating === n}
                   >★</span>
                 ))}
               </div>
@@ -903,6 +917,8 @@
       }, []);
       // Educational banner collapse
       const [eduExpanded, setEduExpanded] = useState(true);
+      // Coming Soon banner dismiss
+      const [bannerDismissed, setBannerDismissed] = useState(false);
       // Enter phone modal
       const [phoneModalPatient, setPhoneModalPatient] = useState(null);
       // Track resolved action-required rows (optimistic UI)
@@ -1018,7 +1034,7 @@
             ); })()}
             <div className="tabs-wrap">
               <div className="tabs">
-                {allTabs.map(t => {
+                {PRESCRIPTION_TABS.map(t => {
                   const count = tabCounts[t.id];
                   return (
                     <div key={t.id} className={`tab ${activeTab === t.id ? "active" : ""}`} onClick={() => handleTabClick(t.id)}>
@@ -1027,6 +1043,12 @@
                     </div>
                   );
                 })}
+                <div className="tab-divider" aria-hidden="true" />
+                {EXTRA_TABS.map(t => (
+                  <div key={t.id} className={`tab tab-utility ${activeTab === t.id ? "active" : ""}`} onClick={() => handleTabClick(t.id)}>
+                    {t.label}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -1042,12 +1064,15 @@
                   </div>
                   <div className="stats-row" style={{display:"flex",gap:"12px",flexWrap:"wrap"}}>
                     {[
-                      { label: "Need Action", count: rx.actionRequired.length, color: "#e05c5c" },
-                      { label: "Pending",     count: rx.pendingPatient.length,  color: "#f5a623" },
-                      { label: "In Process",  count: rx.inProcess.length,       color: "#5b9bd5" },
-                      { label: "Shipped",     count: rx.shipped.length,         color: "#3a8a84" },
+                      { label: "Need Action", count: rx.actionRequired.length, color: "#e05c5c", tab: "action-required" },
+                      { label: "Pending",     count: rx.pendingPatient.length,  color: "#f5a623", tab: "pending-patient" },
+                      { label: "In Process",  count: rx.inProcess.length,       color: "#5b9bd5", tab: "in-process" },
+                      { label: "Shipped",     count: rx.shipped.length,         color: "#3a8a84", tab: "shipped" },
                     ].map(s => (
-                      <div key={s.label} style={{textAlign:"center",minWidth:"60px"}}>
+                      <div key={s.label} onClick={() => scrollToSection(s.tab)}
+                        style={{textAlign:"center",minWidth:"60px",cursor:"pointer",padding:"4px 6px",borderRadius:"6px",transition:"background 0.15s"}}
+                        onMouseEnter={e => e.currentTarget.style.background="#f5f5f5"}
+                        onMouseLeave={e => e.currentTarget.style.background="transparent"}>
                         <div style={{fontSize:"22px",fontWeight:700,color:s.color,lineHeight:1}}>{s.count}</div>
                         <div style={{fontSize:"11px",color:"#777",marginTop:"2px"}}>{s.label}</div>
                       </div>
@@ -1055,7 +1080,12 @@
                   </div>
                 </div>
                 <hr className="summary-divider" />
-                <div className="info-banner">✦ COMING SOON: Take action on Rx Renewals in this view electronically. We'll continue to add new features and improvements here — check back for updates.</div>
+                {!bannerDismissed && (
+                  <div className="info-banner" style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
+                    <span>✦ COMING SOON: Take action on Rx Renewals in this view electronically. We'll continue to add new features and improvements here — check back for updates.</span>
+                    <button onClick={() => setBannerDismissed(true)} style={{background:"none",border:"none",color:"#3a8a84",cursor:"pointer",fontSize:"16px",lineHeight:1,padding:"0",flexShrink:0}} aria-label="Dismiss">✕</button>
+                  </div>
+                )}
               </div>
 
               <HcpSummaryDeliveryCard pref={hcpSummaryPref} onSave={setHcpSummaryPref} />
