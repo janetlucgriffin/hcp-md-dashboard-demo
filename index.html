@@ -41,10 +41,10 @@
     .summary-meta h2 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
     .summary-meta .meta { font-size: 13px; color: #555; }
     .summary-meta .meta span { margin-right: 16px; }
+    .info-banner { border-left: 3px solid #3a8a84; background: #f0fafa; padding: 10px 14px; margin: 12px 0 0; font-size: 13px; color: #3a8a84; }
 
     .updated-line { font-size: 12px; color: #555; margin-bottom: 8px; }
     .summary-divider { border: none; border-top: 1px solid #eee; margin: 12px 0; }
-    .info-banner { border-left: 3px solid #3a8a84; background: #f0fafa; padding: 10px 14px; margin: 12px 0 0; font-size: 13px; color: #3a8a84; }
 
     /* Section card */
     .section { background: white; border: 1px solid #ddd; border-radius: 4px; padding: 20px 24px; margin-bottom: 12px; }
@@ -67,86 +67,6 @@
     /* Print button */
     .print-btn { display: block; margin: 0 auto 12px; background: white; color: #3a8a84; border: 1.5px solid #3a8a84; border-radius: 4px; padding: 10px 40px; font-size: 14px; font-weight: 500; cursor: pointer; }
     .print-btn:hover { background: #f0fafa; }
-
-    @media print {
-      .print-btn { display: none; }
-      .header, .filter-bar, .tabs { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    }
-
-    /* ── Responsive / Mobile ─────────────────────────────────────────────── */
-    /* Sticky top chrome */
-    .sticky-chrome { position: sticky; top: 0; z-index: 100; }
-
-    /* Tab scroll hint */
-    .tabs-wrap { position: relative; }
-    .tabs-wrap::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 40px; background: linear-gradient(to right, transparent, white 80%); pointer-events: none; }
-
-    @media (max-width: 640px) {
-      .page { padding: 12px 10px 40px; }
-      .section { padding: 14px 12px; }
-      .summary-meta { padding: 14px; }
-
-      /* Card-style responsive tables */
-      .rx-table { display: block; }
-      .rx-table thead { display: none; }
-      .rx-table tbody { display: block; }
-      .rx-table tr { display: block; border: 1px solid #e8e8e8; border-radius: 6px; margin-bottom: 10px; padding: 12px 14px; background: #fff; }
-      .rx-table td { display: block; border: none; padding: 2px 0; font-size: 13px; }
-      .rx-table td[data-label]::before { content: attr(data-label); display: block; font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
-      .rx-table .patient-name { font-size: 14px; }
-      .rx-table .enter-btn { margin-top: 10px; width: 100%; padding: 10px; font-size: 14px; }
-      .rx-table .status-badge { font-size: 12px; padding: 3px 8px; }
-
-      /* Filter bar */
-      .filter-bar { padding: 8px 12px; }
-      .filter-select { font-size: 14px; padding: 6px 10px; flex: 1; }
-
-      /* Full-screen modal on mobile */
-      .modal-backdrop { align-items: flex-end; }
-      .modal-box { width: 100%; max-width: 100%; border-radius: 16px 16px 0 0; padding: 24px 20px 32px; max-height: 90vh; overflow-y: auto; }
-
-      /* Stats row stacks tighter */
-      .stats-row { gap: 8px !important; }
-      .stats-row > div { min-width: 52px !important; }
-
-      /* Print button */
-      .print-btn { width: 100%; }
-    }
-
-    @media (min-width: 641px) and (max-width: 900px) {
-      .page { padding: 16px 14px 40px; }
-      .section { padding: 16px 18px; }
-      .rx-table { display: block; }
-      .rx-table thead { display: none; }
-      .rx-table tbody { display: block; }
-      .rx-table tr { display: block; border: 1px solid #e8e8e8; border-radius: 6px; margin-bottom: 10px; padding: 12px 16px; }
-      .rx-table td { display: block; border: none; padding: 2px 0; }
-      .rx-table td[data-label]::before { content: attr(data-label); display: block; font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
-      .rx-table .enter-btn { margin-top: 8px; }
-      .modal-box { width: 460px; }
-    }
-
-    /* Comm prefs card */
-    .prefs-card { background: white; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 12px; overflow: hidden; }
-    .prefs-header { padding: 16px 24px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
-    .prefs-header h3 { font-size: 14px; font-weight: 700; }
-    .prefs-header p { font-size: 12px; color: #777; margin-top: 2px; }
-    .prefs-body { padding: 20px 24px; }
-    .radio-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-    .radio-option { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
-    .radio-option input[type="radio"] { margin-top: 2px; accent-color: #3a8a84; width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
-    .radio-label { font-size: 13px; color: #333; }
-    .radio-label strong { display: block; font-weight: 600; }
-    .radio-label span { color: #777; font-size: 12px; }
-    .email-input-row { display: flex; gap: 8px; align-items: center; margin-top: 4px; margin-left: 25px; }
-    .email-input { border: 1.5px solid #d5d5d5; border-radius: 4px; padding: 8px 12px; font-size: 13px; width: 280px; font-family: inherit; }
-    .email-input:focus { outline: none; border-color: #3a8a84; }
-    .email-input.error { border-color: #e05; }
-    .save-prefs-btn { background: #3a8a84; color: white; border: none; border-radius: 4px; padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; }
-    .save-prefs-btn:hover { background: #2d7070; }
-    .save-prefs-btn:disabled { background: #bbb; cursor: default; }
-    .prefs-saved { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #3a8a84; font-weight: 500; margin-top: 0; }
-    .error-msg { font-size: 11px; color: #e05; margin-top: 4px; margin-left: 25px; }
 
     /* ===== FEEDBACK SECTION ===== */
     .feedback-section-card {
@@ -199,21 +119,133 @@
     .submit-btn:disabled { background: #bbb; cursor: default; }
     .submit-hint { font-size: 11px; color: #aaa; margin-top: 6px; }
 
+    /* Manage Communications tab — matches portal Preferences tab exactly */
+    .manage-comms { max-width: 860px; }
+    .manage-comms .npi-context { font-size: 12px; color: #777; margin-bottom: 16px; background: #f9f9f9; border: 1px solid #e8e8e8; border-radius: 4px; padding: 8px 14px; }
+    .manage-comms .npi-context strong { color: #333; }
+    .comms-card { background: white; border: 1px solid #ddd; border-left: 3px solid #e8e8e8; border-radius: 4px; padding: 20px 24px; margin-bottom: 0; }
+    .comms-section { padding: 20px 0; border-bottom: 1px solid #f0f0f0; }
+    .comms-section:last-child { border-bottom: none; }
+    .comms-section h3 { font-size: 13px; font-weight: 700; margin-bottom: 3px; color: #222; }
+    .comms-section .section-desc { font-size: 12px; color: #888; margin-bottom: 10px; }
+    .methods-label { font-size: 12px; font-weight: 600; color: #555; margin-bottom: 6px; }
+    .method-row { display: flex; gap: 6px; align-items: center; margin-bottom: 5px; }
+    .method-select { border: 1px solid #ccc; border-radius: 3px; padding: 5px 8px; font-size: 12px; color: #555; background: #fafafa; min-width: 88px; cursor: pointer; }
+    .method-select:focus { outline: none; border-color: #3a8a84; }
+    .method-input { border: 1px solid #ccc; border-radius: 3px; padding: 5px 10px; font-size: 12px; width: 240px; font-family: inherit; background: #fafafa; color: #333; }
+    .method-input:focus { outline: none; border-color: #3a8a84; background: white; }
+    .method-input:disabled { background: #f0f0f0; color: #aaa; cursor: not-allowed; }
+    .method-input.input-error { border-color: #e05c5c; background: #fff5f5; }
+    .comms-error-msg { font-size: 11px; color: #e05c5c; margin-top: 3px; margin-bottom: 4px; }
+    .opt-out-row { display: flex; align-items: flex-start; gap: 7px; margin-top: 10px; }
+    .opt-out-row input { margin-top: 2px; accent-color: #3a8a84; flex-shrink: 0; cursor: pointer; }
+    .opt-out-row label { font-size: 12px; color: #555; cursor: pointer; font-weight: 600; }
+    .opt-out-row label span { display: block; color: #999; font-size: 11px; font-weight: 400; }
+    .comms-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #eee; }
+    .btn-cancel { background: white; color: #555; border: 1px solid #ccc; border-radius: 3px; padding: 8px 20px; font-size: 13px; cursor: pointer; }
+    .btn-cancel:hover { background: #f5f5f5; }
+    .btn-save-comms { background: #3a8a84; color: white; border: none; border-radius: 3px; padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .btn-save-comms:hover { background: #2d7070; }
+    .comms-saved-msg { font-size: 13px; color: #3a8a84; font-weight: 500; text-align: right; margin-top: 6px; }
+
+    /* Comm prefs card */
+    .prefs-card { background: white; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 12px; overflow: hidden; }
+    .prefs-header { padding: 16px 24px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+    .prefs-header h3 { font-size: 14px; font-weight: 700; }
+    .prefs-header p { font-size: 12px; color: #777; margin-top: 2px; }
+    .prefs-body { padding: 20px 24px; }
+    .radio-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .radio-option { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+    .radio-option input[type="radio"] { margin-top: 2px; accent-color: #3a8a84; width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+    .radio-label { font-size: 13px; color: #333; }
+    .radio-label strong { display: block; font-weight: 600; }
+    .radio-label span { color: #777; font-size: 12px; }
+    .email-input-row { display: flex; gap: 8px; align-items: center; margin-top: 4px; margin-left: 25px; }
+    .email-input { border: 1.5px solid #d5d5d5; border-radius: 4px; padding: 8px 12px; font-size: 13px; width: 280px; font-family: inherit; }
+    .email-input:focus { outline: none; border-color: #3a8a84; }
+    .email-input.error { border-color: #e05; }
+    .save-prefs-btn { background: #3a8a84; color: white; border: none; border-radius: 4px; padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .save-prefs-btn:hover { background: #2d7070; }
+    .save-prefs-btn:disabled { background: #bbb; cursor: default; }
+    .prefs-saved { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #3a8a84; font-weight: 500; margin-top: 0; }
+    .error-msg { font-size: 11px; color: #e05; margin-top: 4px; margin-left: 25px; }
+
     @media print {
       .prefs-card { display: none; }
       .feedback-section-card { display: none; }
+      .print-btn { display: none; }
+      .header, .filter-bar, .tabs { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
 
+    /* ── Responsive / Mobile ─────────────────────────────────────────────── */
+    /* Sticky top chrome */
+    .sticky-chrome { position: sticky; top: 0; z-index: 100; }
+
+    /* Tab scroll hint */
+    .tabs-wrap { position: relative; }
+    .tabs-wrap::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 40px; background: linear-gradient(to right, transparent, white 80%); pointer-events: none; }
+
     @media (max-width: 640px) {
+      .page { padding: 12px 10px 40px; }
+      .section { padding: 14px 12px; }
+      .summary-meta { padding: 14px; }
+
+      /* Card-style responsive tables */
+      .rx-table { display: block; }
+      .rx-table thead { display: none; }
+      .rx-table tbody { display: block; }
+      .rx-table tr { display: block; border: 1px solid #e8e8e8; border-radius: 6px; margin-bottom: 10px; padding: 12px 14px; background: #fff; }
+      .rx-table td { display: block; border: none; padding: 2px 0; font-size: 13px; }
+      .rx-table td[data-label]::before { content: attr(data-label); display: block; font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+      .rx-table .patient-name { font-size: 14px; }
+      .rx-table .enter-btn { margin-top: 10px; width: 100%; padding: 10px; font-size: 14px; }
+      .rx-table .status-badge { font-size: 12px; padding: 3px 8px; }
+
+      /* Stats row stacks tighter */
+      .stats-row { gap: 8px !important; }
+      .stats-row > div { min-width: 52px !important; }
+
+      /* Filter bar */
+      .filter-bar { padding: 8px 12px; }
+      .filter-select { font-size: 14px; padding: 6px 10px; flex: 1; }
+
+      /* Full-screen modal on mobile */
+      .modal-backdrop { align-items: flex-end; }
+      .modal-box { width: 100%; max-width: 100%; border-radius: 16px 16px 0 0; padding: 24px 20px 32px; max-height: 90vh; overflow-y: auto; }
+
+      /* Manage comms method rows */
+      .method-row { flex-wrap: wrap; }
+      .method-input { width: 100% !important; min-width: 0; }
+
       /* Feedback */
       .nps-row { gap: 3px; }
       .nps-btn { width: 32px; height: 36px; font-size: 12px; }
-    }
 
-    /* HCP delivery bar */
-    @media (max-width: 640px) {
+      /* Print button */
+      .print-btn { width: 100%; }
+
+      /* HCP delivery bar */
       .delivery-bar { flex-wrap: wrap; gap: 4px; }
     }
+
+    @media (min-width: 641px) and (max-width: 900px) {
+      .page { padding: 16px 14px 40px; }
+      .section { padding: 16px 18px; }
+      .rx-table { display: block; }
+      .rx-table thead { display: none; }
+      .rx-table tbody { display: block; }
+      .rx-table tr { display: block; border: 1px solid #e8e8e8; border-radius: 6px; margin-bottom: 10px; padding: 12px 16px; }
+      .rx-table td { display: block; border: none; padding: 2px 0; }
+      .rx-table td[data-label]::before { content: attr(data-label); display: block; font-size: 10px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+      .rx-table .enter-btn { margin-top: 8px; }
+      .modal-box { width: 460px; }
+    }
+
+    /* Success */
+    .success-state { text-align: center; padding: 32px 0 16px; }
+    .success-icon { font-size: 44px; margin-bottom: 12px; }
+    .success-state h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .success-state p { font-size: 13px; color: #666; line-height: 1.6; max-width: 380px; margin: 0 auto; }
 
     /* Modal */
     .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; display: flex; align-items: center; justify-content: center; }
@@ -235,20 +267,12 @@
     .modal-submit:hover { background: #2d7070; }
     .modal-submit:disabled { background: #bbb; cursor: default; }
     .modal-error { font-size: 12px; color: #e05c5c; margin-bottom: 10px; }
-
-    /* Success */
-    .success-state { text-align: center; padding: 32px 0 16px; }
-    .success-icon { font-size: 44px; margin-bottom: 12px; }
-    .success-state h4 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-    .success-state p { font-size: 13px; color: #666; line-height: 1.6; max-width: 380px; margin: 0 auto; }
   </style>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
     const { useState, useEffect } = React;
-
-    const API_BASE = "https://gdex4sbesg.execute-api.us-east-1.amazonaws.com";
 
     const TOPICS = [
       "Communication", "Prescription Speed", "Patient Updates",
@@ -421,21 +445,14 @@
       "All Medications": null,
     };
 
-    function trackEvent(npi, eventType, eventData) {
-      fetch(`${API_BASE}/events`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ npi, event_type: eventType, event_data: eventData }),
-      }).catch(() => {});
-    }
+    const API_BASE = "https://gdex4sbesg.execute-api.us-east-1.amazonaws.com";
 
-    const PRESCRIPTION_TABS = [
-      { id: "action-required",  label: "Action Required" },
-      { id: "pending-patient",  label: "Pending Patient Actions" },
-      { id: "in-process",       label: "Prescriptions in Process" },
-      { id: "shipped",          label: "Successfully Shipped Prescriptions" },
-      { id: "transferred",      label: "Transferred Prescriptions" },
-      { id: "canceled",         label: "Canceled Prescriptions" },
+    const COMM_CATEGORIES = [
+      { key: "prior_auth", label: "Prior Authorization", desc: "Enter the email or fax number(s) where this practice should receive prior authorization communications." },
+      { key: "appeals", label: "Appeals and Tier Exceptions", desc: "Enter the email or fax number(s) where this practice should receive appeals and tier exception communications." },
+      { key: "refills", label: "Refills Communications", desc: "Enter the email or fax number(s) where this practice should receive refill communications." },
+      { key: "scripts", label: "Scripts Communications", desc: "Enter the email or fax number(s) where this practice should receive script communications (e.g. Missing SIG, script clarifications)." },
+      { key: "hcp_summary", label: "HCP Summary Communications", desc: "Enter the email or fax number(s) where this practice should receive summary communications (e.g. HCP Summary Fax)." },
     ];
 
     const _RX = {
@@ -648,6 +665,62 @@
       return acc;
     }, { label: "", actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [] });
 
+    const emptyMethods = () => [{ method: "fax", value: "" }];
+
+    function CommSection({ category, data, onChange, showError }) {
+      const updateRow = (i, field, val) => {
+        const rows = data.rows.map((r, idx) => idx === i ? { ...r, [field]: val } : r);
+        onChange({ ...data, rows });
+      };
+      const hasValue = data.rows.some(r => r.method && r.value.trim());
+      const isInvalid = showError && !hasValue;
+
+      return (
+        <div className="comms-section">
+          <h3>{category.label}</h3>
+          <p className="section-desc">{category.desc}</p>
+          <p className="methods-label">Methods</p>
+          {data.rows.map((row, i) => (
+            <div key={i}>
+              <div className="method-row">
+                <select
+                  className="method-select"
+                  value={row.method}
+                  onChange={e => updateRow(i, "method", e.target.value)}
+                >
+                  <option value="">Select ↓</option>
+                  <option value="fax">Fax</option>
+                  <option value="email">Email</option>
+                </select>
+                <input
+                  className={`method-input ${isInvalid && i === 0 ? "input-error" : ""}`}
+                  type={row.method === "email" ? "email" : "text"}
+                  placeholder={row.method === "email" ? "email@practice.com" : row.method === "fax" ? "Fax number" : ""}
+                  value={row.value}
+                  disabled={!row.method}
+                  onChange={e => updateRow(i, "value", e.target.value)}
+                />
+                {data.rows.length > 1 && (
+                  <button onClick={() => onChange({ ...data, rows: data.rows.filter((_, idx) => idx !== i) })}
+                    style={{background:"none",border:"none",color:"#bbb",cursor:"pointer",fontSize:"16px",padding:"0 2px",lineHeight:1,flexShrink:0}}
+                    aria-label="Remove method">✕</button>
+                )}
+              </div>
+              {isInvalid && i === 0 && (
+                <p className="comms-error-msg">At least one delivery method is required.</p>
+              )}
+            </div>
+          ))}
+          {data.rows.length < 4 && (
+            <button onClick={() => onChange({ ...data, rows: [...data.rows, { method: "", value: "" }] })}
+              style={{background:"none",border:"none",color:"#3a8a84",fontSize:"12px",cursor:"pointer",padding:"4px 0",marginTop:"2px",fontWeight:600}}>
+              + Add Method
+            </button>
+          )}
+        </div>
+      );
+    }
+
     function EnterPhoneModal({ patient, onClose, onSubmitted }) {
       const [phone, setPhone] = useState("");
       const [isLandline, setIsLandline] = useState(false);
@@ -677,6 +750,7 @@
         setTimeout(() => { onSubmitted && onSubmitted(); onClose(); }, 1200);
       };
 
+      // Close on backdrop click
       const handleBackdrop = e => { if (e.target === e.currentTarget) onClose(); };
 
       return (
@@ -717,6 +791,214 @@
                 {submitting ? "Submitting…" : "Submit"}
               </button>
             </>)}
+          </div>
+        </div>
+      );
+    }
+
+    function ManageCommsTab({ hcpSummaryPref, onUpdateHcpSummaryPref }) {
+      const buildInitialPrefs = () => {
+        const base = Object.fromEntries(COMM_CATEGORIES.map(c => [c.key, { rows: emptyMethods(), optOut: false }]));
+        if (hcpSummaryPref) {
+          const rows = [];
+          if (hcpSummaryPref.fax) rows.push({ method: "fax", value: "" });
+          if (hcpSummaryPref.wantEmail && hcpSummaryPref.email) rows.push({ method: "email", value: hcpSummaryPref.email });
+          if (rows.length === 0) rows.push({ method: "fax", value: "" });
+          base.hcp_summary = { rows, optOut: false };
+        }
+        return base;
+      };
+      const [prefs, setPrefs] = useState(buildInitialPrefs);
+      const [saved, setSaved] = useState(false);
+      const [saving, setSaving] = useState(false);
+      const [saveError, setSaveError] = useState("");
+      const [attempted, setAttempted] = useState(false);
+
+      const handleChange = (key, data) => { setPrefs(p => ({ ...p, [key]: data })); setSaved(false); setSaveError(""); };
+
+      const isValid = () => COMM_CATEGORIES.every(cat =>
+        prefs[cat.key].rows.some(r => r.method && r.value.trim())
+      );
+
+      const handleSave = async () => {
+        setAttempted(true);
+        if (!isValid()) return;
+
+        const payload = Object.fromEntries(
+          COMM_CATEGORIES.map(cat => {
+            const d = prefs[cat.key];
+            return [cat.key, {
+              optOut: d.optOut,
+              methods: d.rows.filter(r => r.method && r.value.trim()).map(r => ({ type: r.method, value: r.value.trim() }))
+            }];
+          })
+        );
+
+        setSaving(true);
+        setSaveError("");
+        try {
+          const token = localStorage.getItem("HCP_ACCESS_TOKEN") || "";
+          const res = await fetch(`${API_BASE}/comm-prefs`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              ...(token ? { "Authorization": `Bearer ${token}` } : {})
+            },
+            body: JSON.stringify({ npi: "1234567890", preferences: payload })
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || `Server error ${res.status}`);
+          }
+        } catch (e) {
+          setSaveError(`Could not save preferences: ${e.message}. Please try again or call HCP Support.`);
+          setSaving(false);
+          return;
+        }
+
+        // Sync hcp_summary back to the delivery card
+        const summaryMethods = payload.hcp_summary?.methods ?? [];
+        const newFax = summaryMethods.some(m => m.type === "fax");
+        const emailEntry = summaryMethods.find(m => m.type === "email");
+        if (onUpdateHcpSummaryPref) {
+          onUpdateHcpSummaryPref({ fax: newFax, wantEmail: !!emailEntry, email: emailEntry?.value ?? "" });
+        }
+
+        trackEvent("1234567890", "save_comm_prefs", { categories: Object.keys(payload) });
+        setSaving(false);
+        setSaved(true);
+        setAttempted(false);
+      };
+
+      const handleCancel = () => {
+        setPrefs(buildInitialPrefs());
+        setSaved(false);
+        setSaveError("");
+        setAttempted(false);
+      };
+
+      return (
+        <div className="manage-comms">
+          <div style={{background:"#f0f7f7",border:"1px solid #c8e0de",borderRadius:"6px",padding:"16px 20px",marginBottom:"16px"}}>
+            <div style={{fontWeight:700,fontSize:"15px",color:"#2d7070",marginBottom:"6px"}}>Communication Preferences</div>
+            <p style={{fontSize:"13px",color:"#444",margin:0,lineHeight:"1.6"}}>
+              Use this page to control how Phil contacts your practice for each communication type — prior authorizations, refills, scripts, appeals, and HCP summary reports.
+              For each category, add one or more delivery methods (fax or email).
+              Changes take effect immediately and will update your preferences in the Phil HCP Portal.
+            </p>
+            <p style={{fontSize:"13px",color:"#555",margin:"10px 0 0",lineHeight:"1.6"}}>
+              For special or complex communication requests, please call Phil HCP Support at <strong><a href="tel:8005532406" style={{color:"#2d7070"}}>(800) 553-2406</a></strong>.
+            </p>
+          </div>
+          <div className="npi-context">
+            Viewing preferences for: <strong>Dr. Dora Weinstein</strong> &nbsp;·&nbsp; NPI: <strong>1234567890</strong> &nbsp;·&nbsp; Practice: <strong>Jacqueline Lindsey2</strong>
+          </div>
+          <div className="comms-card">
+            {COMM_CATEGORIES.map(cat => (
+              <CommSection key={cat.key} category={cat} data={prefs[cat.key]} onChange={d => handleChange(cat.key, d)} showError={attempted} />
+            ))}
+            <div className="comms-actions">
+              <button className="btn-cancel" onClick={handleCancel} disabled={saving}>Cancel</button>
+              <button className="btn-save-comms" onClick={handleSave} disabled={saving}>
+                {saving ? "Saving…" : "Save"}
+              </button>
+            </div>
+            {saveError && <p style={{fontSize:"12px",color:"#e05c5c",marginTop:"8px",textAlign:"right"}}>{saveError} <a href="tel:8005532406" style={{color:"#e05c5c"}}>(800) 553-2406</a></p>}
+            {saved && <p className="comms-saved-msg">✓ Preferences saved for NPI 1234567890.</p>}
+          </div>
+        </div>
+      );
+    }
+
+    // Focused card: manage HCP Summary delivery methods (fax and/or email).
+    // Shares hcpSummaryPref state with ManageCommsTab.
+    function HcpSummaryDeliveryCard({ pref, onSave }) {
+      const [expanded, setExpanded] = useState(false);
+      const [wantFax, setWantFax]     = useState(pref.fax);
+      const [wantEmail, setWantEmail] = useState(pref.wantEmail);
+      const [email, setEmail]         = useState(pref.email);
+      const [error, setError]   = useState("");
+
+      const isValidEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+      const currentLabel = () => {
+        const parts = [];
+        if (pref.fax) parts.push("fax");
+        if (pref.wantEmail && pref.email) parts.push(`email (${pref.email})`);
+        else if (pref.wantEmail) parts.push("email");
+        return parts.join(" & ") || "fax";
+      };
+
+      const handleSave = async () => {
+        if (!wantFax && !wantEmail) { setError("Please select at least one delivery method."); return; }
+        if (wantEmail && !isValidEmail(email)) { setError("Please enter a valid email address."); return; }
+        setError("");
+        const methods = [
+          ...(wantFax   ? [{ type: "fax",   value: "" }] : []),
+          ...(wantEmail ? [{ type: "email", value: email.trim() }] : []),
+        ];
+        try {
+          const token = localStorage.getItem("HCP_ACCESS_TOKEN") || "";
+          await fetch(`${API_BASE}/comm-prefs`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json", ...(token ? { "Authorization": `Bearer ${token}` } : {}) },
+            body: JSON.stringify({ npi: "1234567890", preferences: { hcp_summary: { optOut: false, methods } } })
+          });
+        } catch (_) {}
+        const saved_pref = { fax: wantFax, wantEmail, email: wantEmail ? email.trim() : "" };
+        trackEvent("1234567890", "save_delivery_pref", saved_pref);
+        onSave(saved_pref);
+        setExpanded(false);
+      };
+
+      const toggle = (setter, val) => { setter(!val); setError(""); };
+
+      if (!expanded) {
+        return (
+          <div style={{background:"#f9fefe",border:"1px solid #d0e8e6",borderRadius:"4px",padding:"10px 16px",marginBottom:"12px",display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:"13px"}}>
+            <span style={{color:"#555"}}>
+              <span style={{fontWeight:600,color:"#2d7070"}}>Weekly summary sent via:</span> {currentLabel()}
+            </span>
+            <button onClick={() => setExpanded(true)} style={{background:"none",border:"none",color:"#3a8a84",fontWeight:600,fontSize:"13px",cursor:"pointer",padding:"0",textDecoration:"underline"}}>Edit</button>
+          </div>
+        );
+      }
+
+      return (
+        <div className="prefs-card" style={{marginBottom:"12px"}}>
+          <div className="prefs-header" style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div>
+              <h3>HCP Summary — Delivery Preference</h3>
+              <p style={{fontSize:"12px",color:"#888",margin:0}}>Choose how you'd like to receive this Weekly Prescription Summary.</p>
+            </div>
+            <button onClick={() => { setExpanded(false); setError(""); }} style={{background:"none",border:"none",color:"#aaa",fontSize:"18px",cursor:"pointer",lineHeight:1}}>✕</button>
+          </div>
+          <div className="prefs-body">
+            <div style={{display:"flex",flexDirection:"column",gap:"10px",marginBottom:"12px"}}>
+              <label style={{display:"flex",alignItems:"center",gap:"10px",cursor:"pointer"}}>
+                <input type="checkbox" checked={wantFax} onChange={() => toggle(setWantFax, wantFax)}
+                  style={{accentColor:"#3a8a84",width:"15px",height:"15px",flexShrink:0,cursor:"pointer"}} />
+                <span style={{fontSize:"13px",fontWeight:600}}>Fax</span>
+              </label>
+              <label style={{display:"flex",alignItems:"flex-start",gap:"10px",cursor:"pointer"}}>
+                <input type="checkbox" checked={wantEmail} onChange={() => toggle(setWantEmail, wantEmail)}
+                  style={{marginTop:"2px",accentColor:"#3a8a84",width:"15px",height:"15px",flexShrink:0,cursor:"pointer"}} />
+                <div style={{flex:1}}>
+                  <span style={{fontSize:"13px",fontWeight:600}}>Email</span>
+                  {wantEmail && (
+                    <input className={`email-input ${error && !isValidEmail(email) ? "error" : ""}`}
+                      type="email" placeholder="your@practice.com" value={email} autoFocus
+                      style={{display:"block",marginTop:"6px"}}
+                      onChange={e => { setEmail(e.target.value); setError(""); }} />
+                  )}
+                </div>
+              </label>
+            </div>
+            {error && <p className="error-msg" style={{marginBottom:"8px"}}>{error}</p>}
+            <div style={{display:"flex",gap:"8px"}}>
+              <button className="save-prefs-btn" onClick={handleSave}>Save</button>
+              <button onClick={() => { setExpanded(false); setError(""); }} style={{background:"none",border:"1px solid #ccc",borderRadius:"4px",padding:"7px 16px",fontSize:"13px",cursor:"pointer",color:"#555"}}>Cancel</button>
+            </div>
           </div>
         </div>
       );
@@ -854,115 +1136,171 @@
       );
     }
 
-    // Focused card: manage HCP Summary delivery methods (fax and/or email).
-    function HcpSummaryDeliveryCard({ pref, onSave }) {
-      const [expanded, setExpanded] = useState(false);
-      const [wantFax, setWantFax]     = useState(pref.fax);
-      const [wantEmail, setWantEmail] = useState(pref.wantEmail);
-      const [email, setEmail]         = useState(pref.email);
-      const [error, setError]   = useState("");
-
-      const isValidEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-
-      const currentLabel = () => {
-        const parts = [];
-        if (pref.fax) parts.push("fax");
-        if (pref.wantEmail && pref.email) parts.push(`email (${pref.email})`);
-        else if (pref.wantEmail) parts.push("email");
-        return parts.join(" & ") || "fax";
-      };
-
-      const handleSave = async () => {
-        if (!wantFax && !wantEmail) { setError("Please select at least one delivery method."); return; }
-        if (wantEmail && !isValidEmail(email)) { setError("Please enter a valid email address."); return; }
-        setError("");
-        const methods = [
-          ...(wantFax   ? [{ type: "fax",   value: "" }] : []),
-          ...(wantEmail ? [{ type: "email", value: email.trim() }] : []),
-        ];
-        try {
-          const token = localStorage.getItem("HCP_ACCESS_TOKEN") || "";
-          await fetch(`${API_BASE}/comm-prefs`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json", ...(token ? { "Authorization": `Bearer ${token}` } : {}) },
-            body: JSON.stringify({ npi: "1234567890", preferences: { hcp_summary: { optOut: false, methods } } })
-          });
-        } catch (_) {}
-        const saved_pref = { fax: wantFax, wantEmail, email: wantEmail ? email.trim() : "" };
-        trackEvent("1234567890", "save_delivery_pref", saved_pref);
-        onSave(saved_pref);
-        setExpanded(false);
-      };
-
-      const toggle = (setter, val) => { setter(!val); setError(""); };
-
-      if (!expanded) {
-        return (
-          <div style={{background:"#f9fefe",border:"1px solid #d0e8e6",borderRadius:"4px",padding:"10px 16px",marginBottom:"12px",display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:"13px"}}>
-            <span style={{color:"#555"}}>
-              <span style={{fontWeight:600,color:"#2d7070"}}>Weekly summary sent via:</span> {currentLabel()}
-            </span>
-            <button onClick={() => setExpanded(true)} style={{background:"none",border:"none",color:"#3a8a84",fontWeight:600,fontSize:"13px",cursor:"pointer",padding:"0",textDecoration:"underline"}}>Edit</button>
-          </div>
-        );
-      }
-
-      return (
-        <div className="prefs-card" style={{marginBottom:"12px"}}>
-          <div className="prefs-header" style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <div>
-              <h3>HCP Summary — Delivery Preference</h3>
-              <p style={{fontSize:"12px",color:"#888",margin:0}}>Choose how you'd like to receive this Weekly Prescription Summary.</p>
-            </div>
-            <button onClick={() => { setExpanded(false); setError(""); }} style={{background:"none",border:"none",color:"#aaa",fontSize:"18px",cursor:"pointer",lineHeight:1}}>✕</button>
-          </div>
-          <div className="prefs-body">
-            <div style={{display:"flex",flexDirection:"column",gap:"10px",marginBottom:"12px"}}>
-              <label style={{display:"flex",alignItems:"center",gap:"10px",cursor:"pointer"}}>
-                <input type="checkbox" checked={wantFax} onChange={() => toggle(setWantFax, wantFax)}
-                  style={{accentColor:"#3a8a84",width:"15px",height:"15px",flexShrink:0,cursor:"pointer"}} />
-                <span style={{fontSize:"13px",fontWeight:600}}>Fax</span>
-              </label>
-              <label style={{display:"flex",alignItems:"flex-start",gap:"10px",cursor:"pointer"}}>
-                <input type="checkbox" checked={wantEmail} onChange={() => toggle(setWantEmail, wantEmail)}
-                  style={{marginTop:"2px",accentColor:"#3a8a84",width:"15px",height:"15px",flexShrink:0,cursor:"pointer"}} />
-                <div style={{flex:1}}>
-                  <span style={{fontSize:"13px",fontWeight:600}}>Email</span>
-                  {wantEmail && (
-                    <input className={`email-input ${error && !isValidEmail(email) ? "error" : ""}`}
-                      type="email" placeholder="your@practice.com" value={email} autoFocus
-                      style={{display:"block",marginTop:"6px"}}
-                      onChange={e => { setEmail(e.target.value); setError(""); }} />
-                  )}
-                </div>
-              </label>
-            </div>
-            {error && <p className="error-msg" style={{marginBottom:"8px"}}>{error}</p>}
-            <div style={{display:"flex",gap:"8px"}}>
-              <button className="save-prefs-btn" onClick={handleSave}>Save</button>
-              <button onClick={() => { setExpanded(false); setError(""); }} style={{background:"none",border:"1px solid #ccc",borderRadius:"4px",padding:"7px 16px",fontSize:"13px",cursor:"pointer",color:"#555"}}>Cancel</button>
-            </div>
-          </div>
-        </div>
-      );
+    function trackEvent(npi, eventType, eventData) {
+      fetch(`${API_BASE}/events`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ npi, event_type: eventType, event_data: eventData }),
+      }).catch(() => {});
     }
+
+    const PRESCRIPTION_TABS = [
+      { id: "action-required",  label: "Action Required" },
+      { id: "pending-patient",  label: "Pending Patient Actions" },
+      { id: "in-process",       label: "Prescriptions in Process" },
+      { id: "shipped",          label: "Successfully Shipped Prescriptions" },
+      { id: "transferred",      label: "Transferred Prescriptions" },
+      { id: "canceled",         label: "Canceled Prescriptions" },
+    ];
+
+    const MED_INFO = {
+      "Tyrvaya®": {
+        generic: "varenicline solution nasal spray 0.03 mg",
+        indication: "Dry Eye Disease (DED)",
+        effectiveness: "Clinical studies show meaningful improvement in tear production (Schirmer score) as early as 4 weeks, with the greatest benefit observed after 12 weeks of consistent twice-daily use.",
+        tip: "Encourage patients to use both nasal sprays as directed — consistent daily use is key to achieving full therapeutic benefit.",
+      },
+      "Addyi®": {
+        generic: "flibanserin 100 mg tablet",
+        indication: "Hypoactive Sexual Desire Disorder (HSDD)",
+        effectiveness: "Improvement in satisfying sexual events (SSEs) and sexual desire typically observed at 4–8 weeks. Reassess at 8 weeks — if no meaningful benefit, discontinuation is recommended.",
+        tip: "Must be taken at bedtime to reduce risk of hypotension and syncope. Counsel patients to avoid alcohol throughout treatment.",
+      },
+      "Auvelity®": {
+        generic: "dextromethorphan HBr 45 mg / bupropion HCl 105 mg tablet",
+        indication: "Major Depressive Disorder (MDD)",
+        effectiveness: "Rapid onset demonstrated in trials — statistically significant improvement in MADRS scores as early as week 1, with continued improvement through week 6.",
+        tip: "Start with one tablet daily for the first 3 days, then titrate to one tablet twice daily to minimize side effects such as dizziness and nausea.",
+      },
+      "All Medications": null,
+    };
+
+    const _RX = {
+      "Tyrvaya®": {
+        label: "Tyrvaya® (varenicline solution) nasal spray 0.03 MG Nasal Spray",
+        actionRequired: [
+          { name: "Ellis, Maria",    dob: "05/19/1973", pending: "30 days ago", status: "Incorrect Number" },
+          { name: "Flores, Evelyn",  dob: "03/16/1979", pending: "30 days ago", status: "Incorrect Number" },
+          { name: "Moreno, Frank",   dob: "09/17/1980", pending: "29 days ago", status: "Incorrect Number" },
+          { name: "Ellis, Susan",    dob: "02/06/1982", pending: "28 days ago", status: "Incorrect Number" },
+          { name: "Simmons, Joyce",  dob: "03/02/1972", pending: "28 days ago", status: "Incorrect Number" },
+        ],
+        pendingPatient: [
+          { reason: "Patient Has Not Enrolled", name: "Palmer, Robin",    dob: "04/17/1968", detail: "Date Prescribed: 03/30/2026", sub: "(27 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Mendoza, Joe",     dob: "04/26/1976", detail: "Date Prescribed: 03/30/2026", sub: "(27 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Cook, Margaret",   dob: "08/05/1948", detail: "Date Prescribed: 03/30/2026", sub: "(27 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Day, Denise",      dob: "04/28/1981", detail: "Date Prescribed: 04/20/2026", sub: "(7 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Medina, Charles",  dob: "11/03/1969", detail: "Date Prescribed: 04/22/2026", sub: "(6 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Flores, Jack",     dob: "10/24/1977", detail: "Date Prescribed: 04/22/2026", sub: "(6 days ago)" },
+          { reason: "Missing Payment Type",     name: "Gibson, Diane",    dob: "06/14/1970", detail: "30 days, $89", sub: "Patient saved $6" },
+          { reason: "Missing Payment Type",     name: "Hall, Sandra",     dob: "10/25/1980", detail: "30 days, $10", sub: "Patient saved $0" },
+        ],
+        inProcess: [],
+        shipped: [
+          { name: "Fox, Billy",       dob: "03/07/1981", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
+          { name: "Reed, Mildred",    dob: "11/28/1979", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
+          { name: "Moreno, Joyce",    dob: "09/14/1968", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
+          { name: "Howard, David",    dob: "07/26/1978", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
+        ],
+        transferred: [
+          { name: "Wagner, Joseph",   dob: "01/13/1977", note: "Due to patient request, the prescription will be transferred for fulfillment to another pharmacy." },
+        ],
+        canceled: [],
+      },
+      "Addyi®": {
+        label: "Addyi® (flibanserin) 100 MG Tablet",
+        actionRequired: [
+          { name: "Torres, Linda",    dob: "07/22/1975", pending: "25 days ago", status: "Incorrect Number" },
+          { name: "Rivera, Angela",   dob: "05/30/1970", pending: "14 days ago", status: "Incorrect Number" },
+        ],
+        pendingPatient: [
+          { reason: "Patient Has Not Enrolled", name: "Bennett, Carol",   dob: "02/11/1979", detail: "Date Prescribed: 04/01/2026", sub: "(25 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Ward, Nancy",      dob: "09/03/1985", detail: "Date Prescribed: 04/08/2026", sub: "(18 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Ramirez, Lisa",    dob: "06/29/1978", detail: "Date Prescribed: 04/15/2026", sub: "(11 days ago)" },
+          { reason: "Missing Payment Type",     name: "Collins, Barbara", dob: "12/20/1967", detail: "30 days, $142", sub: "Patient saved $25" },
+          { reason: "Insurance Verification",   name: "Jenkins, Maria",   dob: "03/07/1980", detail: "Awaiting prior auth response", sub: "" },
+        ],
+        inProcess: [
+          { name: "Hernandez, Donna", dob: "08/18/1976", status: "Prior Auth Submitted", detail: "Submitted 04/24/2026 — awaiting insurer response" },
+          { name: "Carter, Helen",    dob: "01/25/1990", status: "Pharmacy Processing",  detail: "Expected ship date: 05/01/2026" },
+        ],
+        shipped: [
+          { name: "Scott, Alice",     dob: "04/09/1977", payType: "Insurance + Coupon", insurance: "Express Scripts", detail: "30 days, $10" },
+          { name: "Nelson, Ruth",     dob: "10/31/1982", payType: "Manufacturer Coupon", insurance: "", detail: "30 days, $35" },
+          { name: "Kelly, Dorothy",   dob: "06/16/1973", payType: "Insurance + Coupon", insurance: "CVS Caremark",   detail: "30 days, $0" },
+        ],
+        transferred: [],
+        canceled: [
+          { name: "Price, Sharon", dob: "02/27/1969", reason: "Patient requested cancellation", date: "04/18/2026" },
+        ],
+      },
+      "Auvelity®": {
+        label: "Auvelity® (dextromethorphan HBr/bupropion HCl) 45 mg/105 mg Tablet",
+        actionRequired: [
+          { name: "Cooper, Betty",    dob: "12/05/1965", pending: "10 days ago", status: "Incorrect Number" },
+        ],
+        pendingPatient: [
+          { reason: "Patient Has Not Enrolled", name: "Bailey, Cynthia",  dob: "03/19/1987", detail: "Date Prescribed: 04/05/2026", sub: "(21 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Flores, Frances",  dob: "07/08/1972", detail: "Date Prescribed: 04/12/2026", sub: "(14 days ago)" },
+          { reason: "Missing Payment Type",     name: "James, Evelyn",    dob: "09/22/1980", detail: "30 days, $55", sub: "Patient saved $30" },
+          { reason: "Prior Auth Required",      name: "Stewart, Martha",  dob: "05/16/1975", detail: "PA initiated 04/20/2026", sub: "" },
+        ],
+        inProcess: [
+          { name: "Adams, Gloria",    dob: "11/30/1983", status: "Prior Auth Submitted", detail: "Submitted 04/22/2026 — response expected within 3 business days" },
+        ],
+        shipped: [
+          { name: "Baker, Patricia",  dob: "08/04/1971", payType: "Insurance + Coupon", insurance: "Anthem BCBS",    detail: "30 days, $15" },
+          { name: "Gonzalez, Sandra", dob: "02/13/1984", payType: "Insurance + Coupon", insurance: "UnitedHealth",   detail: "30 days, $0" },
+          { name: "Nelson, Donna",    dob: "06/27/1969", payType: "Manufacturer Coupon", insurance: "",              detail: "30 days, $50" },
+          { name: "Carter, Maria",    dob: "10/10/1979", payType: "Insurance + Coupon", insurance: "Cigna",          detail: "30 days, $0" },
+          { name: "Mitchell, Helen",  dob: "01/08/1993", payType: "Insurance Only",     insurance: "Aetna",          detail: "30 days, $20" },
+        ],
+        transferred: [
+          { name: "Perez, Kathleen",  dob: "04/21/1976", note: "Patient requested transfer to local specialty pharmacy." },
+        ],
+        canceled: [
+          { name: "Roberts, Helen",   dob: "07/03/1971", reason: "Prescriber voided prescription", date: "04/17/2026" },
+          { name: "Turner, Christine",dob: "11/19/1988", reason: "Patient no longer interested",    date: "04/23/2026" },
+        ],
+      },
+    };
+
+    // "All Medications" merges all three
+    _RX["All Medications"] = ["Tyrvaya®","Addyi®","Auvelity®"].reduce((acc, med) => {
+      const d = _RX[med];
+      const tag = r => ({ ...r, medOverride: d.label });
+      acc.actionRequired.push(...d.actionRequired.map(tag));
+      acc.pendingPatient.push(...d.pendingPatient.map(tag));
+      acc.inProcess.push(...d.inProcess.map(tag));
+      acc.shipped.push(...d.shipped.map(tag));
+      acc.transferred.push(...d.transferred.map(tag));
+      acc.canceled.push(...d.canceled.map(tag));
+      return acc;
+    }, { label: "", actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [] });
 
     function App() {
       const [activeTab, setActiveTab] = useState("action-required");
+      const [viewMode, setViewMode] = useState("overview"); // "overview" | "manage-comms" | "feedback"
       const [selectedMed, setSelectedMed] = useState("Tyrvaya®");
+      // Shared HCP Summary delivery pref — kept in sync between inline card and ManageCommsTab
+      const [hcpSummaryPref, setHcpSummaryPref] = useState({ fax: true, wantEmail: false, email: "" });
+      // Live-updating timestamp
       const [lastUpdated, setLastUpdated] = useState(new Date());
       useEffect(() => {
         const t = setInterval(() => setLastUpdated(new Date()), 60000);
         return () => clearInterval(t);
       }, []);
-      const [viewMode, setViewMode] = useState("overview"); // "overview" | "feedback"
-      const [hcpSummaryPref, setHcpSummaryPref] = useState({ fax: true, wantEmail: false, email: "" });
+      // Educational banner collapse
       const [eduExpanded, setEduExpanded] = useState(true);
+      // Coming Soon banner dismiss
       const [bannerDismissed, setBannerDismissed] = useState(false);
+      // Enter phone modal
       const [phoneModalPatient, setPhoneModalPatient] = useState(null);
+      // Track resolved action-required rows (optimistic UI)
       const [resolvedPatients, setResolvedPatients] = useState(new Set());
       const markResolved = (name) => setResolvedPatients(prev => new Set([...prev, name]));
 
+      // Scroll to a section and highlight its tab
       const scrollToSection = (id) => {
         const el = document.getElementById(`section-${id}`);
         if (el) {
@@ -973,13 +1311,17 @@
       };
 
       const handleTabClick = (id) => {
-        if (id === "feedback") {
+        if (id === "manage-comms") {
+          setViewMode("manage-comms"); setActiveTab("manage-comms");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else if (id === "feedback") {
           setViewMode("feedback"); setActiveTab("feedback");
           window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
           if (viewMode !== "overview") {
             setViewMode("overview");
             setActiveTab(id);
+            // Wait for render then scroll
             setTimeout(() => scrollToSection(id), 80);
           } else {
             scrollToSection(id);
@@ -987,6 +1329,7 @@
         }
       };
 
+      // Update active tab based on scroll position
       useEffect(() => {
         if (viewMode !== "overview") return;
         const onScroll = () => {
@@ -1002,6 +1345,11 @@
         return () => window.removeEventListener("scroll", onScroll);
       }, [viewMode]);
 
+      const EXTRA_TABS = [
+        { id: "manage-comms", label: "Manage Communications" },
+        { id: "feedback",     label: "Share Feedback" },
+      ];
+
       const rx = _RX[selectedMed];
       const tabCounts = {
         "action-required": rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length,
@@ -1011,10 +1359,6 @@
         "transferred":     rx.transferred.length,
         "canceled":        rx.canceled.length,
       };
-
-      const EXTRA_TABS = [
-        { id: "feedback", label: "Share Feedback" },
-      ];
 
       return (
         <div>
@@ -1105,7 +1449,7 @@
                     </div>
                   );
                 })}
-                {EXTRA_TABS.length > 0 && <div className="tab-divider" aria-hidden="true" />}
+                <div className="tab-divider" aria-hidden="true" />
                 {EXTRA_TABS.map(t => (
                   <div key={t.id} className={`tab tab-utility ${activeTab === t.id ? "active" : ""}`} onClick={() => handleTabClick(t.id)}>
                     {t.label}
@@ -1118,168 +1462,170 @@
           <div className="page">
 
             {viewMode === "overview" && (<>
-            <div className="summary-meta" style={{marginBottom:"10px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:"8px"}}>
-                <div>
-                  <h2 style={{marginBottom:"2px"}}>Weekly Prescription Overview</h2>
-                  <div className="meta"><span><strong>Dr. Dora Weinstein</strong></span><span>Practice: Jacqueline Lindsey2</span><span style={{color:"#aaa"}}>Updated: {lastUpdated.toLocaleDateString('en-US', {month:'numeric',day:'numeric',year:'numeric'})} {lastUpdated.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}</span></div>
+              <div className="summary-meta" style={{marginBottom:"10px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:"8px"}}>
+                  <div>
+                    <h2 style={{marginBottom:"2px"}}>Weekly Prescription Overview</h2>
+                    <div className="meta"><span><strong>Dr. Dora Weinstein</strong></span><span>Practice: Jacqueline Lindsey2</span><span style={{color:"#aaa"}}>Updated: {lastUpdated.toLocaleDateString('en-US', {month:'numeric',day:'numeric',year:'numeric'})} {lastUpdated.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}</span></div>
+                  </div>
+                  <div className="stats-row" style={{display:"flex",gap:"12px",flexWrap:"wrap"}}>
+                    {[
+                      { label: "Need Action", count: rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length, color: "#e05c5c", tab: "action-required" },
+                      { label: "Pending",     count: rx.pendingPatient.length,  color: "#f5a623", tab: "pending-patient" },
+                      { label: "In Process",  count: rx.inProcess.length,       color: "#5b9bd5", tab: "in-process" },
+                      { label: "Shipped",     count: rx.shipped.length,         color: "#3a8a84", tab: "shipped" },
+                    ].map(s => (
+                      <div key={s.label} onClick={() => scrollToSection(s.tab)}
+                        style={{textAlign:"center",minWidth:"60px",cursor:"pointer",padding:"4px 6px",borderRadius:"6px",transition:"background 0.15s"}}
+                        onMouseEnter={e => e.currentTarget.style.background="#f5f5f5"}
+                        onMouseLeave={e => e.currentTarget.style.background="transparent"}>
+                        <div style={{fontSize:"22px",fontWeight:700,color:s.color,lineHeight:1}}>{s.count}</div>
+                        <div style={{fontSize:"11px",color:"#777",marginTop:"2px"}}>{s.label}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="stats-row" style={{display:"flex",gap:"12px",flexWrap:"wrap"}}>
-                  {[
-                    { label: "Need Action", count: rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length, color: "#e05c5c", tab: "action-required" },
-                    { label: "Pending",     count: rx.pendingPatient.length,  color: "#f5a623", tab: "pending-patient" },
-                    { label: "In Process",  count: rx.inProcess.length,       color: "#5b9bd5", tab: "in-process" },
-                    { label: "Shipped",     count: rx.shipped.length,         color: "#3a8a84", tab: "shipped" },
-                  ].map(s => (
-                    <div key={s.label} onClick={() => scrollToSection(s.tab)}
-                      style={{textAlign:"center",minWidth:"60px",cursor:"pointer",padding:"4px 6px",borderRadius:"6px",transition:"background 0.15s"}}
-                      onMouseEnter={e => e.currentTarget.style.background="#f5f5f5"}
-                      onMouseLeave={e => e.currentTarget.style.background="transparent"}>
-                      <div style={{fontSize:"22px",fontWeight:700,color:s.color,lineHeight:1}}>{s.count}</div>
-                      <div style={{fontSize:"11px",color:"#777",marginTop:"2px"}}>{s.label}</div>
-                    </div>
-                  ))}
-                </div>
+                <hr className="summary-divider" />
+                {!bannerDismissed && (
+                  <div className="info-banner" style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
+                    <span>✦ COMING SOON: Take action on Rx Renewals in this view electronically. We'll continue to add new features and improvements here — check back for updates.</span>
+                    <button onClick={() => setBannerDismissed(true)} style={{background:"none",border:"none",color:"#3a8a84",cursor:"pointer",fontSize:"16px",lineHeight:1,padding:"0",flexShrink:0}} aria-label="Dismiss">✕</button>
+                  </div>
+                )}
               </div>
-              <hr className="summary-divider" />
-              {!bannerDismissed && (
-                <div style={{borderLeft:"3px solid #3a8a84",background:"#f0fafa",padding:"10px 14px",fontSize:"13px",color:"#3a8a84",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
-                  <span>✦ COMING SOON: Take action on Rx Renewals in this view electronically. We'll continue to add new features and improvements here — check back for updates.</span>
-                  <button onClick={() => setBannerDismissed(true)} style={{background:"none",border:"none",color:"#3a8a84",cursor:"pointer",fontSize:"16px",lineHeight:1,padding:"0",flexShrink:0}} aria-label="Dismiss">✕</button>
-                </div>
-              )}
-            </div>
 
-            <HcpSummaryDeliveryCard pref={hcpSummaryPref} onSave={setHcpSummaryPref} />
+              <HcpSummaryDeliveryCard pref={hcpSummaryPref} onSave={setHcpSummaryPref} />
 
-            {(() => {
-              const medLabel = r => r.medOverride || (selectedMed !== "All Medications" ? selectedMed : rx.label);
-              return (<>
-                <div id="section-action-required" className="section">
-                  <h3>Action Required. <span className="section-subtitle">Resolve the items below to ensure the prescription is filled on time.</span></h3>
-                  {(() => {
-                    const visible = rx.actionRequired.filter(r => !resolvedPatients.has(r.name));
-                    return visible.length === 0
-                      ? <p className="empty-text" style={{color:"#3a8a84"}}>✓ All items resolved. No further action needed.</p>
-                      : (
+              {(() => {
+                const rx = _RX[selectedMed];
+                const medLabel = r => r.medOverride || (selectedMed !== "All Medications" ? selectedMed : rx.label);
+                return (<>
+                  <div id="section-action-required" className="section">
+                    <h3>Action Required. <span className="section-subtitle">Resolve the items below to ensure the prescription is filled on time.</span></h3>
+                    {(() => {
+                      const visible = rx.actionRequired.filter(r => !resolvedPatients.has(r.name));
+                      return visible.length === 0
+                        ? <p className="empty-text" style={{color:"#3a8a84"}}>✓ All items resolved. No further action needed.</p>
+                        : (
+                        <table className="rx-table">
+                          <thead><tr><th>Status</th><th>Patient Info</th><th>Medication</th><th>Action</th></tr></thead>
+                          <tbody>
+                            {visible.map((r, i) => (
+                              <tr key={i}>
+                                <td data-label="Status"><div className="status-badge">{r.status}</div><div className="pending-text">Pending: {r.pending}</div></td>
+                                <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
+                                <td data-label="Medication">{medLabel(r)}</td>
+                                <td data-label="Action"><button className="enter-btn" onClick={() => setPhoneModalPatient(r)}>Update Number</button></td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      );
+                    })()}
+                  </div>
+
+                  <div id="section-pending-patient" className="section">
+                    <h3>Pending Patient Actions</h3>
+                    <p style={{fontSize:"12px",color:"#3a8a84",marginBottom:"12px"}}>We recommend reaching out to the patient for additional information.</p>
+                    {rx.pendingPatient.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
                       <table className="rx-table">
-                        <thead><tr><th>Status</th><th>Patient Info</th><th>Medication</th><th>Action</th></tr></thead>
+                        <thead><tr><th>Reason</th><th>Patient Info</th><th>Medication</th><th>Additional Details</th></tr></thead>
                         <tbody>
-                          {visible.map((r, i) => (
+                          {rx.pendingPatient.map((r, i) => (
                             <tr key={i}>
-                              <td data-label="Status"><div className="status-badge">{r.status}</div><div className="pending-text">Pending: {r.pending}</div></td>
+                              <td data-label="Reason"><div className="cell-title">{r.reason}</div></td>
                               <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
                               <td data-label="Medication">{medLabel(r)}</td>
-                              <td data-label="Action"><button className="enter-btn" onClick={() => setPhoneModalPatient(r)}>Update Number</button></td>
+                              <td data-label="Details"><div className="cell-title">{r.detail}</div>{r.sub && <div className="cell-detail">{r.sub}</div>}</td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
-                    );
-                  })()}
-                </div>
+                    )}
+                  </div>
 
-                <div id="section-pending-patient" className="section">
-                  <h3>Pending Patient Actions</h3>
-                  <p style={{fontSize:"12px",color:"#3a8a84",marginBottom:"12px"}}>We recommend reaching out to the patient for additional information.</p>
-                  {rx.pendingPatient.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
-                    <table className="rx-table">
-                      <thead><tr><th>Reason</th><th>Patient Info</th><th>Medication</th><th>Additional Details</th></tr></thead>
-                      <tbody>
-                        {rx.pendingPatient.map((r, i) => (
-                          <tr key={i}>
-                            <td data-label="Reason"><div className="cell-title">{r.reason}</div></td>
-                            <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                            <td data-label="Medication">{medLabel(r)}</td>
-                            <td data-label="Details"><div className="cell-title">{r.detail}</div>{r.sub && <div className="cell-detail">{r.sub}</div>}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
+                  <div id="section-in-process" className="section">
+                    <h3>Prescriptions in Process</h3>
+                    {rx.inProcess.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
+                      <table className="rx-table">
+                        <thead><tr><th>Patient Info</th><th>Medication</th><th>Status</th><th>Additional Details</th></tr></thead>
+                        <tbody>
+                          {rx.inProcess.map((r, i) => (
+                            <tr key={i}>
+                              <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
+                              <td data-label="Medication">{medLabel(r)}</td>
+                              <td data-label="Status"><div className="status-badge">{r.status}</div></td>
+                              <td data-label="Details"><div className="cell-detail">{r.detail}</div></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
 
-                <div id="section-in-process" className="section">
-                  <h3>Prescriptions in Process</h3>
-                  {rx.inProcess.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
-                    <table className="rx-table">
-                      <thead><tr><th>Patient Info</th><th>Medication</th><th>Status</th><th>Additional Details</th></tr></thead>
-                      <tbody>
-                        {rx.inProcess.map((r, i) => (
-                          <tr key={i}>
-                            <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                            <td data-label="Medication">{medLabel(r)}</td>
-                            <td data-label="Status"><div className="status-badge">{r.status}</div></td>
-                            <td data-label="Details"><div className="cell-detail">{r.detail}</div></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
+                  <div id="section-shipped" className="section">
+                    <h3>Successfully Shipped Prescriptions</h3>
+                    {rx.shipped.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
+                      <table className="rx-table">
+                        <thead><tr><th>Patient Info</th><th>Medication</th><th>Processing Details</th><th>Details</th></tr></thead>
+                        <tbody>
+                          {rx.shipped.map((r, i) => (
+                            <tr key={i}>
+                              <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
+                              <td data-label="Medication">{medLabel(r)}</td>
+                              <td data-label="Processing"><div className="cell-title">{r.payType}</div>{r.insurance && <div className="cell-detail">Insurance: {r.insurance}</div>}</td>
+                              <td data-label="Details"><div className="cell-title">{r.detail}</div></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
 
-                <div id="section-shipped" className="section">
-                  <h3>Successfully Shipped Prescriptions</h3>
-                  {rx.shipped.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
-                    <table className="rx-table">
-                      <thead><tr><th>Patient Info</th><th>Medication</th><th>Processing Details</th><th>Details</th></tr></thead>
-                      <tbody>
-                        {rx.shipped.map((r, i) => (
-                          <tr key={i}>
-                            <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                            <td data-label="Medication">{medLabel(r)}</td>
-                            <td data-label="Processing"><div className="cell-title">{r.payType}</div>{r.insurance && <div className="cell-detail">Insurance: {r.insurance}</div>}</td>
-                            <td data-label="Details"><div className="cell-title">{r.detail}</div></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
+                  <div id="section-transferred" className="section">
+                    <h3>Transferred Prescriptions</h3>
+                    {rx.transferred.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
+                      <table className="rx-table">
+                        <thead><tr><th>Patient Info</th><th>Medication</th><th>Additional Details</th></tr></thead>
+                        <tbody>
+                          {rx.transferred.map((r, i) => (
+                            <tr key={i}>
+                              <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
+                              <td data-label="Medication">{medLabel(r)}</td>
+                              <td data-label="Details">{r.note}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
 
-                <div id="section-transferred" className="section">
-                  <h3>Transferred Prescriptions</h3>
-                  {rx.transferred.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
-                    <table className="rx-table">
-                      <thead><tr><th>Patient Info</th><th>Medication</th><th>Additional Details</th></tr></thead>
-                      <tbody>
-                        {rx.transferred.map((r, i) => (
-                          <tr key={i}>
-                            <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                            <td data-label="Medication">{medLabel(r)}</td>
-                            <td data-label="Details">{r.note}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
+                  <div id="section-canceled" className="section">
+                    <h3>Canceled Prescriptions</h3>
+                    {rx.canceled.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
+                      <table className="rx-table">
+                        <thead><tr><th>Patient Info</th><th>Medication</th><th>Reason</th><th>Date</th></tr></thead>
+                        <tbody>
+                          {rx.canceled.map((r, i) => (
+                            <tr key={i}>
+                              <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
+                              <td data-label="Medication">{medLabel(r)}</td>
+                              <td data-label="Reason">{r.reason}</td>
+                              <td data-label="Date">{r.date}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                </>);
+              })()}
 
-                <div id="section-canceled" className="section">
-                  <h3>Canceled Prescriptions</h3>
-                  {rx.canceled.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
-                    <table className="rx-table">
-                      <thead><tr><th>Patient Info</th><th>Medication</th><th>Reason</th><th>Date</th></tr></thead>
-                      <tbody>
-                        {rx.canceled.map((r, i) => (
-                          <tr key={i}>
-                            <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                            <td data-label="Medication">{medLabel(r)}</td>
-                            <td data-label="Reason">{r.reason}</td>
-                            <td data-label="Date">{r.date}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
-              </>);
-            })()}
-
-            <FeedbackCard />
-            <button className="print-btn" onClick={() => { trackEvent("1234567890", "print", { url: window.location.href }); window.print(); }}>Print</button>
+              <FeedbackCard />
+              <button className="print-btn" onClick={() => { trackEvent("1234567890", "print", { url: window.location.href }); window.print(); }}>Print</button>
             </>)}
 
+            {viewMode === "manage-comms" && <ManageCommsTab hcpSummaryPref={hcpSummaryPref} onUpdateHcpSummaryPref={setHcpSummaryPref} />}
             {viewMode === "feedback" && <div style={{maxWidth:"680px"}}><FeedbackCard /></div>}
           </div>
         </div>
@@ -1288,7 +1634,7 @@
 
     // ── Access gate ────────────────────────────────────────────────────────
     const ACCESS_CODE = "PHIL2026";
-    const SESSION_KEY = "hcp_demo_auth";
+    const SESSION_KEY = "hcp_demo_auth"; // localStorage so iframes on same origin inherit it
 
     function AccessGate({ onUnlock }) {
       const [code, setCode] = useState("");
@@ -1326,6 +1672,10 @@
       );
     }
 
+    // ── Device preview frame ────────────────────────────────────────────────
+    // URL param ?view=mobile|tablet wraps an iframe in a device bezel.
+    // The iframe is at 1:1 (no CSS scaling) so clicks and scroll work correctly.
+    // The outer dark page scrolls vertically if the device is taller than the screen.
     function DeviceFrame({ children }) {
       const params = new URLSearchParams(window.location.search);
       const view = params.get("view");
@@ -1342,12 +1692,14 @@
 
       return (
         <div style={{background:"#1a1a2e",minHeight:"100vh",padding:"24px 20px 40px",display:"flex",flexDirection:"column",alignItems:"center",gap:"16px"}}>
+          {/* Nav bar */}
           <div style={{display:"flex",gap:"20px",alignItems:"center",flexShrink:0,flexWrap:"wrap",justifyContent:"center"}}>
             <span style={{color:"white",fontWeight:700,fontSize:"14px"}}>{f.icon} {f.label}</span>
             <a href={baseUrl} style={{color:"#888",textDecoration:"none",fontSize:"13px",border:"1px solid #444",borderRadius:"4px",padding:"4px 10px"}}>🖥 Desktop</a>
             {view !== "mobile" && <a href={`${baseUrl}?view=mobile`} style={{color:"#888",textDecoration:"none",fontSize:"13px",border:"1px solid #444",borderRadius:"4px",padding:"4px 10px"}}>📱 Mobile</a>}
             {view !== "tablet" && <a href={`${baseUrl}?view=tablet`} style={{color:"#888",textDecoration:"none",fontSize:"13px",border:"1px solid #444",borderRadius:"4px",padding:"4px 10px"}}>📲 Tablet</a>}
           </div>
+          {/* Device bezel — iframe at native resolution, no scaling */}
           <div style={{
             width: f.w + 24,
             border: "12px solid #2a2a2a",
