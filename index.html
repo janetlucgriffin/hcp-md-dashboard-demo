@@ -153,23 +153,53 @@
     const API_BASE = "https://gdex4sbesg.execute-api.us-east-1.amazonaws.com";
 
     const MED_INFO = {
+      // ── Ophthalmology ──────────────────────────────────────────────────────
       "Tyrvaya®": {
         generic: "varenicline solution nasal spray 0.03 mg",
         indication: "Dry Eye Disease (DED)",
         effectiveness: "Clinical studies show meaningful improvement in tear production (Schirmer score) as early as 4 weeks, with the greatest benefit observed after 12 weeks of consistent twice-daily use.",
         tip: "Encourage patients to use both nasal sprays as directed — consistent daily use is key to achieving full therapeutic benefit.",
       },
+      // ── Women's Health ─────────────────────────────────────────────────────
       "Addyi®": {
         generic: "flibanserin 100 mg tablet",
         indication: "Hypoactive Sexual Desire Disorder (HSDD)",
         effectiveness: "Improvement in satisfying sexual events (SSEs) and sexual desire typically observed at 4–8 weeks. Reassess at 8 weeks — if no meaningful benefit, discontinuation is recommended.",
         tip: "Must be taken at bedtime to reduce risk of hypotension and syncope. Counsel patients to avoid alcohol throughout treatment.",
       },
+      // ── Psychiatry / CNS ───────────────────────────────────────────────────
       "Auvelity®": {
         generic: "dextromethorphan HBr 45 mg / bupropion HCl 105 mg tablet",
         indication: "Major Depressive Disorder (MDD)",
         effectiveness: "Rapid onset demonstrated in trials — statistically significant improvement in MADRS scores as early as week 1, with continued improvement through week 6.",
         tip: "Start with one tablet daily for the first 3 days, then titrate to one tablet twice daily to minimize side effects such as dizziness and nausea.",
+      },
+      "Ingrezza®": {
+        generic: "valbenazine 40 mg / 80 mg capsule",
+        indication: "Tardive Dyskinesia (TD)",
+        effectiveness: "KINECT-3 trial demonstrated statistically significant reduction in AIMS scores at 6 weeks; approximately 40–50% of patients achieved ≥50% improvement on 80 mg dosing.",
+        tip: "Start at 40 mg once daily for one week, then increase to 80 mg. Reassess at 4–6 weeks — dose reduction to 40 mg may be considered if tolerability is a concern.",
+      },
+      // ── Endocrinology ──────────────────────────────────────────────────────
+      "Ozempic®": {
+        generic: "semaglutide 0.5 mg / 1 mg / 2 mg injection",
+        indication: "Type 2 Diabetes Mellitus (T2DM)",
+        effectiveness: "Clinical trials demonstrate HbA1c reductions of 1.5–1.8% with once-weekly dosing; SUSTAIN-6 showed a 26% reduction in major adverse cardiovascular events (MACE) vs placebo.",
+        tip: "Initiate at 0.25 mg once weekly for 4 weeks, then increase to 0.5 mg. Counsel patients on injection technique and proper storage — refrigerate until first use, then may keep at room temperature for up to 56 days.",
+      },
+      // ── Dermatology ────────────────────────────────────────────────────────
+      "Dupixent®": {
+        generic: "dupilumab 300 mg / 2 mL subcutaneous injection",
+        indication: "Atopic Dermatitis (AD) · Asthma · Chronic Rhinosinusitis with Nasal Polyps (CRSwNP)",
+        effectiveness: "SOLO-1/SOLO-2 trials: ~38% of adults achieved IGA 0/1 (clear/almost clear skin) vs ~10% placebo at 16 weeks, with significant reductions in itch and EASI score.",
+        tip: "For AD, give loading dose of 600 mg (two 300 mg injections), then 300 mg every other week. Advise patients to rotate injection sites. Refer to ophthalmology if conjunctivitis develops.",
+      },
+      // ── Neurology ──────────────────────────────────────────────────────────
+      "Ajovy®": {
+        generic: "fremanezumab-vfrm 225 mg / 1.5 mL subcutaneous injection",
+        indication: "Migraine Prevention (Episodic & Chronic)",
+        effectiveness: "HALO trials showed 3.7–4.6 fewer migraine days/month vs placebo at 3 months; ~40–45% of patients achieved ≥50% reduction in monthly migraine days.",
+        tip: "Offer monthly (225 mg) or quarterly (675 mg — 3 injections at once every 3 months) dosing options. Counsel patients that full benefit may take up to 3 months to manifest.",
       },
       "All Medications": null,
     };
@@ -279,10 +309,28 @@
           { name: "Turner, Christine",dob: "11/19/1988", reason: "Patient no longer interested",    date: "04/23/2026" },
         ],
       },
+      // ── Additional PHIL Rx portfolio (live data populated by real API) ─────
+      "Ingrezza®": {
+        label: "Ingrezza® (valbenazine) 40 mg / 80 mg Capsule",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Ozempic®": {
+        label: "Ozempic® (semaglutide) 0.5 mg / 1 mg / 2 mg Injection",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Dupixent®": {
+        label: "Dupixent® (dupilumab) 300 mg / 2 mL Subcutaneous Injection",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Ajovy®": {
+        label: "Ajovy® (fremanezumab-vfrm) 225 mg / 1.5 mL Subcutaneous Injection",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
     };
 
-    // "All Medications" merges all three
-    _RX["All Medications"] = ["Tyrvaya®","Addyi®","Auvelity®"].reduce((acc, med) => {
+    // "All Medications" merges all active medications
+    const ALL_MEDS = ["Tyrvaya®","Addyi®","Auvelity®","Ingrezza®","Ozempic®","Dupixent®","Ajovy®"];
+    _RX["All Medications"] = ALL_MEDS.reduce((acc, med) => {
       const d = _RX[med];
       const tag = r => ({ ...r, medOverride: d.label });
       acc.actionRequired.push(...d.actionRequired.map(tag));
@@ -428,10 +476,13 @@
             <div className="filter-bar">
               <span className="filter-label">Filter by Medication:</span>
               <select className="filter-select" value={selectedMed} onChange={e => { setSelectedMed(e.target.value); setEduExpanded(true); }}>
-                <option>Tyrvaya®</option>
-                <option>Addyi®</option>
-                <option>Auvelity®</option>
-                <option>All Medications</option>
+                <optgroup label="Ophthalmology"><option>Tyrvaya®</option></optgroup>
+                <optgroup label="Women's Health"><option>Addyi®</option></optgroup>
+                <optgroup label="Psychiatry / CNS"><option>Auvelity®</option><option>Ingrezza®</option></optgroup>
+                <optgroup label="Endocrinology"><option>Ozempic®</option></optgroup>
+                <optgroup label="Dermatology"><option>Dupixent®</option></optgroup>
+                <optgroup label="Neurology"><option>Ajovy®</option></optgroup>
+                <option value="All Medications">All Medications</option>
               </select>
             </div>
             {MED_INFO[selectedMed] && (() => { const m = MED_INFO[selectedMed]; return (
