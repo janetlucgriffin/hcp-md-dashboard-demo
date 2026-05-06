@@ -148,8 +148,66 @@
     .prefs-saved { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #3a8a84; font-weight: 500; margin-top: 0; }
     .error-msg { font-size: 11px; color: #e05; margin-top: 4px; margin-left: 25px; }
 
+    /* ===== FEEDBACK SECTION ===== */
+    .feedback-section-card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .feedback-header {
+      background: linear-gradient(135deg, #3a8a84 0%, #2d7070 100%);
+      padding: 20px 24px;
+      color: white;
+    }
+    .feedback-header h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .feedback-header p { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+    .feedback-body { padding: 24px; }
+
+    .fb-label { display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px; }
+    .fb-group { margin-bottom: 20px; }
+
+    /* Stars */
+    .stars { display: flex; gap: 6px; }
+    .star { font-size: 28px; cursor: pointer; color: #ddd; transition: color 0.1s; line-height: 1; }
+    .star.filled { color: #f5a623; }
+    .star:focus { outline: 2px solid #3a8a84; border-radius: 3px; outline-offset: 2px; }
+
+    /* Chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+    .chip { border: 1.5px solid #d5d5d5; border-radius: 16px; padding: 6px 14px; font-size: 12px; cursor: pointer; color: #555; background: white; transition: all 0.15s; }
+    .chip:hover { border-color: #3a8a84; color: #3a8a84; }
+    .chip.selected { border-color: #3a8a84; background: #edf7f6; color: #3a8a84; font-weight: 500; }
+
+    /* NPS */
+    .nps-row { display: flex; gap: 4px; flex-wrap: wrap; }
+    .nps-btn { width: 38px; height: 38px; border: 1.5px solid #d5d5d5; border-radius: 4px; background: white; font-size: 13px; cursor: pointer; color: #555; transition: all 0.15s; }
+    .nps-btn:hover { border-color: #3a8a84; color: #3a8a84; }
+    .nps-btn:focus { outline: 2px solid #3a8a84; outline-offset: 2px; }
+    .nps-btn.selected { background: #3a8a84; border-color: #3a8a84; color: white; font-weight: 600; }
+    .nps-labels { display: flex; justify-content: space-between; max-width: 454px; margin-top: 5px; }
+    .nps-label { font-size: 11px; color: #999; }
+
+    /* Textarea */
+    .fb-textarea { width: 100%; border: 1.5px solid #d5d5d5; border-radius: 4px; padding: 10px 12px; font-size: 13px; font-family: inherit; resize: vertical; min-height: 80px; color: #333; }
+    .fb-textarea:focus { outline: none; border-color: #3a8a84; }
+    .fb-textarea::placeholder { color: #bbb; }
+
+    .submit-btn { background: #3a8a84; color: white; border: none; border-radius: 4px; padding: 11px 28px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .submit-btn:hover { background: #2d7070; }
+    .submit-btn:disabled { background: #bbb; cursor: default; }
+    .submit-hint { font-size: 11px; color: #aaa; margin-top: 6px; }
+
     @media print {
       .prefs-card { display: none; }
+      .feedback-section-card { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      /* Feedback */
+      .nps-row { gap: 3px; }
+      .nps-btn { width: 32px; height: 36px; font-size: 12px; }
     }
 
     /* HCP delivery bar */
@@ -191,6 +249,12 @@
     const { useState, useEffect } = React;
 
     const API_BASE = "https://gdex4sbesg.execute-api.us-east-1.amazonaws.com";
+
+    const TOPICS = [
+      "Communication", "Prescription Speed", "Patient Updates",
+      "Platform Ease of Use", "Fax Experience", "Support & Help",
+      "Enrollment Process", "Other"
+    ];
 
     const MED_INFO = {
       // ── Ophthalmology ──────────────────────────────────────────────────────
@@ -658,6 +722,138 @@
       );
     }
 
+    function FeedbackCard() {
+      const [rating, setRating] = useState(0);
+      const [hovered, setHovered] = useState(0);
+      const [selectedTopics, setSelectedTopics] = useState([]);
+      const [otherText, setOtherText] = useState("");
+      const [nps, setNps] = useState(null);
+      const [comment, setComment] = useState("");
+      const [submitted, setSubmitted] = useState(false);
+      const [submitting, setSubmitting] = useState(false);
+      const [submitError, setSubmitError] = useState("");
+
+      const toggleTopic = t =>
+        setSelectedTopics(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t]);
+
+      if (submitted) {
+        return (
+          <div className="feedback-section-card">
+            <div className="feedback-header">
+              <h3>Share Your Feedback</h3>
+              <p>Help us build a better experience for you and your patients.</p>
+            </div>
+            <div className="feedback-body">
+              <div className="success-state">
+                <div className="success-icon">✅</div>
+                <h4>Thank you — this means a lot.</h4>
+                <p>Your feedback goes directly to our team and helps us keep improving the experience for you and your patients.</p>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="feedback-section-card">
+          <div className="feedback-header">
+            <h3>Share Your Feedback</h3>
+            <p>You help patients get their medications — and you help us get better. It takes 2 minutes.</p>
+          </div>
+          <div className="feedback-body">
+
+            <div className="fb-group">
+              <label className="fb-label">How would you rate your overall experience with PHIL? *</label>
+              <div className="stars">
+                {[1,2,3,4,5].map(n => (
+                  <span
+                    key={n}
+                    className={`star ${n <= (hovered || rating) ? "filled" : ""}`}
+                    onMouseEnter={() => setHovered(n)}
+                    onMouseLeave={() => setHovered(0)}
+                    onClick={() => setRating(n)}
+                    onKeyDown={e => (e.key === "Enter" || e.key === " ") && setRating(n)}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`Rate ${n} star${n > 1 ? "s" : ""}`}
+                    aria-pressed={rating === n}
+                  >★</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="fb-group">
+              <label className="fb-label">What areas matter most to you? (select all that apply)</label>
+              <div className="chips">
+                {TOPICS.map(t => (
+                  <button key={t} className={`chip ${selectedTopics.includes(t) ? "selected" : ""}`} onClick={() => toggleTopic(t)}>{t}</button>
+                ))}
+              </div>
+              {selectedTopics.includes("Other") && (
+                <input
+                  type="text"
+                  className="email-input"
+                  placeholder="Please describe..."
+                  value={otherText}
+                  onChange={e => setOtherText(e.target.value)}
+                  style={{marginTop:"10px", width:"100%", maxWidth:"420px"}}
+                  autoFocus
+                />
+              )}
+            </div>
+
+            <div className="fb-group">
+              <label className="fb-label">How likely are you to recommend PHIL to a colleague?</label>
+              <div className="nps-row">
+                {[0,1,2,3,4,5,6,7,8,9,10].map(n => (
+                  <button key={n} className={`nps-btn ${nps === n ? "selected" : ""}`} onClick={() => setNps(n)}>{n}</button>
+                ))}
+              </div>
+              <div className="nps-labels">
+                <span className="nps-label">Not at all likely</span>
+                <span className="nps-label">Extremely likely</span>
+              </div>
+            </div>
+
+            <div className="fb-group">
+              <label className="fb-label">Anything else you'd like us to know?</label>
+              <textarea
+                className="fb-textarea"
+                placeholder="Tell us what's working well, what's frustrating, or anything you wish we'd change..."
+                value={comment}
+                onChange={e => setComment(e.target.value)}
+              />
+            </div>
+
+            <button className="submit-btn" disabled={!rating || submitting} onClick={async () => {
+              setSubmitting(true);
+              setSubmitError("");
+              try {
+                const res = await fetch(`${API_BASE}/feedback`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    npi: "1234567890",
+                    feedback: { rating, categories: selectedTopics, other_text: otherText.trim() || null, nps_score: nps, comment }
+                  })
+                });
+                if (!res.ok) throw new Error(`Server error ${res.status}`);
+              } catch (e) {
+                setSubmitError("Unable to submit feedback. Please try again.");
+                setSubmitting(false);
+                return;
+              }
+              setSubmitted(true);
+            }}>
+              {submitting ? "Submitting…" : "Submit Feedback"}
+            </button>
+            {!rating && !submitting && <p className="submit-hint">Please leave a star rating to submit.</p>}
+            {submitError && <p style={{fontSize:"12px",color:"#e05c5c",marginTop:"6px"}}>{submitError}</p>}
+          </div>
+        </div>
+      );
+    }
+
     // Focused card: manage HCP Summary delivery methods (fax and/or email).
     function HcpSummaryDeliveryCard({ pref, onSave }) {
       const [expanded, setExpanded] = useState(false);
@@ -753,13 +949,13 @@
 
     function App() {
       const [activeTab, setActiveTab] = useState("action-required");
-      const [viewMode] = useState("overview");
       const [selectedMed, setSelectedMed] = useState("Tyrvaya®");
       const [lastUpdated, setLastUpdated] = useState(new Date());
       useEffect(() => {
         const t = setInterval(() => setLastUpdated(new Date()), 60000);
         return () => clearInterval(t);
       }, []);
+      const [viewMode, setViewMode] = useState("overview"); // "overview" | "feedback"
       const [hcpSummaryPref, setHcpSummaryPref] = useState({ fax: true, wantEmail: false, email: "" });
       const [eduExpanded, setEduExpanded] = useState(true);
       const [bannerDismissed, setBannerDismissed] = useState(false);
@@ -777,10 +973,22 @@
       };
 
       const handleTabClick = (id) => {
-        scrollToSection(id);
+        if (id === "feedback") {
+          setViewMode("feedback"); setActiveTab("feedback");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          if (viewMode !== "overview") {
+            setViewMode("overview");
+            setActiveTab(id);
+            setTimeout(() => scrollToSection(id), 80);
+          } else {
+            scrollToSection(id);
+          }
+        }
       };
 
       useEffect(() => {
+        if (viewMode !== "overview") return;
         const onScroll = () => {
           const offset = 130;
           let current = PRESCRIPTION_TABS[0].id;
@@ -792,7 +1000,7 @@
         };
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
-      }, []);
+      }, [viewMode]);
 
       const rx = _RX[selectedMed];
       const tabCounts = {
@@ -804,7 +1012,9 @@
         "canceled":        rx.canceled.length,
       };
 
-      const EXTRA_TABS = [];
+      const EXTRA_TABS = [
+        { id: "feedback", label: "Share Feedback" },
+      ];
 
       return (
         <div>
@@ -906,6 +1116,8 @@
           </div>
 
           <div className="page">
+
+            {viewMode === "overview" && (<>
             <div className="summary-meta" style={{marginBottom:"10px"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:"8px"}}>
                 <div>
@@ -1064,7 +1276,11 @@
               </>);
             })()}
 
+            <FeedbackCard />
             <button className="print-btn" onClick={() => { trackEvent("1234567890", "print", { url: window.location.href }); window.print(); }}>Print</button>
+            </>)}
+
+            {viewMode === "feedback" && <div style={{maxWidth:"680px"}}><FeedbackCard /></div>}
           </div>
         </div>
       );
