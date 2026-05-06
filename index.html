@@ -1722,8 +1722,6 @@
     }
 
     function Root() {
-      const [authed, setAuthed] = useState(!!localStorage.getItem(SESSION_KEY));
-      if (!authed) return <AccessGate onUnlock={() => setAuthed(true)} />;
       return <DeviceFrame><App /></DeviceFrame>;
     }
 
