@@ -6,7 +6,6 @@
   <title>PHIL MD Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js" crossorigin></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.25.6/babel.min.js" crossorigin></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f0f0; color: #333; font-size: 13px; }
@@ -271,1337 +270,2239 @@
 </head>
 <body>
   <div id="root"></div>
-  <script type="text/babel">
-    const { useState, useEffect } = React;
+  <script>
+const {
+  useState,
+  useEffect
+} = React;
+const TOPICS = ["Communication", "Prescription Speed", "Patient Updates", "Platform Ease of Use", "Fax Experience", "Support & Help", "Enrollment Process", "Other"];
+const MED_INFO = {
+  // ── Ophthalmology ──────────────────────────────────────────────────────
+  "YUVEZZI™": {
+    generic: "carbachol and brimonidine tartrate ophthalmic solution 2.75% / 0.1%",
+    indication: "Pharmacologically Induced Mydriasis Reversal",
+    effectiveness: "Clinical studies demonstrated rapid pupil constriction to near-normal diameter within 1 hour of pharmacologic dilation. Reduces patient discomfort and light sensitivity post-procedure.",
+    tip: "Instill two drops in each dilated eye immediately following the ophthalmic procedure. Effect onset typically within 30 minutes — counsel patients to avoid driving until vision normalizes."
+  },
+  "CEQUA®": {
+    generic: "cyclosporine ophthalmic solution 0.09%",
+    indication: "Dry Eye Disease (DED)",
+    effectiveness: "Nanomicellar technology enhances corneal bioavailability. Pivotal trials showed significant improvement in total corneal fluorescein staining (TCFS) vs vehicle at 3 months.",
+    tip: "Instill one drop in each eye twice daily (approximately 12 hours apart). Patients may use artificial tears — allow at least 15 minutes between drops. Improvement may take 3–6 months."
+  },
+  "IYUZEH™": {
+    generic: "latanoprost ophthalmic solution 0.005%",
+    indication: "Elevated Intraocular Pressure (IOP) — Ocular Hypertension / Open-Angle Glaucoma",
+    effectiveness: "Preservative-free formulation reduces IOP by approximately 25–32% from baseline. Single-use vials minimize preservative-related ocular surface toxicity in long-term use.",
+    tip: "Administer one drop in the affected eye(s) once daily in the evening. Preservative-free single-use vials — discard each unit dose immediately after use. May gradually darken iris pigmentation with long-term use."
+  },
+  "Tyrvaya®": {
+    generic: "varenicline solution nasal spray 0.03 mg",
+    indication: "Dry Eye Disease (DED)",
+    effectiveness: "Clinical studies show meaningful improvement in tear production (Schirmer score) as early as 4 weeks, with the greatest benefit observed after 12 weeks of consistent twice-daily use.",
+    tip: "Encourage patients to use both nasal sprays as directed — consistent daily use is key to achieving full therapeutic benefit."
+  },
+  "VEVYE®": {
+    generic: "cyclosporine ophthalmic solution 0.1%",
+    indication: "Dry Eye Disease (DED)",
+    effectiveness: "Highest concentration cyclosporine ophthalmic solution available. Pivotal ESSENCE trials demonstrated significant improvement in corneal and conjunctival staining and Schirmer scores vs vehicle.",
+    tip: "Instill one drop in each eye four times daily. Preservative-free formulation — suitable for patients with preservative sensitivity. Full effect may require up to 6 months of consistent use."
+  },
+  "Verkazia®": {
+    generic: "cyclosporine ophthalmic emulsion 0.1%",
+    indication: "Vernal Keratoconjunctivitis (VKC)",
+    effectiveness: "Pivotal VEKTIS trial showed significant reduction in corneal and conjunctival inflammation scores (TOSS) vs vehicle at 4 months. Sustained long-term benefit in pediatric and adult patients.",
+    tip: "Instill one drop in each eye four times daily. Designed for chronic long-term management of VKC — do not discontinue abruptly during active inflammation. Shake well before use."
+  },
+  "Flarex®": {
+    generic: "fluorometholone acetate ophthalmic suspension 0.1%",
+    indication: "Steroid-Responsive Inflammatory Ocular Conditions",
+    effectiveness: "Effective for anterior segment inflammation with a lower IOP-elevation risk profile compared to prednisolone acetate, due to reduced penetration into aqueous humor.",
+    tip: "Typical dosing: 1 drop 2–4 times daily. Shake well before use. Monitor IOP in patients using for more than 10 days — discontinue if significant IOP rise occurs."
+  },
+  "Ilevro®": {
+    generic: "nepafenac ophthalmic suspension 0.3%",
+    indication: "Pain and Inflammation — Post-Cataract Surgery",
+    effectiveness: "Once-daily dosing demonstrated non-inferiority to nepafenac 0.1% TID for peri-operative pain and inflammation. Prodrug penetrates cornea and converts to amfenac in ocular tissues.",
+    tip: "Instill 1 drop once daily beginning 1 day prior to surgery, on the day of surgery, and through the first 14 days post-surgery. Shake well before use."
+  },
+  "Maxidex®": {
+    generic: "dexamethasone ophthalmic suspension 0.1%",
+    indication: "Steroid-Responsive Inflammatory Ocular Conditions",
+    effectiveness: "Potent corticosteroid providing broad anti-inflammatory coverage for anterior and posterior segment conditions. Rapid symptom relief in inflammatory uveitis and post-operative cases.",
+    tip: "Dosing: 1–2 drops every 4–6 hours; taper gradually as inflammation resolves. Monitor IOP closely — dexamethasone carries higher IOP risk than fluorometholone. Shake well before use."
+  },
+  "Maxitrol®": {
+    generic: "neomycin / polymyxin B sulfates / dexamethasone ophthalmic suspension",
+    indication: "Steroid-Responsive Inflammatory Ocular Conditions with Bacterial Infection Risk",
+    effectiveness: "Combination antibiotic/steroid addresses concurrent bacterial infection and inflammation. Effective against gram-positive and gram-negative organisms in the ocular surface.",
+    tip: "Not intended for long-term use. Monitor for secondary fungal or viral infections and IOP elevation. Instill 1–2 drops every 4–6 hours; reduce frequency as condition improves."
+  },
+  "Natacyn®": {
+    generic: "natamycin ophthalmic suspension 5%",
+    indication: "Fungal Blepharitis, Conjunctivitis, and Keratitis",
+    effectiveness: "Only FDA-approved antifungal ophthalmic agent. Clinical evidence supports efficacy in Fusarium keratitis — most common cause of fungal corneal ulcer in contact lens wearers.",
+    tip: "Initial dosing: 1 drop every 1–2 hours for 3–4 days, then reduce to 6–8 times daily. Treatment typically 14–21 days. Shake well; suspension does not penetrate intact corneal epithelium well."
+  },
+  "Nevanac®": {
+    generic: "nepafenac ophthalmic suspension 0.1%",
+    indication: "Pain and Inflammation — Post-Cataract Surgery",
+    effectiveness: "Three-times-daily NSAID for peri-operative pain and inflammation control. Prodrug mechanism provides targeted intraocular activity with minimal systemic absorption.",
+    tip: "Instill 1 drop three times daily beginning 1 day before surgery through 14 days post-surgery. Shake well before use. May be used in combination with a steroid per surgeon preference."
+  },
+  "Tobradex ST®": {
+    generic: "tobramycin 0.3% / dexamethasone 0.05% ophthalmic suspension",
+    indication: "Steroid-Responsive Inflammatory Ocular Conditions with Bacterial Infection",
+    effectiveness: "Suspension Technology (ST) formulation achieves equivalent anti-inflammatory efficacy to original Tobradex with 50% less dexamethasone, potentially reducing IOP risk.",
+    tip: "Instill 1 drop 4 times daily; taper dexamethasone exposure by shortening treatment duration when possible. Monitor IOP. Shake well before use."
+  },
+  "Vigamox®": {
+    generic: "moxifloxacin ophthalmic solution 0.5%",
+    indication: "Bacterial Conjunctivitis",
+    effectiveness: "Broad-spectrum 4th-generation fluoroquinolone. Clinical trials show bacterial eradication rates >85% at day 5; typically resolves symptoms within 3–5 days of treatment.",
+    tip: "Instill 1 drop in affected eye(s) three times daily for 7 days. Preservative-free formulation. Advise patients not to wear contact lenses while signs and symptoms are present."
+  },
+  "Zerviate®": {
+    generic: "cetirizine ophthalmic solution 0.24%",
+    indication: "Ocular Itching Associated with Allergic Conjunctivitis",
+    effectiveness: "Significant reduction in ocular itch scores vs vehicle within 3 minutes in conjunctival allergen challenge (CAC) studies. Dual H1-antihistamine and mast cell stabilizing effect.",
+    tip: "Instill 1 drop in affected eye(s) twice daily. Approved for patients 2 years and older. Advise patients to remove contact lenses before instillation; may reinsert 10 minutes after dosing."
+  },
+  // ── Neurology — Parkinson's ────────────────────────────────────────────
+  "RYTARY®": {
+    generic: "carbidopa and levodopa extended-release capsules",
+    indication: "Parkinson's Disease · Post-Encephalitic Parkinsonism",
+    effectiveness: "Extended-release formulation provides more continuous levodopa plasma concentrations, reducing OFF time and motor fluctuations compared to immediate-release carbidopa-levodopa.",
+    tip: "Capsules may be opened and contents sprinkled on applesauce. Do not substitute on a mg-per-mg basis with IR formulations — conversion ratios apply. Titrate dose based on clinical response."
+  },
+  "CREXONT®": {
+    generic: "carbidopa and levodopa extended-release capsules",
+    indication: "Parkinson's Disease",
+    effectiveness: "Novel multilayer bead technology delivers biphasic levodopa release (rapid onset + sustained duration), targeting both OFF time reduction and peak-dose dyskinesia minimization.",
+    tip: "Do not substitute for other carbidopa-levodopa formulations on a mg-per-mg basis — initiation and titration protocols differ. Capsules may be opened; do not crush beads."
+  },
+  // ── Psychiatry / CNS ───────────────────────────────────────────────────
+  "Auvelity®": {
+    generic: "dextromethorphan HBr 45 mg / bupropion HCl 105 mg tablet",
+    indication: "Major Depressive Disorder (MDD)",
+    effectiveness: "Rapid onset demonstrated in trials — statistically significant improvement in MADRS scores as early as week 1, with continued improvement through week 6.",
+    tip: "Start with one tablet daily for the first 3 days, then titrate to one tablet twice daily to minimize side effects such as dizziness and nausea."
+  },
+  "APLENZIN®": {
+    generic: "bupropion hydrobromide extended-release tablets",
+    indication: "Major Depressive Disorder (MDD)",
+    effectiveness: "174 mg bupropion HBr is bioequivalent to 150 mg bupropion HCl. Once-daily dosing supports adherence; antidepressant response typically observed at 4 weeks.",
+    tip: "Do not crush or chew. Titrate to 348 mg/day after 4 weeks if needed. Lowers seizure threshold — avoid abrupt discontinuation and use with caution in patients with eating disorders."
+  },
+  "Qelbree®": {
+    generic: "viloxazine extended-release capsules",
+    indication: "Attention-Deficit/Hyperactivity Disorder (ADHD) — Ages 6 and Older",
+    effectiveness: "Phase 3 trials showed statistically significant reduction in ADHD-RS-5 total scores vs placebo. Non-stimulant SNRI mechanism — no DEA scheduling, no abuse potential concerns.",
+    tip: "May be opened and contents sprinkled on a teaspoon of applesauce; do not crush. Take at the same time each day with or without food. Titrate based on response and tolerability."
+  },
+  "WELLBUTRIN XL®": {
+    generic: "bupropion hydrochloride extended-release tablets",
+    indication: "Major Depressive Disorder (MDD) · Seasonal Affective Disorder (SAD)",
+    effectiveness: "Once-daily formulation with proven antidepressant efficacy; approximately 44% of patients achieve remission at 6 months. Favorable weight-neutral and sexual side-effect profile.",
+    tip: "Administer once daily in the morning to minimize insomnia. Titrate from 150 mg to 300 mg after at least 3 days. Do not exceed 450 mg/day. Do not crush or chew tablets."
+  },
+  // ── Neurology — Migraine ───────────────────────────────────────────────
+  "TRUDHESA™": {
+    generic: "dihydroergotamine mesylate nasal spray",
+    indication: "Acute Treatment of Migraine With or Without Aura in Adults",
+    effectiveness: "Precision Olfactory Delivery (POD) technology achieves rapid, high plasma DHE levels via upper nasal mucosa. Comparable efficacy to subcutaneous sumatriptan with improved tolerability profile.",
+    tip: "One spray (0.725 mg) in each nostril; may repeat after 1 hour for a maximum of 4 sprays (2.9 mg) per attack. Do not use within 24 hours of triptans or other ergotamines."
+  },
+  // ── Women's Health ─────────────────────────────────────────────────────
+  "Addyi®": {
+    generic: "flibanserin 100 mg tablet",
+    indication: "Hypoactive Sexual Desire Disorder (HSDD)",
+    effectiveness: "Improvement in satisfying sexual events (SSEs) and sexual desire typically observed at 4–8 weeks. Reassess at 8 weeks — if no meaningful benefit, discontinuation is recommended.",
+    tip: "Must be taken at bedtime to reduce risk of hypotension and syncope. Counsel patients to avoid alcohol throughout treatment."
+  },
+  "Bonjesta®": {
+    generic: "doxylamine succinate 20 mg / pyridoxine hydrochloride 20 mg extended-release tablets",
+    indication: "Nausea and Vomiting of Pregnancy (NVP)",
+    effectiveness: "Only FDA-approved prescription treatment for NVP. Clinical trials demonstrated significant reduction in Pregnancy-Unique Quantification of Emesis (PUQE) scores vs placebo.",
+    tip: "Begin with 2 tablets at bedtime on day 1. If symptoms persist on day 3, add 1 tablet in the morning; by day 4 also add 1 tablet at midday. Take on an empty stomach with a glass of water."
+  },
+  "Osphena®": {
+    generic: "ospemifene 60 mg tablets",
+    indication: "Dyspareunia and Dysuria Due to Vulvar & Vaginal Atrophy (VVA) of Menopause",
+    effectiveness: "SMART-1 trial demonstrated significant improvement in most bothersome symptom (MBS) severity and vaginal maturation index vs placebo. SERM mechanism avoids systemic estrogen exposure.",
+    tip: "Take with food to maximize absorption (2.7× higher Cmax with a meal). Does not require concomitant progestogen in women without a uterus. Screen for SERM contraindications before prescribing."
+  },
+  "Winlevi®": {
+    generic: "clascoterone cream 1%",
+    indication: "Acne Vulgaris — Ages 12 and Older",
+    effectiveness: "First-in-class topical androgen receptor inhibitor. Phase 3 trials showed significant reduction in both inflammatory and non-inflammatory lesion counts vs vehicle at 12 weeks.",
+    tip: "Apply a thin layer twice daily to affected areas. Avoid eyes, lips, and mucous membranes. Unique mechanism targets sebaceous gland androgen receptors — suitable for combination regimens."
+  },
+  "All Medications": null
+};
+const API_BASE = "https://gdex4sbesg.execute-api.us-east-1.amazonaws.com";
+const COMM_CATEGORIES = [{
+  key: "prior_auth",
+  label: "Prior Authorization",
+  desc: "Enter the email or fax number(s) where this practice should receive prior authorization communications."
+}, {
+  key: "appeals",
+  label: "Appeals and Tier Exceptions",
+  desc: "Enter the email or fax number(s) where this practice should receive appeals and tier exception communications."
+}, {
+  key: "refills",
+  label: "Refills Communications",
+  desc: "Enter the email or fax number(s) where this practice should receive refill communications."
+}, {
+  key: "scripts",
+  label: "Scripts Communications",
+  desc: "Enter the email or fax number(s) where this practice should receive script communications (e.g. Missing SIG, script clarifications)."
+}, {
+  key: "hcp_summary",
+  label: "HCP Summary Communications",
+  desc: "Enter the email or fax number(s) where this practice should receive summary communications (e.g. HCP Summary Fax)."
+}];
+const _RX = {
+  "Tyrvaya®": {
+    label: "Tyrvaya® (varenicline solution) nasal spray 0.03 MG Nasal Spray",
+    actionRequired: [{
+      name: "Ellis, Maria",
+      dob: "05/19/1973",
+      pending: "30 days ago",
+      status: "Incorrect Number"
+    }, {
+      name: "Flores, Evelyn",
+      dob: "03/16/1979",
+      pending: "30 days ago",
+      status: "Incorrect Number"
+    }, {
+      name: "Moreno, Frank",
+      dob: "09/17/1980",
+      pending: "29 days ago",
+      status: "Incorrect Number"
+    }, {
+      name: "Ellis, Susan",
+      dob: "02/06/1982",
+      pending: "28 days ago",
+      status: "Incorrect Number"
+    }, {
+      name: "Simmons, Joyce",
+      dob: "03/02/1972",
+      pending: "28 days ago",
+      status: "Incorrect Number"
+    }],
+    pendingPatient: [{
+      reason: "Patient Has Not Enrolled",
+      name: "Palmer, Robin",
+      dob: "04/17/1968",
+      detail: "Date Prescribed: 03/30/2026",
+      sub: "(27 days ago)"
+    }, {
+      reason: "Patient Has Not Enrolled",
+      name: "Mendoza, Joe",
+      dob: "04/26/1976",
+      detail: "Date Prescribed: 03/30/2026",
+      sub: "(27 days ago)"
+    }, {
+      reason: "Patient Has Not Enrolled",
+      name: "Cook, Margaret",
+      dob: "08/05/1948",
+      detail: "Date Prescribed: 03/30/2026",
+      sub: "(27 days ago)"
+    }, {
+      reason: "Patient Has Not Enrolled",
+      name: "Day, Denise",
+      dob: "04/28/1981",
+      detail: "Date Prescribed: 04/20/2026",
+      sub: "(7 days ago)"
+    }, {
+      reason: "Patient Has Not Enrolled",
+      name: "Medina, Charles",
+      dob: "11/03/1969",
+      detail: "Date Prescribed: 04/22/2026",
+      sub: "(6 days ago)"
+    }, {
+      reason: "Patient Has Not Enrolled",
+      name: "Flores, Jack",
+      dob: "10/24/1977",
+      detail: "Date Prescribed: 04/22/2026",
+      sub: "(6 days ago)"
+    }, {
+      reason: "Missing Payment Type",
+      name: "Gibson, Diane",
+      dob: "06/14/1970",
+      detail: "30 days, $89",
+      sub: "Patient saved $6"
+    }, {
+      reason: "Missing Payment Type",
+      name: "Hall, Sandra",
+      dob: "10/25/1980",
+      detail: "30 days, $10",
+      sub: "Patient saved $0"
+    }],
+    inProcess: [],
+    shipped: [{
+      name: "Fox, Billy",
+      dob: "03/07/1981",
+      payType: "Insurance + Coupon",
+      insurance: "Caremark",
+      detail: "30 days, $0"
+    }, {
+      name: "Reed, Mildred",
+      dob: "11/28/1979",
+      payType: "Insurance + Coupon",
+      insurance: "Caremark",
+      detail: "30 days, $0"
+    }, {
+      name: "Moreno, Joyce",
+      dob: "09/14/1968",
+      payType: "Insurance + Coupon",
+      insurance: "Caremark",
+      detail: "30 days, $0"
+    }, {
+      name: "Howard, David",
+      dob: "07/26/1978",
+      payType: "Insurance + Coupon",
+      insurance: "Caremark",
+      detail: "30 days, $0"
+    }],
+    transferred: [{
+      name: "Wagner, Joseph",
+      dob: "01/13/1977",
+      note: "Due to patient request, the prescription will be transferred for fulfillment to another pharmacy."
+    }],
+    canceled: []
+  },
+  "Addyi®": {
+    label: "Addyi® (flibanserin) 100 MG Tablet",
+    actionRequired: [{
+      name: "Torres, Linda",
+      dob: "07/22/1975",
+      pending: "25 days ago",
+      status: "Incorrect Number"
+    }, {
+      name: "Rivera, Angela",
+      dob: "05/30/1970",
+      pending: "14 days ago",
+      status: "Incorrect Number"
+    }],
+    pendingPatient: [{
+      reason: "Patient Has Not Enrolled",
+      name: "Bennett, Carol",
+      dob: "02/11/1979",
+      detail: "Date Prescribed: 04/01/2026",
+      sub: "(25 days ago)"
+    }, {
+      reason: "Patient Has Not Enrolled",
+      name: "Ward, Nancy",
+      dob: "09/03/1985",
+      detail: "Date Prescribed: 04/08/2026",
+      sub: "(18 days ago)"
+    }, {
+      reason: "Patient Has Not Enrolled",
+      name: "Ramirez, Lisa",
+      dob: "06/29/1978",
+      detail: "Date Prescribed: 04/15/2026",
+      sub: "(11 days ago)"
+    }, {
+      reason: "Missing Payment Type",
+      name: "Collins, Barbara",
+      dob: "12/20/1967",
+      detail: "30 days, $142",
+      sub: "Patient saved $25"
+    }, {
+      reason: "Insurance Verification",
+      name: "Jenkins, Maria",
+      dob: "03/07/1980",
+      detail: "Awaiting prior auth response",
+      sub: ""
+    }],
+    inProcess: [{
+      name: "Hernandez, Donna",
+      dob: "08/18/1976",
+      status: "Prior Auth Submitted",
+      detail: "Submitted 04/24/2026 — awaiting insurer response"
+    }, {
+      name: "Carter, Helen",
+      dob: "01/25/1990",
+      status: "Pharmacy Processing",
+      detail: "Expected ship date: 05/01/2026"
+    }],
+    shipped: [{
+      name: "Scott, Alice",
+      dob: "04/09/1977",
+      payType: "Insurance + Coupon",
+      insurance: "Express Scripts",
+      detail: "30 days, $10"
+    }, {
+      name: "Nelson, Ruth",
+      dob: "10/31/1982",
+      payType: "Manufacturer Coupon",
+      insurance: "",
+      detail: "30 days, $35"
+    }, {
+      name: "Kelly, Dorothy",
+      dob: "06/16/1973",
+      payType: "Insurance + Coupon",
+      insurance: "CVS Caremark",
+      detail: "30 days, $0"
+    }],
+    transferred: [],
+    canceled: [{
+      name: "Price, Sharon",
+      dob: "02/27/1969",
+      reason: "Patient requested cancellation",
+      date: "04/18/2026"
+    }]
+  },
+  "Auvelity®": {
+    label: "Auvelity® (dextromethorphan HBr/bupropion HCl) 45 mg/105 mg Tablet",
+    actionRequired: [{
+      name: "Cooper, Betty",
+      dob: "12/05/1965",
+      pending: "10 days ago",
+      status: "Incorrect Number"
+    }],
+    pendingPatient: [{
+      reason: "Patient Has Not Enrolled",
+      name: "Bailey, Cynthia",
+      dob: "03/19/1987",
+      detail: "Date Prescribed: 04/05/2026",
+      sub: "(21 days ago)"
+    }, {
+      reason: "Patient Has Not Enrolled",
+      name: "Flores, Frances",
+      dob: "07/08/1972",
+      detail: "Date Prescribed: 04/12/2026",
+      sub: "(14 days ago)"
+    }, {
+      reason: "Missing Payment Type",
+      name: "James, Evelyn",
+      dob: "09/22/1980",
+      detail: "30 days, $55",
+      sub: "Patient saved $30"
+    }, {
+      reason: "Prior Auth Required",
+      name: "Stewart, Martha",
+      dob: "05/16/1975",
+      detail: "PA initiated 04/20/2026",
+      sub: ""
+    }],
+    inProcess: [{
+      name: "Adams, Gloria",
+      dob: "11/30/1983",
+      status: "Prior Auth Submitted",
+      detail: "Submitted 04/22/2026 — response expected within 3 business days"
+    }],
+    shipped: [{
+      name: "Baker, Patricia",
+      dob: "08/04/1971",
+      payType: "Insurance + Coupon",
+      insurance: "Anthem BCBS",
+      detail: "30 days, $15"
+    }, {
+      name: "Gonzalez, Sandra",
+      dob: "02/13/1984",
+      payType: "Insurance + Coupon",
+      insurance: "UnitedHealth",
+      detail: "30 days, $0"
+    }, {
+      name: "Nelson, Donna",
+      dob: "06/27/1969",
+      payType: "Manufacturer Coupon",
+      insurance: "",
+      detail: "30 days, $50"
+    }, {
+      name: "Carter, Maria",
+      dob: "10/10/1979",
+      payType: "Insurance + Coupon",
+      insurance: "Cigna",
+      detail: "30 days, $0"
+    }, {
+      name: "Mitchell, Helen",
+      dob: "01/08/1993",
+      payType: "Insurance Only",
+      insurance: "Aetna",
+      detail: "30 days, $20"
+    }],
+    transferred: [{
+      name: "Perez, Kathleen",
+      dob: "04/21/1976",
+      note: "Patient requested transfer to local specialty pharmacy."
+    }],
+    canceled: [{
+      name: "Roberts, Helen",
+      dob: "07/03/1971",
+      reason: "Prescriber voided prescription",
+      date: "04/17/2026"
+    }, {
+      name: "Turner, Christine",
+      dob: "11/19/1988",
+      reason: "Patient no longer interested",
+      date: "04/23/2026"
+    }]
+  },
+  // ── Additional PHIL Rx portfolio (live data populated by real API) ─────
+  "YUVEZZI™": {
+    label: "YUVEZZI™ (carbachol and brimonidine tartrate) 2.75%/0.1% Ophthalmic Solution",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "CEQUA®": {
+    label: "CEQUA® (cyclosporine) 0.09% Ophthalmic Solution",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "IYUZEH™": {
+    label: "IYUZEH™ (latanoprost) 0.005% Ophthalmic Solution",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "VEVYE®": {
+    label: "VEVYE® (cyclosporine) 0.1% Ophthalmic Solution",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Verkazia®": {
+    label: "Verkazia® (cyclosporine) 0.1% Ophthalmic Emulsion",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Flarex®": {
+    label: "Flarex® (fluorometholone acetate) 0.1% Ophthalmic Suspension",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Ilevro®": {
+    label: "Ilevro® (nepafenac) 0.3% Ophthalmic Suspension",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Maxidex®": {
+    label: "Maxidex® (dexamethasone) 0.1% Ophthalmic Suspension",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Maxitrol®": {
+    label: "Maxitrol® (neomycin / polymyxin B / dexamethasone) Ophthalmic Suspension",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Natacyn®": {
+    label: "Natacyn® (natamycin) 5% Ophthalmic Suspension",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Nevanac®": {
+    label: "Nevanac® (nepafenac) 0.1% Ophthalmic Suspension",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Tobradex ST®": {
+    label: "Tobradex ST® (tobramycin 0.3% / dexamethasone 0.05%) Ophthalmic Suspension",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Vigamox®": {
+    label: "Vigamox® (moxifloxacin) 0.5% Ophthalmic Solution",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Zerviate®": {
+    label: "Zerviate® (cetirizine) 0.24% Ophthalmic Solution",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "RYTARY®": {
+    label: "RYTARY® (carbidopa and levodopa) Extended-Release Capsules",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "CREXONT®": {
+    label: "CREXONT® (carbidopa and levodopa) Extended-Release Capsules",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "APLENZIN®": {
+    label: "APLENZIN® (bupropion hydrobromide) Extended-Release Tablets",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Qelbree®": {
+    label: "Qelbree® (viloxazine) Extended-Release Capsules",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "WELLBUTRIN XL®": {
+    label: "WELLBUTRIN XL® (bupropion hydrochloride) 300 mg Extended-Release Tablets",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "TRUDHESA™": {
+    label: "TRUDHESA™ (dihydroergotamine mesylate) Nasal Spray",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Bonjesta®": {
+    label: "Bonjesta® (doxylamine succinate / pyridoxine HCl) 20 mg/20 mg Extended-Release Tablets",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Osphena®": {
+    label: "Osphena® (ospemifene) 60 mg Tablets",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  },
+  "Winlevi®": {
+    label: "Winlevi® (clascoterone) 1% Cream",
+    actionRequired: [],
+    pendingPatient: [],
+    inProcess: [],
+    shipped: [],
+    transferred: [],
+    canceled: []
+  }
+};
 
-    const TOPICS = [
-      "Communication", "Prescription Speed", "Patient Updates",
-      "Platform Ease of Use", "Fax Experience", "Support & Help",
-      "Enrollment Process", "Other"
-    ];
+// "All Medications" merges all active medications
+const ALL_MEDS = [
+// Ophthalmology
+"YUVEZZI™", "CEQUA®", "IYUZEH™", "Tyrvaya®", "VEVYE®", "Verkazia®", "Flarex®", "Ilevro®", "Maxidex®", "Maxitrol®", "Natacyn®", "Nevanac®", "Tobradex ST®", "Vigamox®", "Zerviate®",
+// Neurology — Parkinson's
+"RYTARY®", "CREXONT®",
+// Psychiatry / CNS
+"Auvelity®", "APLENZIN®", "Qelbree®", "WELLBUTRIN XL®",
+// Neurology — Migraine
+"TRUDHESA™",
+// Women's Health
+"Addyi®", "Bonjesta®", "Osphena®", "Winlevi®"];
+_RX["All Medications"] = ALL_MEDS.reduce((acc, med) => {
+  const d = _RX[med];
+  const tag = r => ({
+    ...r,
+    medOverride: d.label
+  });
+  acc.actionRequired.push(...d.actionRequired.map(tag));
+  acc.pendingPatient.push(...d.pendingPatient.map(tag));
+  acc.inProcess.push(...d.inProcess.map(tag));
+  acc.shipped.push(...d.shipped.map(tag));
+  acc.transferred.push(...d.transferred.map(tag));
+  acc.canceled.push(...d.canceled.map(tag));
+  return acc;
+}, {
+  label: "",
+  actionRequired: [],
+  pendingPatient: [],
+  inProcess: [],
+  shipped: [],
+  transferred: [],
+  canceled: []
+});
+const emptyMethods = () => [{
+  method: "fax",
+  value: ""
+}];
+function CommSection({
+  category,
+  data,
+  onChange,
+  showError
+}) {
+  const updateRow = (i, field, val) => {
+    const rows = data.rows.map((r, idx) => idx === i ? {
+      ...r,
+      [field]: val
+    } : r);
+    onChange({
+      ...data,
+      rows
+    });
+  };
+  const hasValue = data.rows.some(r => r.method && r.value.trim());
+  const isInvalid = showError && !hasValue;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "comms-section"
+  }, /*#__PURE__*/React.createElement("h3", null, category.label), /*#__PURE__*/React.createElement("p", {
+    className: "section-desc"
+  }, category.desc), /*#__PURE__*/React.createElement("p", {
+    className: "methods-label"
+  }, "Methods"), data.rows.map((row, i) => /*#__PURE__*/React.createElement("div", {
+    key: i
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "method-row"
+  }, /*#__PURE__*/React.createElement("select", {
+    className: "method-select",
+    value: row.method,
+    onChange: e => updateRow(i, "method", e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "Select \u2193"), /*#__PURE__*/React.createElement("option", {
+    value: "fax"
+  }, "Fax"), /*#__PURE__*/React.createElement("option", {
+    value: "email"
+  }, "Email")), /*#__PURE__*/React.createElement("input", {
+    className: `method-input ${isInvalid && i === 0 ? "input-error" : ""}`,
+    type: row.method === "email" ? "email" : "text",
+    placeholder: row.method === "email" ? "email@practice.com" : row.method === "fax" ? "Fax number" : "",
+    value: row.value,
+    disabled: !row.method,
+    onChange: e => updateRow(i, "value", e.target.value)
+  }), data.rows.length > 1 && /*#__PURE__*/React.createElement("button", {
+    onClick: () => onChange({
+      ...data,
+      rows: data.rows.filter((_, idx) => idx !== i)
+    }),
+    style: {
+      background: "none",
+      border: "none",
+      color: "#bbb",
+      cursor: "pointer",
+      fontSize: "16px",
+      padding: "0 2px",
+      lineHeight: 1,
+      flexShrink: 0
+    },
+    "aria-label": "Remove method"
+  }, "\u2715")), isInvalid && i === 0 && /*#__PURE__*/React.createElement("p", {
+    className: "comms-error-msg"
+  }, "At least one delivery method is required."))), data.rows.length < 4 && /*#__PURE__*/React.createElement("button", {
+    onClick: () => onChange({
+      ...data,
+      rows: [...data.rows, {
+        method: "",
+        value: ""
+      }]
+    }),
+    style: {
+      background: "none",
+      border: "none",
+      color: "#3a8a84",
+      fontSize: "12px",
+      cursor: "pointer",
+      padding: "4px 0",
+      marginTop: "2px",
+      fontWeight: 600
+    }
+  }, "+ Add Method"));
+}
+function EnterPhoneModal({
+  patient,
+  onClose,
+  onSubmitted
+}) {
+  const [phone, setPhone] = useState("");
+  const [isLandline, setIsLandline] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [done, setDone] = useState(false);
+  const isValidPhone = v => /^[\d\s\-\(\)\.]{7,}$/.test(v.trim());
+  const handleSubmit = async () => {
+    if (!isLandline && !isValidPhone(phone)) {
+      setError("Please enter a valid mobile number.");
+      return;
+    }
+    setError("");
+    setSubmitting(true);
+    try {
+      await trackEvent("1234567890", "enter_phone", {
+        patient_name: patient.name,
+        dob: patient.dob,
+        phone: isLandline ? null : phone.trim(),
+        is_landline: isLandline
+      });
+    } catch (_) {}
+    setSubmitting(false);
+    setDone(true);
+    setTimeout(() => {
+      onSubmitted && onSubmitted();
+      onClose();
+    }, 1200);
+  };
 
-    const MED_INFO = {
-      // ── Ophthalmology ──────────────────────────────────────────────────────
-      "YUVEZZI™": {
-        generic: "carbachol and brimonidine tartrate ophthalmic solution 2.75% / 0.1%",
-        indication: "Pharmacologically Induced Mydriasis Reversal",
-        effectiveness: "Clinical studies demonstrated rapid pupil constriction to near-normal diameter within 1 hour of pharmacologic dilation. Reduces patient discomfort and light sensitivity post-procedure.",
-        tip: "Instill two drops in each dilated eye immediately following the ophthalmic procedure. Effect onset typically within 30 minutes — counsel patients to avoid driving until vision normalizes.",
-      },
-      "CEQUA®": {
-        generic: "cyclosporine ophthalmic solution 0.09%",
-        indication: "Dry Eye Disease (DED)",
-        effectiveness: "Nanomicellar technology enhances corneal bioavailability. Pivotal trials showed significant improvement in total corneal fluorescein staining (TCFS) vs vehicle at 3 months.",
-        tip: "Instill one drop in each eye twice daily (approximately 12 hours apart). Patients may use artificial tears — allow at least 15 minutes between drops. Improvement may take 3–6 months.",
-      },
-      "IYUZEH™": {
-        generic: "latanoprost ophthalmic solution 0.005%",
-        indication: "Elevated Intraocular Pressure (IOP) — Ocular Hypertension / Open-Angle Glaucoma",
-        effectiveness: "Preservative-free formulation reduces IOP by approximately 25–32% from baseline. Single-use vials minimize preservative-related ocular surface toxicity in long-term use.",
-        tip: "Administer one drop in the affected eye(s) once daily in the evening. Preservative-free single-use vials — discard each unit dose immediately after use. May gradually darken iris pigmentation with long-term use.",
-      },
-      "Tyrvaya®": {
-        generic: "varenicline solution nasal spray 0.03 mg",
-        indication: "Dry Eye Disease (DED)",
-        effectiveness: "Clinical studies show meaningful improvement in tear production (Schirmer score) as early as 4 weeks, with the greatest benefit observed after 12 weeks of consistent twice-daily use.",
-        tip: "Encourage patients to use both nasal sprays as directed — consistent daily use is key to achieving full therapeutic benefit.",
-      },
-      "VEVYE®": {
-        generic: "cyclosporine ophthalmic solution 0.1%",
-        indication: "Dry Eye Disease (DED)",
-        effectiveness: "Highest concentration cyclosporine ophthalmic solution available. Pivotal ESSENCE trials demonstrated significant improvement in corneal and conjunctival staining and Schirmer scores vs vehicle.",
-        tip: "Instill one drop in each eye four times daily. Preservative-free formulation — suitable for patients with preservative sensitivity. Full effect may require up to 6 months of consistent use.",
-      },
-      "Verkazia®": {
-        generic: "cyclosporine ophthalmic emulsion 0.1%",
-        indication: "Vernal Keratoconjunctivitis (VKC)",
-        effectiveness: "Pivotal VEKTIS trial showed significant reduction in corneal and conjunctival inflammation scores (TOSS) vs vehicle at 4 months. Sustained long-term benefit in pediatric and adult patients.",
-        tip: "Instill one drop in each eye four times daily. Designed for chronic long-term management of VKC — do not discontinue abruptly during active inflammation. Shake well before use.",
-      },
-      "Flarex®": {
-        generic: "fluorometholone acetate ophthalmic suspension 0.1%",
-        indication: "Steroid-Responsive Inflammatory Ocular Conditions",
-        effectiveness: "Effective for anterior segment inflammation with a lower IOP-elevation risk profile compared to prednisolone acetate, due to reduced penetration into aqueous humor.",
-        tip: "Typical dosing: 1 drop 2–4 times daily. Shake well before use. Monitor IOP in patients using for more than 10 days — discontinue if significant IOP rise occurs.",
-      },
-      "Ilevro®": {
-        generic: "nepafenac ophthalmic suspension 0.3%",
-        indication: "Pain and Inflammation — Post-Cataract Surgery",
-        effectiveness: "Once-daily dosing demonstrated non-inferiority to nepafenac 0.1% TID for peri-operative pain and inflammation. Prodrug penetrates cornea and converts to amfenac in ocular tissues.",
-        tip: "Instill 1 drop once daily beginning 1 day prior to surgery, on the day of surgery, and through the first 14 days post-surgery. Shake well before use.",
-      },
-      "Maxidex®": {
-        generic: "dexamethasone ophthalmic suspension 0.1%",
-        indication: "Steroid-Responsive Inflammatory Ocular Conditions",
-        effectiveness: "Potent corticosteroid providing broad anti-inflammatory coverage for anterior and posterior segment conditions. Rapid symptom relief in inflammatory uveitis and post-operative cases.",
-        tip: "Dosing: 1–2 drops every 4–6 hours; taper gradually as inflammation resolves. Monitor IOP closely — dexamethasone carries higher IOP risk than fluorometholone. Shake well before use.",
-      },
-      "Maxitrol®": {
-        generic: "neomycin / polymyxin B sulfates / dexamethasone ophthalmic suspension",
-        indication: "Steroid-Responsive Inflammatory Ocular Conditions with Bacterial Infection Risk",
-        effectiveness: "Combination antibiotic/steroid addresses concurrent bacterial infection and inflammation. Effective against gram-positive and gram-negative organisms in the ocular surface.",
-        tip: "Not intended for long-term use. Monitor for secondary fungal or viral infections and IOP elevation. Instill 1–2 drops every 4–6 hours; reduce frequency as condition improves.",
-      },
-      "Natacyn®": {
-        generic: "natamycin ophthalmic suspension 5%",
-        indication: "Fungal Blepharitis, Conjunctivitis, and Keratitis",
-        effectiveness: "Only FDA-approved antifungal ophthalmic agent. Clinical evidence supports efficacy in Fusarium keratitis — most common cause of fungal corneal ulcer in contact lens wearers.",
-        tip: "Initial dosing: 1 drop every 1–2 hours for 3–4 days, then reduce to 6–8 times daily. Treatment typically 14–21 days. Shake well; suspension does not penetrate intact corneal epithelium well.",
-      },
-      "Nevanac®": {
-        generic: "nepafenac ophthalmic suspension 0.1%",
-        indication: "Pain and Inflammation — Post-Cataract Surgery",
-        effectiveness: "Three-times-daily NSAID for peri-operative pain and inflammation control. Prodrug mechanism provides targeted intraocular activity with minimal systemic absorption.",
-        tip: "Instill 1 drop three times daily beginning 1 day before surgery through 14 days post-surgery. Shake well before use. May be used in combination with a steroid per surgeon preference.",
-      },
-      "Tobradex ST®": {
-        generic: "tobramycin 0.3% / dexamethasone 0.05% ophthalmic suspension",
-        indication: "Steroid-Responsive Inflammatory Ocular Conditions with Bacterial Infection",
-        effectiveness: "Suspension Technology (ST) formulation achieves equivalent anti-inflammatory efficacy to original Tobradex with 50% less dexamethasone, potentially reducing IOP risk.",
-        tip: "Instill 1 drop 4 times daily; taper dexamethasone exposure by shortening treatment duration when possible. Monitor IOP. Shake well before use.",
-      },
-      "Vigamox®": {
-        generic: "moxifloxacin ophthalmic solution 0.5%",
-        indication: "Bacterial Conjunctivitis",
-        effectiveness: "Broad-spectrum 4th-generation fluoroquinolone. Clinical trials show bacterial eradication rates >85% at day 5; typically resolves symptoms within 3–5 days of treatment.",
-        tip: "Instill 1 drop in affected eye(s) three times daily for 7 days. Preservative-free formulation. Advise patients not to wear contact lenses while signs and symptoms are present.",
-      },
-      "Zerviate®": {
-        generic: "cetirizine ophthalmic solution 0.24%",
-        indication: "Ocular Itching Associated with Allergic Conjunctivitis",
-        effectiveness: "Significant reduction in ocular itch scores vs vehicle within 3 minutes in conjunctival allergen challenge (CAC) studies. Dual H1-antihistamine and mast cell stabilizing effect.",
-        tip: "Instill 1 drop in affected eye(s) twice daily. Approved for patients 2 years and older. Advise patients to remove contact lenses before instillation; may reinsert 10 minutes after dosing.",
-      },
-      // ── Neurology — Parkinson's ────────────────────────────────────────────
-      "RYTARY®": {
-        generic: "carbidopa and levodopa extended-release capsules",
-        indication: "Parkinson's Disease · Post-Encephalitic Parkinsonism",
-        effectiveness: "Extended-release formulation provides more continuous levodopa plasma concentrations, reducing OFF time and motor fluctuations compared to immediate-release carbidopa-levodopa.",
-        tip: "Capsules may be opened and contents sprinkled on applesauce. Do not substitute on a mg-per-mg basis with IR formulations — conversion ratios apply. Titrate dose based on clinical response.",
-      },
-      "CREXONT®": {
-        generic: "carbidopa and levodopa extended-release capsules",
-        indication: "Parkinson's Disease",
-        effectiveness: "Novel multilayer bead technology delivers biphasic levodopa release (rapid onset + sustained duration), targeting both OFF time reduction and peak-dose dyskinesia minimization.",
-        tip: "Do not substitute for other carbidopa-levodopa formulations on a mg-per-mg basis — initiation and titration protocols differ. Capsules may be opened; do not crush beads.",
-      },
-      // ── Psychiatry / CNS ───────────────────────────────────────────────────
-      "Auvelity®": {
-        generic: "dextromethorphan HBr 45 mg / bupropion HCl 105 mg tablet",
-        indication: "Major Depressive Disorder (MDD)",
-        effectiveness: "Rapid onset demonstrated in trials — statistically significant improvement in MADRS scores as early as week 1, with continued improvement through week 6.",
-        tip: "Start with one tablet daily for the first 3 days, then titrate to one tablet twice daily to minimize side effects such as dizziness and nausea.",
-      },
-      "APLENZIN®": {
-        generic: "bupropion hydrobromide extended-release tablets",
-        indication: "Major Depressive Disorder (MDD)",
-        effectiveness: "174 mg bupropion HBr is bioequivalent to 150 mg bupropion HCl. Once-daily dosing supports adherence; antidepressant response typically observed at 4 weeks.",
-        tip: "Do not crush or chew. Titrate to 348 mg/day after 4 weeks if needed. Lowers seizure threshold — avoid abrupt discontinuation and use with caution in patients with eating disorders.",
-      },
-      "Qelbree®": {
-        generic: "viloxazine extended-release capsules",
-        indication: "Attention-Deficit/Hyperactivity Disorder (ADHD) — Ages 6 and Older",
-        effectiveness: "Phase 3 trials showed statistically significant reduction in ADHD-RS-5 total scores vs placebo. Non-stimulant SNRI mechanism — no DEA scheduling, no abuse potential concerns.",
-        tip: "May be opened and contents sprinkled on a teaspoon of applesauce; do not crush. Take at the same time each day with or without food. Titrate based on response and tolerability.",
-      },
-      "WELLBUTRIN XL®": {
-        generic: "bupropion hydrochloride extended-release tablets",
-        indication: "Major Depressive Disorder (MDD) · Seasonal Affective Disorder (SAD)",
-        effectiveness: "Once-daily formulation with proven antidepressant efficacy; approximately 44% of patients achieve remission at 6 months. Favorable weight-neutral and sexual side-effect profile.",
-        tip: "Administer once daily in the morning to minimize insomnia. Titrate from 150 mg to 300 mg after at least 3 days. Do not exceed 450 mg/day. Do not crush or chew tablets.",
-      },
-      // ── Neurology — Migraine ───────────────────────────────────────────────
-      "TRUDHESA™": {
-        generic: "dihydroergotamine mesylate nasal spray",
-        indication: "Acute Treatment of Migraine With or Without Aura in Adults",
-        effectiveness: "Precision Olfactory Delivery (POD) technology achieves rapid, high plasma DHE levels via upper nasal mucosa. Comparable efficacy to subcutaneous sumatriptan with improved tolerability profile.",
-        tip: "One spray (0.725 mg) in each nostril; may repeat after 1 hour for a maximum of 4 sprays (2.9 mg) per attack. Do not use within 24 hours of triptans or other ergotamines.",
-      },
-      // ── Women's Health ─────────────────────────────────────────────────────
-      "Addyi®": {
-        generic: "flibanserin 100 mg tablet",
-        indication: "Hypoactive Sexual Desire Disorder (HSDD)",
-        effectiveness: "Improvement in satisfying sexual events (SSEs) and sexual desire typically observed at 4–8 weeks. Reassess at 8 weeks — if no meaningful benefit, discontinuation is recommended.",
-        tip: "Must be taken at bedtime to reduce risk of hypotension and syncope. Counsel patients to avoid alcohol throughout treatment.",
-      },
-      "Bonjesta®": {
-        generic: "doxylamine succinate 20 mg / pyridoxine hydrochloride 20 mg extended-release tablets",
-        indication: "Nausea and Vomiting of Pregnancy (NVP)",
-        effectiveness: "Only FDA-approved prescription treatment for NVP. Clinical trials demonstrated significant reduction in Pregnancy-Unique Quantification of Emesis (PUQE) scores vs placebo.",
-        tip: "Begin with 2 tablets at bedtime on day 1. If symptoms persist on day 3, add 1 tablet in the morning; by day 4 also add 1 tablet at midday. Take on an empty stomach with a glass of water.",
-      },
-      "Osphena®": {
-        generic: "ospemifene 60 mg tablets",
-        indication: "Dyspareunia and Dysuria Due to Vulvar & Vaginal Atrophy (VVA) of Menopause",
-        effectiveness: "SMART-1 trial demonstrated significant improvement in most bothersome symptom (MBS) severity and vaginal maturation index vs placebo. SERM mechanism avoids systemic estrogen exposure.",
-        tip: "Take with food to maximize absorption (2.7× higher Cmax with a meal). Does not require concomitant progestogen in women without a uterus. Screen for SERM contraindications before prescribing.",
-      },
-      "Winlevi®": {
-        generic: "clascoterone cream 1%",
-        indication: "Acne Vulgaris — Ages 12 and Older",
-        effectiveness: "First-in-class topical androgen receptor inhibitor. Phase 3 trials showed significant reduction in both inflammatory and non-inflammatory lesion counts vs vehicle at 12 weeks.",
-        tip: "Apply a thin layer twice daily to affected areas. Avoid eyes, lips, and mucous membranes. Unique mechanism targets sebaceous gland androgen receptors — suitable for combination regimens.",
-      },
-      "All Medications": null,
-    };
-
-    const API_BASE = "https://gdex4sbesg.execute-api.us-east-1.amazonaws.com";
-
-    const COMM_CATEGORIES = [
-      { key: "prior_auth", label: "Prior Authorization", desc: "Enter the email or fax number(s) where this practice should receive prior authorization communications." },
-      { key: "appeals", label: "Appeals and Tier Exceptions", desc: "Enter the email or fax number(s) where this practice should receive appeals and tier exception communications." },
-      { key: "refills", label: "Refills Communications", desc: "Enter the email or fax number(s) where this practice should receive refill communications." },
-      { key: "scripts", label: "Scripts Communications", desc: "Enter the email or fax number(s) where this practice should receive script communications (e.g. Missing SIG, script clarifications)." },
-      { key: "hcp_summary", label: "HCP Summary Communications", desc: "Enter the email or fax number(s) where this practice should receive summary communications (e.g. HCP Summary Fax)." },
-    ];
-
-    const _RX = {
-      "Tyrvaya®": {
-        label: "Tyrvaya® (varenicline solution) nasal spray 0.03 MG Nasal Spray",
-        actionRequired: [
-          { name: "Ellis, Maria",    dob: "05/19/1973", pending: "30 days ago", status: "Incorrect Number" },
-          { name: "Flores, Evelyn",  dob: "03/16/1979", pending: "30 days ago", status: "Incorrect Number" },
-          { name: "Moreno, Frank",   dob: "09/17/1980", pending: "29 days ago", status: "Incorrect Number" },
-          { name: "Ellis, Susan",    dob: "02/06/1982", pending: "28 days ago", status: "Incorrect Number" },
-          { name: "Simmons, Joyce",  dob: "03/02/1972", pending: "28 days ago", status: "Incorrect Number" },
-        ],
-        pendingPatient: [
-          { reason: "Patient Has Not Enrolled", name: "Palmer, Robin",    dob: "04/17/1968", detail: "Date Prescribed: 03/30/2026", sub: "(27 days ago)" },
-          { reason: "Patient Has Not Enrolled", name: "Mendoza, Joe",     dob: "04/26/1976", detail: "Date Prescribed: 03/30/2026", sub: "(27 days ago)" },
-          { reason: "Patient Has Not Enrolled", name: "Cook, Margaret",   dob: "08/05/1948", detail: "Date Prescribed: 03/30/2026", sub: "(27 days ago)" },
-          { reason: "Patient Has Not Enrolled", name: "Day, Denise",      dob: "04/28/1981", detail: "Date Prescribed: 04/20/2026", sub: "(7 days ago)" },
-          { reason: "Patient Has Not Enrolled", name: "Medina, Charles",  dob: "11/03/1969", detail: "Date Prescribed: 04/22/2026", sub: "(6 days ago)" },
-          { reason: "Patient Has Not Enrolled", name: "Flores, Jack",     dob: "10/24/1977", detail: "Date Prescribed: 04/22/2026", sub: "(6 days ago)" },
-          { reason: "Missing Payment Type",     name: "Gibson, Diane",    dob: "06/14/1970", detail: "30 days, $89", sub: "Patient saved $6" },
-          { reason: "Missing Payment Type",     name: "Hall, Sandra",     dob: "10/25/1980", detail: "30 days, $10", sub: "Patient saved $0" },
-        ],
-        inProcess: [],
-        shipped: [
-          { name: "Fox, Billy",       dob: "03/07/1981", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
-          { name: "Reed, Mildred",    dob: "11/28/1979", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
-          { name: "Moreno, Joyce",    dob: "09/14/1968", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
-          { name: "Howard, David",    dob: "07/26/1978", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
-        ],
-        transferred: [
-          { name: "Wagner, Joseph",   dob: "01/13/1977", note: "Due to patient request, the prescription will be transferred for fulfillment to another pharmacy." },
-        ],
-        canceled: [],
-      },
-      "Addyi®": {
-        label: "Addyi® (flibanserin) 100 MG Tablet",
-        actionRequired: [
-          { name: "Torres, Linda",    dob: "07/22/1975", pending: "25 days ago", status: "Incorrect Number" },
-          { name: "Rivera, Angela",   dob: "05/30/1970", pending: "14 days ago", status: "Incorrect Number" },
-        ],
-        pendingPatient: [
-          { reason: "Patient Has Not Enrolled", name: "Bennett, Carol",   dob: "02/11/1979", detail: "Date Prescribed: 04/01/2026", sub: "(25 days ago)" },
-          { reason: "Patient Has Not Enrolled", name: "Ward, Nancy",      dob: "09/03/1985", detail: "Date Prescribed: 04/08/2026", sub: "(18 days ago)" },
-          { reason: "Patient Has Not Enrolled", name: "Ramirez, Lisa",    dob: "06/29/1978", detail: "Date Prescribed: 04/15/2026", sub: "(11 days ago)" },
-          { reason: "Missing Payment Type",     name: "Collins, Barbara", dob: "12/20/1967", detail: "30 days, $142", sub: "Patient saved $25" },
-          { reason: "Insurance Verification",   name: "Jenkins, Maria",   dob: "03/07/1980", detail: "Awaiting prior auth response", sub: "" },
-        ],
-        inProcess: [
-          { name: "Hernandez, Donna", dob: "08/18/1976", status: "Prior Auth Submitted", detail: "Submitted 04/24/2026 — awaiting insurer response" },
-          { name: "Carter, Helen",    dob: "01/25/1990", status: "Pharmacy Processing",  detail: "Expected ship date: 05/01/2026" },
-        ],
-        shipped: [
-          { name: "Scott, Alice",     dob: "04/09/1977", payType: "Insurance + Coupon", insurance: "Express Scripts", detail: "30 days, $10" },
-          { name: "Nelson, Ruth",     dob: "10/31/1982", payType: "Manufacturer Coupon", insurance: "", detail: "30 days, $35" },
-          { name: "Kelly, Dorothy",   dob: "06/16/1973", payType: "Insurance + Coupon", insurance: "CVS Caremark",   detail: "30 days, $0" },
-        ],
-        transferred: [],
-        canceled: [
-          { name: "Price, Sharon", dob: "02/27/1969", reason: "Patient requested cancellation", date: "04/18/2026" },
-        ],
-      },
-      "Auvelity®": {
-        label: "Auvelity® (dextromethorphan HBr/bupropion HCl) 45 mg/105 mg Tablet",
-        actionRequired: [
-          { name: "Cooper, Betty",    dob: "12/05/1965", pending: "10 days ago", status: "Incorrect Number" },
-        ],
-        pendingPatient: [
-          { reason: "Patient Has Not Enrolled", name: "Bailey, Cynthia",  dob: "03/19/1987", detail: "Date Prescribed: 04/05/2026", sub: "(21 days ago)" },
-          { reason: "Patient Has Not Enrolled", name: "Flores, Frances",  dob: "07/08/1972", detail: "Date Prescribed: 04/12/2026", sub: "(14 days ago)" },
-          { reason: "Missing Payment Type",     name: "James, Evelyn",    dob: "09/22/1980", detail: "30 days, $55", sub: "Patient saved $30" },
-          { reason: "Prior Auth Required",      name: "Stewart, Martha",  dob: "05/16/1975", detail: "PA initiated 04/20/2026", sub: "" },
-        ],
-        inProcess: [
-          { name: "Adams, Gloria",    dob: "11/30/1983", status: "Prior Auth Submitted", detail: "Submitted 04/22/2026 — response expected within 3 business days" },
-        ],
-        shipped: [
-          { name: "Baker, Patricia",  dob: "08/04/1971", payType: "Insurance + Coupon", insurance: "Anthem BCBS",    detail: "30 days, $15" },
-          { name: "Gonzalez, Sandra", dob: "02/13/1984", payType: "Insurance + Coupon", insurance: "UnitedHealth",   detail: "30 days, $0" },
-          { name: "Nelson, Donna",    dob: "06/27/1969", payType: "Manufacturer Coupon", insurance: "",              detail: "30 days, $50" },
-          { name: "Carter, Maria",    dob: "10/10/1979", payType: "Insurance + Coupon", insurance: "Cigna",          detail: "30 days, $0" },
-          { name: "Mitchell, Helen",  dob: "01/08/1993", payType: "Insurance Only",     insurance: "Aetna",          detail: "30 days, $20" },
-        ],
-        transferred: [
-          { name: "Perez, Kathleen",  dob: "04/21/1976", note: "Patient requested transfer to local specialty pharmacy." },
-        ],
-        canceled: [
-          { name: "Roberts, Helen",   dob: "07/03/1971", reason: "Prescriber voided prescription", date: "04/17/2026" },
-          { name: "Turner, Christine",dob: "11/19/1988", reason: "Patient no longer interested",    date: "04/23/2026" },
-        ],
-      },
-      // ── Additional PHIL Rx portfolio (live data populated by real API) ─────
-      "YUVEZZI™": {
-        label: "YUVEZZI™ (carbachol and brimonidine tartrate) 2.75%/0.1% Ophthalmic Solution",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "CEQUA®": {
-        label: "CEQUA® (cyclosporine) 0.09% Ophthalmic Solution",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "IYUZEH™": {
-        label: "IYUZEH™ (latanoprost) 0.005% Ophthalmic Solution",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "VEVYE®": {
-        label: "VEVYE® (cyclosporine) 0.1% Ophthalmic Solution",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Verkazia®": {
-        label: "Verkazia® (cyclosporine) 0.1% Ophthalmic Emulsion",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Flarex®": {
-        label: "Flarex® (fluorometholone acetate) 0.1% Ophthalmic Suspension",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Ilevro®": {
-        label: "Ilevro® (nepafenac) 0.3% Ophthalmic Suspension",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Maxidex®": {
-        label: "Maxidex® (dexamethasone) 0.1% Ophthalmic Suspension",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Maxitrol®": {
-        label: "Maxitrol® (neomycin / polymyxin B / dexamethasone) Ophthalmic Suspension",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Natacyn®": {
-        label: "Natacyn® (natamycin) 5% Ophthalmic Suspension",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Nevanac®": {
-        label: "Nevanac® (nepafenac) 0.1% Ophthalmic Suspension",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Tobradex ST®": {
-        label: "Tobradex ST® (tobramycin 0.3% / dexamethasone 0.05%) Ophthalmic Suspension",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Vigamox®": {
-        label: "Vigamox® (moxifloxacin) 0.5% Ophthalmic Solution",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Zerviate®": {
-        label: "Zerviate® (cetirizine) 0.24% Ophthalmic Solution",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "RYTARY®": {
-        label: "RYTARY® (carbidopa and levodopa) Extended-Release Capsules",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "CREXONT®": {
-        label: "CREXONT® (carbidopa and levodopa) Extended-Release Capsules",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "APLENZIN®": {
-        label: "APLENZIN® (bupropion hydrobromide) Extended-Release Tablets",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Qelbree®": {
-        label: "Qelbree® (viloxazine) Extended-Release Capsules",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "WELLBUTRIN XL®": {
-        label: "WELLBUTRIN XL® (bupropion hydrochloride) 300 mg Extended-Release Tablets",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "TRUDHESA™": {
-        label: "TRUDHESA™ (dihydroergotamine mesylate) Nasal Spray",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Bonjesta®": {
-        label: "Bonjesta® (doxylamine succinate / pyridoxine HCl) 20 mg/20 mg Extended-Release Tablets",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Osphena®": {
-        label: "Osphena® (ospemifene) 60 mg Tablets",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-      "Winlevi®": {
-        label: "Winlevi® (clascoterone) 1% Cream",
-        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
-      },
-    };
-
-    // "All Medications" merges all active medications
-    const ALL_MEDS = [
-      // Ophthalmology
-      "YUVEZZI™","CEQUA®","IYUZEH™","Tyrvaya®","VEVYE®","Verkazia®",
-      "Flarex®","Ilevro®","Maxidex®","Maxitrol®","Natacyn®","Nevanac®",
-      "Tobradex ST®","Vigamox®","Zerviate®",
-      // Neurology — Parkinson's
-      "RYTARY®","CREXONT®",
-      // Psychiatry / CNS
-      "Auvelity®","APLENZIN®","Qelbree®","WELLBUTRIN XL®",
-      // Neurology — Migraine
-      "TRUDHESA™",
-      // Women's Health
-      "Addyi®","Bonjesta®","Osphena®","Winlevi®",
-    ];
-    _RX["All Medications"] = ALL_MEDS.reduce((acc, med) => {
-      const d = _RX[med];
-      const tag = r => ({ ...r, medOverride: d.label });
-      acc.actionRequired.push(...d.actionRequired.map(tag));
-      acc.pendingPatient.push(...d.pendingPatient.map(tag));
-      acc.inProcess.push(...d.inProcess.map(tag));
-      acc.shipped.push(...d.shipped.map(tag));
-      acc.transferred.push(...d.transferred.map(tag));
-      acc.canceled.push(...d.canceled.map(tag));
-      return acc;
-    }, { label: "", actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [] });
-
-    const emptyMethods = () => [{ method: "fax", value: "" }];
-
-    function CommSection({ category, data, onChange, showError }) {
-      const updateRow = (i, field, val) => {
-        const rows = data.rows.map((r, idx) => idx === i ? { ...r, [field]: val } : r);
-        onChange({ ...data, rows });
+  // Close on backdrop click
+  const handleBackdrop = e => {
+    if (e.target === e.currentTarget) onClose();
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-backdrop",
+    onClick: handleBackdrop
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal-box"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "modal-close",
+    onClick: onClose
+  }, "\u2715"), /*#__PURE__*/React.createElement("div", {
+    className: "modal-title"
+  }, "Update Patient's Contact Information"), /*#__PURE__*/React.createElement("div", {
+    className: "modal-field"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "modal-field-label"
+  }, "Patient Name"), /*#__PURE__*/React.createElement("span", {
+    className: "modal-field-value"
+  }, patient.name.split(", ").reverse().join(" "))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-field"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "modal-field-label"
+  }, "Date of Birth"), /*#__PURE__*/React.createElement("span", {
+    className: "modal-field-value"
+  }, patient.dob)), /*#__PURE__*/React.createElement("hr", {
+    className: "modal-divider"
+  }), done ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: "12px 0 4px",
+      color: "#3a8a84",
+      fontWeight: 600,
+      fontSize: "14px"
+    }
+  }, "\u2713 Contact information updated.") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("input", {
+    className: `modal-input ${error ? "error" : ""}`,
+    type: "tel",
+    placeholder: "Enter mobile number",
+    value: isLandline ? "" : phone,
+    disabled: isLandline,
+    onChange: e => {
+      setPhone(e.target.value);
+      setError("");
+    },
+    autoFocus: true
+  }), error && /*#__PURE__*/React.createElement("p", {
+    className: "modal-error"
+  }, error), /*#__PURE__*/React.createElement("div", {
+    className: "modal-checkbox-row"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    id: "landline-check",
+    checked: isLandline,
+    onChange: e => {
+      setIsLandline(e.target.checked);
+      setPhone("");
+      setError("");
+    }
+  }), /*#__PURE__*/React.createElement("label", {
+    htmlFor: "landline-check"
+  }, "The patient does not have a mobile phone number. The number provided is a landline.")), /*#__PURE__*/React.createElement("button", {
+    className: "modal-submit",
+    disabled: submitting,
+    onClick: handleSubmit
+  }, submitting ? "Submitting…" : "Submit"))));
+}
+function ManageCommsTab({
+  hcpSummaryPref,
+  onUpdateHcpSummaryPref
+}) {
+  const buildInitialPrefs = () => {
+    const base = Object.fromEntries(COMM_CATEGORIES.map(c => [c.key, {
+      rows: emptyMethods(),
+      optOut: false
+    }]));
+    if (hcpSummaryPref) {
+      const rows = [];
+      if (hcpSummaryPref.fax) rows.push({
+        method: "fax",
+        value: ""
+      });
+      if (hcpSummaryPref.wantEmail && hcpSummaryPref.email) rows.push({
+        method: "email",
+        value: hcpSummaryPref.email
+      });
+      if (rows.length === 0) rows.push({
+        method: "fax",
+        value: ""
+      });
+      base.hcp_summary = {
+        rows,
+        optOut: false
       };
-      const hasValue = data.rows.some(r => r.method && r.value.trim());
-      const isInvalid = showError && !hasValue;
-
-      return (
-        <div className="comms-section">
-          <h3>{category.label}</h3>
-          <p className="section-desc">{category.desc}</p>
-          <p className="methods-label">Methods</p>
-          {data.rows.map((row, i) => (
-            <div key={i}>
-              <div className="method-row">
-                <select
-                  className="method-select"
-                  value={row.method}
-                  onChange={e => updateRow(i, "method", e.target.value)}
-                >
-                  <option value="">Select ↓</option>
-                  <option value="fax">Fax</option>
-                  <option value="email">Email</option>
-                </select>
-                <input
-                  className={`method-input ${isInvalid && i === 0 ? "input-error" : ""}`}
-                  type={row.method === "email" ? "email" : "text"}
-                  placeholder={row.method === "email" ? "email@practice.com" : row.method === "fax" ? "Fax number" : ""}
-                  value={row.value}
-                  disabled={!row.method}
-                  onChange={e => updateRow(i, "value", e.target.value)}
-                />
-                {data.rows.length > 1 && (
-                  <button onClick={() => onChange({ ...data, rows: data.rows.filter((_, idx) => idx !== i) })}
-                    style={{background:"none",border:"none",color:"#bbb",cursor:"pointer",fontSize:"16px",padding:"0 2px",lineHeight:1,flexShrink:0}}
-                    aria-label="Remove method">✕</button>
-                )}
-              </div>
-              {isInvalid && i === 0 && (
-                <p className="comms-error-msg">At least one delivery method is required.</p>
-              )}
-            </div>
-          ))}
-          {data.rows.length < 4 && (
-            <button onClick={() => onChange({ ...data, rows: [...data.rows, { method: "", value: "" }] })}
-              style={{background:"none",border:"none",color:"#3a8a84",fontSize:"12px",cursor:"pointer",padding:"4px 0",marginTop:"2px",fontWeight:600}}>
-              + Add Method
-            </button>
-          )}
-        </div>
-      );
+    }
+    return base;
+  };
+  const [prefs, setPrefs] = useState(buildInitialPrefs);
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
+  const [attempted, setAttempted] = useState(false);
+  const handleChange = (key, data) => {
+    setPrefs(p => ({
+      ...p,
+      [key]: data
+    }));
+    setSaved(false);
+    setSaveError("");
+  };
+  const isValid = () => COMM_CATEGORIES.every(cat => prefs[cat.key].rows.some(r => r.method && r.value.trim()));
+  const handleSave = async () => {
+    setAttempted(true);
+    if (!isValid()) return;
+    const payload = Object.fromEntries(COMM_CATEGORIES.map(cat => {
+      const d = prefs[cat.key];
+      return [cat.key, {
+        optOut: d.optOut,
+        methods: d.rows.filter(r => r.method && r.value.trim()).map(r => ({
+          type: r.method,
+          value: r.value.trim()
+        }))
+      }];
+    }));
+    setSaving(true);
+    setSaveError("");
+    try {
+      const token = localStorage.getItem("HCP_ACCESS_TOKEN") || "";
+      const res = await fetch(`${API_BASE}/comm-prefs`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? {
+            "Authorization": `Bearer ${token}`
+          } : {})
+        },
+        body: JSON.stringify({
+          npi: "1234567890",
+          preferences: payload
+        })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || `Server error ${res.status}`);
+      }
+    } catch (e) {
+      setSaveError(`Could not save preferences: ${e.message}. Please try again or call HCP Support.`);
+      setSaving(false);
+      return;
     }
 
-    function EnterPhoneModal({ patient, onClose, onSubmitted }) {
-      const [phone, setPhone] = useState("");
-      const [isLandline, setIsLandline] = useState(false);
-      const [submitting, setSubmitting] = useState(false);
-      const [error, setError] = useState("");
-      const [done, setDone] = useState(false);
-
-      const isValidPhone = v => /^[\d\s\-\(\)\.]{7,}$/.test(v.trim());
-
-      const handleSubmit = async () => {
-        if (!isLandline && !isValidPhone(phone)) {
-          setError("Please enter a valid mobile number.");
-          return;
-        }
-        setError("");
-        setSubmitting(true);
-        try {
-          await trackEvent("1234567890", "enter_phone", {
-            patient_name: patient.name,
-            dob: patient.dob,
-            phone: isLandline ? null : phone.trim(),
-            is_landline: isLandline,
-          });
-        } catch (_) {}
-        setSubmitting(false);
-        setDone(true);
-        setTimeout(() => { onSubmitted && onSubmitted(); onClose(); }, 1200);
-      };
-
-      // Close on backdrop click
-      const handleBackdrop = e => { if (e.target === e.currentTarget) onClose(); };
-
-      return (
-        <div className="modal-backdrop" onClick={handleBackdrop}>
-          <div className="modal-box">
-            <button className="modal-close" onClick={onClose}>✕</button>
-            <div className="modal-title">Update Patient's Contact Information</div>
-            <div className="modal-field">
-              <span className="modal-field-label">Patient Name</span>
-              <span className="modal-field-value">{patient.name.split(", ").reverse().join(" ")}</span>
-            </div>
-            <div className="modal-field">
-              <span className="modal-field-label">Date of Birth</span>
-              <span className="modal-field-value">{patient.dob}</span>
-            </div>
-            <hr className="modal-divider" />
-            {done ? (
-              <div style={{textAlign:"center",padding:"12px 0 4px",color:"#3a8a84",fontWeight:600,fontSize:"14px"}}>✓ Contact information updated.</div>
-            ) : (<>
-              <input
-                className={`modal-input ${error ? "error" : ""}`}
-                type="tel"
-                placeholder="Enter mobile number"
-                value={isLandline ? "" : phone}
-                disabled={isLandline}
-                onChange={e => { setPhone(e.target.value); setError(""); }}
-                autoFocus
-              />
-              {error && <p className="modal-error">{error}</p>}
-              <div className="modal-checkbox-row">
-                <input type="checkbox" id="landline-check" checked={isLandline}
-                  onChange={e => { setIsLandline(e.target.checked); setPhone(""); setError(""); }} />
-                <label htmlFor="landline-check">
-                  The patient does not have a mobile phone number. The number provided is a landline.
-                </label>
-              </div>
-              <button className="modal-submit" disabled={submitting} onClick={handleSubmit}>
-                {submitting ? "Submitting…" : "Submit"}
-              </button>
-            </>)}
-          </div>
-        </div>
-      );
+    // Sync hcp_summary back to the delivery card
+    const summaryMethods = payload.hcp_summary?.methods ?? [];
+    const newFax = summaryMethods.some(m => m.type === "fax");
+    const emailEntry = summaryMethods.find(m => m.type === "email");
+    if (onUpdateHcpSummaryPref) {
+      onUpdateHcpSummaryPref({
+        fax: newFax,
+        wantEmail: !!emailEntry,
+        email: emailEntry?.value ?? ""
+      });
     }
+    trackEvent("1234567890", "save_comm_prefs", {
+      categories: Object.keys(payload)
+    });
+    setSaving(false);
+    setSaved(true);
+    setAttempted(false);
+  };
+  const handleCancel = () => {
+    setPrefs(buildInitialPrefs());
+    setSaved(false);
+    setSaveError("");
+    setAttempted(false);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "manage-comms"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#f0f7f7",
+      border: "1px solid #c8e0de",
+      borderRadius: "6px",
+      padding: "16px 20px",
+      marginBottom: "16px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: "15px",
+      color: "#2d7070",
+      marginBottom: "6px"
+    }
+  }, "Communication Preferences"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "13px",
+      color: "#444",
+      margin: 0,
+      lineHeight: "1.6"
+    }
+  }, "Use this page to control how Phil contacts your practice for each communication type \u2014 prior authorizations, refills, scripts, appeals, and HCP summary reports. For each category, add one or more delivery methods (fax or email). Changes take effect immediately and will update your preferences in the Phil HCP Portal."), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "13px",
+      color: "#555",
+      margin: "10px 0 0",
+      lineHeight: "1.6"
+    }
+  }, "For special or complex communication requests, please call Phil HCP Support at ", /*#__PURE__*/React.createElement("strong", null, /*#__PURE__*/React.createElement("a", {
+    href: "tel:8005532406",
+    style: {
+      color: "#2d7070"
+    }
+  }, "(800) 553-2406")), ".")), /*#__PURE__*/React.createElement("div", {
+    className: "npi-context"
+  }, "Viewing preferences for: ", /*#__PURE__*/React.createElement("strong", null, "Dr. Dora Weinstein"), " \xA0\xB7\xA0 NPI: ", /*#__PURE__*/React.createElement("strong", null, "1234567890"), " \xA0\xB7\xA0 Practice: ", /*#__PURE__*/React.createElement("strong", null, "Jacqueline Lindsey2")), /*#__PURE__*/React.createElement("div", {
+    className: "comms-card"
+  }, COMM_CATEGORIES.map(cat => /*#__PURE__*/React.createElement(CommSection, {
+    key: cat.key,
+    category: cat,
+    data: prefs[cat.key],
+    onChange: d => handleChange(cat.key, d),
+    showError: attempted
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "comms-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn-cancel",
+    onClick: handleCancel,
+    disabled: saving
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "btn-save-comms",
+    onClick: handleSave,
+    disabled: saving
+  }, saving ? "Saving…" : "Save")), saveError && /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "12px",
+      color: "#e05c5c",
+      marginTop: "8px",
+      textAlign: "right"
+    }
+  }, saveError, " ", /*#__PURE__*/React.createElement("a", {
+    href: "tel:8005532406",
+    style: {
+      color: "#e05c5c"
+    }
+  }, "(800) 553-2406")), saved && /*#__PURE__*/React.createElement("p", {
+    className: "comms-saved-msg"
+  }, "\u2713 Preferences saved for NPI 1234567890.")));
+}
 
-    function ManageCommsTab({ hcpSummaryPref, onUpdateHcpSummaryPref }) {
-      const buildInitialPrefs = () => {
-        const base = Object.fromEntries(COMM_CATEGORIES.map(c => [c.key, { rows: emptyMethods(), optOut: false }]));
-        if (hcpSummaryPref) {
-          const rows = [];
-          if (hcpSummaryPref.fax) rows.push({ method: "fax", value: "" });
-          if (hcpSummaryPref.wantEmail && hcpSummaryPref.email) rows.push({ method: "email", value: hcpSummaryPref.email });
-          if (rows.length === 0) rows.push({ method: "fax", value: "" });
-          base.hcp_summary = { rows, optOut: false };
-        }
-        return base;
-      };
-      const [prefs, setPrefs] = useState(buildInitialPrefs);
-      const [saved, setSaved] = useState(false);
-      const [saving, setSaving] = useState(false);
-      const [saveError, setSaveError] = useState("");
-      const [attempted, setAttempted] = useState(false);
-
-      const handleChange = (key, data) => { setPrefs(p => ({ ...p, [key]: data })); setSaved(false); setSaveError(""); };
-
-      const isValid = () => COMM_CATEGORIES.every(cat =>
-        prefs[cat.key].rows.some(r => r.method && r.value.trim())
-      );
-
-      const handleSave = async () => {
-        setAttempted(true);
-        if (!isValid()) return;
-
-        const payload = Object.fromEntries(
-          COMM_CATEGORIES.map(cat => {
-            const d = prefs[cat.key];
-            return [cat.key, {
-              optOut: d.optOut,
-              methods: d.rows.filter(r => r.method && r.value.trim()).map(r => ({ type: r.method, value: r.value.trim() }))
-            }];
+// Focused card: manage HCP Summary delivery methods (fax and/or email).
+// Shares hcpSummaryPref state with ManageCommsTab.
+function HcpSummaryDeliveryCard({
+  pref,
+  onSave
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const [wantFax, setWantFax] = useState(pref.fax);
+  const [wantEmail, setWantEmail] = useState(pref.wantEmail);
+  const [email, setEmail] = useState(pref.email);
+  const [error, setError] = useState("");
+  const isValidEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  const currentLabel = () => {
+    const parts = [];
+    if (pref.fax) parts.push("fax");
+    if (pref.wantEmail && pref.email) parts.push(`email (${pref.email})`);else if (pref.wantEmail) parts.push("email");
+    return parts.join(" & ") || "fax";
+  };
+  const handleSave = async () => {
+    if (!wantFax && !wantEmail) {
+      setError("Please select at least one delivery method.");
+      return;
+    }
+    if (wantEmail && !isValidEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    setError("");
+    const methods = [...(wantFax ? [{
+      type: "fax",
+      value: ""
+    }] : []), ...(wantEmail ? [{
+      type: "email",
+      value: email.trim()
+    }] : [])];
+    try {
+      const token = localStorage.getItem("HCP_ACCESS_TOKEN") || "";
+      await fetch(`${API_BASE}/comm-prefs`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? {
+            "Authorization": `Bearer ${token}`
+          } : {})
+        },
+        body: JSON.stringify({
+          npi: "1234567890",
+          preferences: {
+            hcp_summary: {
+              optOut: false,
+              methods
+            }
+          }
+        })
+      });
+    } catch (_) {}
+    const saved_pref = {
+      fax: wantFax,
+      wantEmail,
+      email: wantEmail ? email.trim() : ""
+    };
+    trackEvent("1234567890", "save_delivery_pref", saved_pref);
+    onSave(saved_pref);
+    setExpanded(false);
+  };
+  const toggle = (setter, val) => {
+    setter(!val);
+    setError("");
+  };
+  if (!expanded) {
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: "#f9fefe",
+        border: "1px solid #d0e8e6",
+        borderRadius: "4px",
+        padding: "10px 16px",
+        marginBottom: "12px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        fontSize: "13px"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "#555"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 600,
+        color: "#2d7070"
+      }
+    }, "Weekly summary sent via:"), " ", currentLabel()), /*#__PURE__*/React.createElement("button", {
+      onClick: () => setExpanded(true),
+      style: {
+        background: "none",
+        border: "none",
+        color: "#3a8a84",
+        fontWeight: 600,
+        fontSize: "13px",
+        cursor: "pointer",
+        padding: "0",
+        textDecoration: "underline"
+      }
+    }, "Edit"));
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "prefs-card",
+    style: {
+      marginBottom: "12px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "prefs-header",
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, "HCP Summary \u2014 Delivery Preference"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "12px",
+      color: "#888",
+      margin: 0
+    }
+  }, "Choose how you'd like to receive this Weekly Prescription Summary.")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setExpanded(false);
+      setError("");
+    },
+    style: {
+      background: "none",
+      border: "none",
+      color: "#aaa",
+      fontSize: "18px",
+      cursor: "pointer",
+      lineHeight: 1
+    }
+  }, "\u2715")), /*#__PURE__*/React.createElement("div", {
+    className: "prefs-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+      marginBottom: "12px"
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: "10px",
+      cursor: "pointer"
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    checked: wantFax,
+    onChange: () => toggle(setWantFax, wantFax),
+    style: {
+      accentColor: "#3a8a84",
+      width: "15px",
+      height: "15px",
+      flexShrink: 0,
+      cursor: "pointer"
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "13px",
+      fontWeight: 600
+    }
+  }, "Fax")), /*#__PURE__*/React.createElement("label", {
+    style: {
+      display: "flex",
+      alignItems: "flex-start",
+      gap: "10px",
+      cursor: "pointer"
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    checked: wantEmail,
+    onChange: () => toggle(setWantEmail, wantEmail),
+    style: {
+      marginTop: "2px",
+      accentColor: "#3a8a84",
+      width: "15px",
+      height: "15px",
+      flexShrink: 0,
+      cursor: "pointer"
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "13px",
+      fontWeight: 600
+    }
+  }, "Email"), wantEmail && /*#__PURE__*/React.createElement("input", {
+    className: `email-input ${error && !isValidEmail(email) ? "error" : ""}`,
+    type: "email",
+    placeholder: "your@practice.com",
+    value: email,
+    autoFocus: true,
+    style: {
+      display: "block",
+      marginTop: "6px"
+    },
+    onChange: e => {
+      setEmail(e.target.value);
+      setError("");
+    }
+  })))), error && /*#__PURE__*/React.createElement("p", {
+    className: "error-msg",
+    style: {
+      marginBottom: "8px"
+    }
+  }, error), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "8px"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "save-prefs-btn",
+    onClick: handleSave
+  }, "Save"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setExpanded(false);
+      setError("");
+    },
+    style: {
+      background: "none",
+      border: "1px solid #ccc",
+      borderRadius: "4px",
+      padding: "7px 16px",
+      fontSize: "13px",
+      cursor: "pointer",
+      color: "#555"
+    }
+  }, "Cancel"))));
+}
+function FeedbackCard() {
+  const [rating, setRating] = useState(0);
+  const [hovered, setHovered] = useState(0);
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  const [otherText, setOtherText] = useState("");
+  const [nps, setNps] = useState(null);
+  const [comment, setComment] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const toggleTopic = t => setSelectedTopics(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t]);
+  if (submitted) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "feedback-section-card"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "feedback-header"
+    }, /*#__PURE__*/React.createElement("h3", null, "Share Your Feedback"), /*#__PURE__*/React.createElement("p", null, "Help us build a better experience for you and your patients.")), /*#__PURE__*/React.createElement("div", {
+      className: "feedback-body"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "success-state"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "success-icon"
+    }, "\u2705"), /*#__PURE__*/React.createElement("h4", null, "Thank you \u2014 this means a lot."), /*#__PURE__*/React.createElement("p", null, "Your feedback goes directly to our team and helps us keep improving the experience for you and your patients."))));
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "feedback-section-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "feedback-header"
+  }, /*#__PURE__*/React.createElement("h3", null, "Share Your Feedback"), /*#__PURE__*/React.createElement("p", null, "You help patients get their medications \u2014 and you help us get better. It takes 2 minutes.")), /*#__PURE__*/React.createElement("div", {
+    className: "feedback-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "fb-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "fb-label"
+  }, "How would you rate your overall experience with PHIL? *"), /*#__PURE__*/React.createElement("div", {
+    className: "stars"
+  }, [1, 2, 3, 4, 5].map(n => /*#__PURE__*/React.createElement("span", {
+    key: n,
+    className: `star ${n <= (hovered || rating) ? "filled" : ""}`,
+    onMouseEnter: () => setHovered(n),
+    onMouseLeave: () => setHovered(0),
+    onClick: () => setRating(n),
+    onKeyDown: e => (e.key === "Enter" || e.key === " ") && setRating(n),
+    tabIndex: 0,
+    role: "button",
+    "aria-label": `Rate ${n} star${n > 1 ? "s" : ""}`,
+    "aria-pressed": rating === n
+  }, "\u2605")))), /*#__PURE__*/React.createElement("div", {
+    className: "fb-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "fb-label"
+  }, "What areas matter most to you? (select all that apply)"), /*#__PURE__*/React.createElement("div", {
+    className: "chips"
+  }, TOPICS.map(t => /*#__PURE__*/React.createElement("button", {
+    key: t,
+    className: `chip ${selectedTopics.includes(t) ? "selected" : ""}`,
+    onClick: () => toggleTopic(t)
+  }, t))), selectedTopics.includes("Other") && /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "email-input",
+    placeholder: "Please describe...",
+    value: otherText,
+    onChange: e => setOtherText(e.target.value),
+    style: {
+      marginTop: "10px",
+      width: "100%",
+      maxWidth: "420px"
+    },
+    autoFocus: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "fb-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "fb-label"
+  }, "How likely are you to recommend PHIL to a colleague?"), /*#__PURE__*/React.createElement("div", {
+    className: "nps-row"
+  }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => /*#__PURE__*/React.createElement("button", {
+    key: n,
+    className: `nps-btn ${nps === n ? "selected" : ""}`,
+    onClick: () => setNps(n)
+  }, n))), /*#__PURE__*/React.createElement("div", {
+    className: "nps-labels"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "nps-label"
+  }, "Not at all likely"), /*#__PURE__*/React.createElement("span", {
+    className: "nps-label"
+  }, "Extremely likely"))), /*#__PURE__*/React.createElement("div", {
+    className: "fb-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "fb-label"
+  }, "Anything else you'd like us to know?"), /*#__PURE__*/React.createElement("textarea", {
+    className: "fb-textarea",
+    placeholder: "Tell us what's working well, what's frustrating, or anything you wish we'd change...",
+    value: comment,
+    onChange: e => setComment(e.target.value)
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "submit-btn",
+    disabled: !rating || submitting,
+    onClick: async () => {
+      setSubmitting(true);
+      setSubmitError("");
+      try {
+        const res = await fetch(`${API_BASE}/feedback`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            npi: "1234567890",
+            feedback: {
+              rating,
+              categories: selectedTopics,
+              other_text: otherText.trim() || null,
+              nps_score: nps,
+              comment
+            }
           })
-        );
-
-        setSaving(true);
-        setSaveError("");
-        try {
-          const token = localStorage.getItem("HCP_ACCESS_TOKEN") || "";
-          const res = await fetch(`${API_BASE}/comm-prefs`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              ...(token ? { "Authorization": `Bearer ${token}` } : {})
-            },
-            body: JSON.stringify({ npi: "1234567890", preferences: payload })
-          });
-          if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.error || `Server error ${res.status}`);
-          }
-        } catch (e) {
-          setSaveError(`Could not save preferences: ${e.message}. Please try again or call HCP Support.`);
-          setSaving(false);
-          return;
-        }
-
-        // Sync hcp_summary back to the delivery card
-        const summaryMethods = payload.hcp_summary?.methods ?? [];
-        const newFax = summaryMethods.some(m => m.type === "fax");
-        const emailEntry = summaryMethods.find(m => m.type === "email");
-        if (onUpdateHcpSummaryPref) {
-          onUpdateHcpSummaryPref({ fax: newFax, wantEmail: !!emailEntry, email: emailEntry?.value ?? "" });
-        }
-
-        trackEvent("1234567890", "save_comm_prefs", { categories: Object.keys(payload) });
-        setSaving(false);
-        setSaved(true);
-        setAttempted(false);
-      };
-
-      const handleCancel = () => {
-        setPrefs(buildInitialPrefs());
-        setSaved(false);
-        setSaveError("");
-        setAttempted(false);
-      };
-
-      return (
-        <div className="manage-comms">
-          <div style={{background:"#f0f7f7",border:"1px solid #c8e0de",borderRadius:"6px",padding:"16px 20px",marginBottom:"16px"}}>
-            <div style={{fontWeight:700,fontSize:"15px",color:"#2d7070",marginBottom:"6px"}}>Communication Preferences</div>
-            <p style={{fontSize:"13px",color:"#444",margin:0,lineHeight:"1.6"}}>
-              Use this page to control how Phil contacts your practice for each communication type — prior authorizations, refills, scripts, appeals, and HCP summary reports.
-              For each category, add one or more delivery methods (fax or email).
-              Changes take effect immediately and will update your preferences in the Phil HCP Portal.
-            </p>
-            <p style={{fontSize:"13px",color:"#555",margin:"10px 0 0",lineHeight:"1.6"}}>
-              For special or complex communication requests, please call Phil HCP Support at <strong><a href="tel:8005532406" style={{color:"#2d7070"}}>(800) 553-2406</a></strong>.
-            </p>
-          </div>
-          <div className="npi-context">
-            Viewing preferences for: <strong>Dr. Dora Weinstein</strong> &nbsp;·&nbsp; NPI: <strong>1234567890</strong> &nbsp;·&nbsp; Practice: <strong>Jacqueline Lindsey2</strong>
-          </div>
-          <div className="comms-card">
-            {COMM_CATEGORIES.map(cat => (
-              <CommSection key={cat.key} category={cat} data={prefs[cat.key]} onChange={d => handleChange(cat.key, d)} showError={attempted} />
-            ))}
-            <div className="comms-actions">
-              <button className="btn-cancel" onClick={handleCancel} disabled={saving}>Cancel</button>
-              <button className="btn-save-comms" onClick={handleSave} disabled={saving}>
-                {saving ? "Saving…" : "Save"}
-              </button>
-            </div>
-            {saveError && <p style={{fontSize:"12px",color:"#e05c5c",marginTop:"8px",textAlign:"right"}}>{saveError} <a href="tel:8005532406" style={{color:"#e05c5c"}}>(800) 553-2406</a></p>}
-            {saved && <p className="comms-saved-msg">✓ Preferences saved for NPI 1234567890.</p>}
-          </div>
-        </div>
-      );
-    }
-
-    // Focused card: manage HCP Summary delivery methods (fax and/or email).
-    // Shares hcpSummaryPref state with ManageCommsTab.
-    function HcpSummaryDeliveryCard({ pref, onSave }) {
-      const [expanded, setExpanded] = useState(false);
-      const [wantFax, setWantFax]     = useState(pref.fax);
-      const [wantEmail, setWantEmail] = useState(pref.wantEmail);
-      const [email, setEmail]         = useState(pref.email);
-      const [error, setError]   = useState("");
-
-      const isValidEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-
-      const currentLabel = () => {
-        const parts = [];
-        if (pref.fax) parts.push("fax");
-        if (pref.wantEmail && pref.email) parts.push(`email (${pref.email})`);
-        else if (pref.wantEmail) parts.push("email");
-        return parts.join(" & ") || "fax";
-      };
-
-      const handleSave = async () => {
-        if (!wantFax && !wantEmail) { setError("Please select at least one delivery method."); return; }
-        if (wantEmail && !isValidEmail(email)) { setError("Please enter a valid email address."); return; }
-        setError("");
-        const methods = [
-          ...(wantFax   ? [{ type: "fax",   value: "" }] : []),
-          ...(wantEmail ? [{ type: "email", value: email.trim() }] : []),
-        ];
-        try {
-          const token = localStorage.getItem("HCP_ACCESS_TOKEN") || "";
-          await fetch(`${API_BASE}/comm-prefs`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json", ...(token ? { "Authorization": `Bearer ${token}` } : {}) },
-            body: JSON.stringify({ npi: "1234567890", preferences: { hcp_summary: { optOut: false, methods } } })
-          });
-        } catch (_) {}
-        const saved_pref = { fax: wantFax, wantEmail, email: wantEmail ? email.trim() : "" };
-        trackEvent("1234567890", "save_delivery_pref", saved_pref);
-        onSave(saved_pref);
-        setExpanded(false);
-      };
-
-      const toggle = (setter, val) => { setter(!val); setError(""); };
-
-      if (!expanded) {
-        return (
-          <div style={{background:"#f9fefe",border:"1px solid #d0e8e6",borderRadius:"4px",padding:"10px 16px",marginBottom:"12px",display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:"13px"}}>
-            <span style={{color:"#555"}}>
-              <span style={{fontWeight:600,color:"#2d7070"}}>Weekly summary sent via:</span> {currentLabel()}
-            </span>
-            <button onClick={() => setExpanded(true)} style={{background:"none",border:"none",color:"#3a8a84",fontWeight:600,fontSize:"13px",cursor:"pointer",padding:"0",textDecoration:"underline"}}>Edit</button>
-          </div>
-        );
+        });
+        if (!res.ok) throw new Error(`Server error ${res.status}`);
+      } catch (e) {
+        setSubmitError("Unable to submit feedback. Please try again.");
+        setSubmitting(false);
+        return;
       }
-
-      return (
-        <div className="prefs-card" style={{marginBottom:"12px"}}>
-          <div className="prefs-header" style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <div>
-              <h3>HCP Summary — Delivery Preference</h3>
-              <p style={{fontSize:"12px",color:"#888",margin:0}}>Choose how you'd like to receive this Weekly Prescription Summary.</p>
-            </div>
-            <button onClick={() => { setExpanded(false); setError(""); }} style={{background:"none",border:"none",color:"#aaa",fontSize:"18px",cursor:"pointer",lineHeight:1}}>✕</button>
-          </div>
-          <div className="prefs-body">
-            <div style={{display:"flex",flexDirection:"column",gap:"10px",marginBottom:"12px"}}>
-              <label style={{display:"flex",alignItems:"center",gap:"10px",cursor:"pointer"}}>
-                <input type="checkbox" checked={wantFax} onChange={() => toggle(setWantFax, wantFax)}
-                  style={{accentColor:"#3a8a84",width:"15px",height:"15px",flexShrink:0,cursor:"pointer"}} />
-                <span style={{fontSize:"13px",fontWeight:600}}>Fax</span>
-              </label>
-              <label style={{display:"flex",alignItems:"flex-start",gap:"10px",cursor:"pointer"}}>
-                <input type="checkbox" checked={wantEmail} onChange={() => toggle(setWantEmail, wantEmail)}
-                  style={{marginTop:"2px",accentColor:"#3a8a84",width:"15px",height:"15px",flexShrink:0,cursor:"pointer"}} />
-                <div style={{flex:1}}>
-                  <span style={{fontSize:"13px",fontWeight:600}}>Email</span>
-                  {wantEmail && (
-                    <input className={`email-input ${error && !isValidEmail(email) ? "error" : ""}`}
-                      type="email" placeholder="your@practice.com" value={email} autoFocus
-                      style={{display:"block",marginTop:"6px"}}
-                      onChange={e => { setEmail(e.target.value); setError(""); }} />
-                  )}
-                </div>
-              </label>
-            </div>
-            {error && <p className="error-msg" style={{marginBottom:"8px"}}>{error}</p>}
-            <div style={{display:"flex",gap:"8px"}}>
-              <button className="save-prefs-btn" onClick={handleSave}>Save</button>
-              <button onClick={() => { setExpanded(false); setError(""); }} style={{background:"none",border:"1px solid #ccc",borderRadius:"4px",padding:"7px 16px",fontSize:"13px",cursor:"pointer",color:"#555"}}>Cancel</button>
-            </div>
-          </div>
-        </div>
-      );
+      setSubmitted(true);
     }
-
-    function FeedbackCard() {
-      const [rating, setRating] = useState(0);
-      const [hovered, setHovered] = useState(0);
-      const [selectedTopics, setSelectedTopics] = useState([]);
-      const [otherText, setOtherText] = useState("");
-      const [nps, setNps] = useState(null);
-      const [comment, setComment] = useState("");
-      const [submitted, setSubmitted] = useState(false);
-      const [submitting, setSubmitting] = useState(false);
-      const [submitError, setSubmitError] = useState("");
-
-      const toggleTopic = t =>
-        setSelectedTopics(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t]);
-
-      if (submitted) {
-        return (
-          <div className="feedback-section-card">
-            <div className="feedback-header">
-              <h3>Share Your Feedback</h3>
-              <p>Help us build a better experience for you and your patients.</p>
-            </div>
-            <div className="feedback-body">
-              <div className="success-state">
-                <div className="success-icon">✅</div>
-                <h4>Thank you — this means a lot.</h4>
-                <p>Your feedback goes directly to our team and helps us keep improving the experience for you and your patients.</p>
-              </div>
-            </div>
-          </div>
-        );
-      }
-
-      return (
-        <div className="feedback-section-card">
-          <div className="feedback-header">
-            <h3>Share Your Feedback</h3>
-            <p>You help patients get their medications — and you help us get better. It takes 2 minutes.</p>
-          </div>
-          <div className="feedback-body">
-
-            <div className="fb-group">
-              <label className="fb-label">How would you rate your overall experience with PHIL? *</label>
-              <div className="stars">
-                {[1,2,3,4,5].map(n => (
-                  <span
-                    key={n}
-                    className={`star ${n <= (hovered || rating) ? "filled" : ""}`}
-                    onMouseEnter={() => setHovered(n)}
-                    onMouseLeave={() => setHovered(0)}
-                    onClick={() => setRating(n)}
-                    onKeyDown={e => (e.key === "Enter" || e.key === " ") && setRating(n)}
-                    tabIndex={0}
-                    role="button"
-                    aria-label={`Rate ${n} star${n > 1 ? "s" : ""}`}
-                    aria-pressed={rating === n}
-                  >★</span>
-                ))}
-              </div>
-            </div>
-
-            <div className="fb-group">
-              <label className="fb-label">What areas matter most to you? (select all that apply)</label>
-              <div className="chips">
-                {TOPICS.map(t => (
-                  <button key={t} className={`chip ${selectedTopics.includes(t) ? "selected" : ""}`} onClick={() => toggleTopic(t)}>{t}</button>
-                ))}
-              </div>
-              {selectedTopics.includes("Other") && (
-                <input
-                  type="text"
-                  className="email-input"
-                  placeholder="Please describe..."
-                  value={otherText}
-                  onChange={e => setOtherText(e.target.value)}
-                  style={{marginTop:"10px", width:"100%", maxWidth:"420px"}}
-                  autoFocus
-                />
-              )}
-            </div>
-
-            <div className="fb-group">
-              <label className="fb-label">How likely are you to recommend PHIL to a colleague?</label>
-              <div className="nps-row">
-                {[0,1,2,3,4,5,6,7,8,9,10].map(n => (
-                  <button key={n} className={`nps-btn ${nps === n ? "selected" : ""}`} onClick={() => setNps(n)}>{n}</button>
-                ))}
-              </div>
-              <div className="nps-labels">
-                <span className="nps-label">Not at all likely</span>
-                <span className="nps-label">Extremely likely</span>
-              </div>
-            </div>
-
-            <div className="fb-group">
-              <label className="fb-label">Anything else you'd like us to know?</label>
-              <textarea
-                className="fb-textarea"
-                placeholder="Tell us what's working well, what's frustrating, or anything you wish we'd change..."
-                value={comment}
-                onChange={e => setComment(e.target.value)}
-              />
-            </div>
-
-            <button className="submit-btn" disabled={!rating || submitting} onClick={async () => {
-              setSubmitting(true);
-              setSubmitError("");
-              try {
-                const res = await fetch(`${API_BASE}/feedback`, {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    npi: "1234567890",
-                    feedback: { rating, categories: selectedTopics, other_text: otherText.trim() || null, nps_score: nps, comment }
-                  })
-                });
-                if (!res.ok) throw new Error(`Server error ${res.status}`);
-              } catch (e) {
-                setSubmitError("Unable to submit feedback. Please try again.");
-                setSubmitting(false);
-                return;
-              }
-              setSubmitted(true);
-            }}>
-              {submitting ? "Submitting…" : "Submit Feedback"}
-            </button>
-            {!rating && !submitting && <p className="submit-hint">Please leave a star rating to submit.</p>}
-            {submitError && <p style={{fontSize:"12px",color:"#e05c5c",marginTop:"6px"}}>{submitError}</p>}
-          </div>
-        </div>
-      );
+  }, submitting ? "Submitting…" : "Submit Feedback"), !rating && !submitting && /*#__PURE__*/React.createElement("p", {
+    className: "submit-hint"
+  }, "Please leave a star rating to submit."), submitError && /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "12px",
+      color: "#e05c5c",
+      marginTop: "6px"
     }
+  }, submitError)));
+}
+function trackEvent(npi, eventType, eventData) {
+  fetch(`${API_BASE}/events`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      npi,
+      event_type: eventType,
+      event_data: eventData
+    })
+  }).catch(() => {});
+}
+const PRESCRIPTION_TABS = [{
+  id: "action-required",
+  label: "Action Required"
+}, {
+  id: "pending-patient",
+  label: "Pending Patient Actions"
+}, {
+  id: "in-process",
+  label: "Prescriptions in Process"
+}, {
+  id: "shipped",
+  label: "Successfully Shipped Prescriptions"
+}, {
+  id: "transferred",
+  label: "Transferred Prescriptions"
+}, {
+  id: "canceled",
+  label: "Canceled Prescriptions"
+}];
+function App() {
+  const [activeTab, setActiveTab] = useState("action-required");
+  const [viewMode, setViewMode] = useState("overview"); // "overview" | "manage-comms" | "feedback"
+  const [selectedMed, setSelectedMed] = useState("Tyrvaya®");
+  // Shared HCP Summary delivery pref — kept in sync between inline card and ManageCommsTab
+  const [hcpSummaryPref, setHcpSummaryPref] = useState({
+    fax: true,
+    wantEmail: false,
+    email: ""
+  });
+  // Live-updating timestamp
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  useEffect(() => {
+    const t = setInterval(() => setLastUpdated(new Date()), 60000);
+    return () => clearInterval(t);
+  }, []);
+  // Educational banner collapse
+  const [eduExpanded, setEduExpanded] = useState(true);
+  // Coming Soon banner dismiss
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+  // Enter phone modal
+  const [phoneModalPatient, setPhoneModalPatient] = useState(null);
+  // Track resolved action-required rows (optimistic UI)
+  const [resolvedPatients, setResolvedPatients] = useState(new Set());
+  const markResolved = name => setResolvedPatients(prev => new Set([...prev, name]));
 
-    function trackEvent(npi, eventType, eventData) {
-      fetch(`${API_BASE}/events`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ npi, event_type: eventType, event_data: eventData }),
-      }).catch(() => {});
+  // Scroll to a section and highlight its tab
+  const scrollToSection = id => {
+    const el = document.getElementById(`section-${id}`);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 110;
+      window.scrollTo({
+        top,
+        behavior: "smooth"
+      });
     }
-
-    const PRESCRIPTION_TABS = [
-      { id: "action-required",  label: "Action Required" },
-      { id: "pending-patient",  label: "Pending Patient Actions" },
-      { id: "in-process",       label: "Prescriptions in Process" },
-      { id: "shipped",          label: "Successfully Shipped Prescriptions" },
-      { id: "transferred",      label: "Transferred Prescriptions" },
-      { id: "canceled",         label: "Canceled Prescriptions" },
-    ];
-
-
-    function App() {
-      const [activeTab, setActiveTab] = useState("action-required");
-      const [viewMode, setViewMode] = useState("overview"); // "overview" | "manage-comms" | "feedback"
-      const [selectedMed, setSelectedMed] = useState("Tyrvaya®");
-      // Shared HCP Summary delivery pref — kept in sync between inline card and ManageCommsTab
-      const [hcpSummaryPref, setHcpSummaryPref] = useState({ fax: true, wantEmail: false, email: "" });
-      // Live-updating timestamp
-      const [lastUpdated, setLastUpdated] = useState(new Date());
-      useEffect(() => {
-        const t = setInterval(() => setLastUpdated(new Date()), 60000);
-        return () => clearInterval(t);
-      }, []);
-      // Educational banner collapse
-      const [eduExpanded, setEduExpanded] = useState(true);
-      // Coming Soon banner dismiss
-      const [bannerDismissed, setBannerDismissed] = useState(false);
-      // Enter phone modal
-      const [phoneModalPatient, setPhoneModalPatient] = useState(null);
-      // Track resolved action-required rows (optimistic UI)
-      const [resolvedPatients, setResolvedPatients] = useState(new Set());
-      const markResolved = (name) => setResolvedPatients(prev => new Set([...prev, name]));
-
-      // Scroll to a section and highlight its tab
-      const scrollToSection = (id) => {
-        const el = document.getElementById(`section-${id}`);
-        if (el) {
-          const top = el.getBoundingClientRect().top + window.scrollY - 110;
-          window.scrollTo({ top, behavior: "smooth" });
-        }
+    setActiveTab(id);
+  };
+  const handleTabClick = id => {
+    if (id === "manage-comms") {
+      setViewMode("manage-comms");
+      setActiveTab("manage-comms");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    } else if (id === "feedback") {
+      setViewMode("feedback");
+      setActiveTab("feedback");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    } else {
+      if (viewMode !== "overview") {
+        setViewMode("overview");
         setActiveTab(id);
-      };
+        // Wait for render then scroll
+        setTimeout(() => scrollToSection(id), 80);
+      } else {
+        scrollToSection(id);
+      }
+    }
+  };
 
-      const handleTabClick = (id) => {
-        if (id === "manage-comms") {
-          setViewMode("manage-comms"); setActiveTab("manage-comms");
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        } else if (id === "feedback") {
-          setViewMode("feedback"); setActiveTab("feedback");
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
-          if (viewMode !== "overview") {
-            setViewMode("overview");
-            setActiveTab(id);
-            // Wait for render then scroll
-            setTimeout(() => scrollToSection(id), 80);
-          } else {
-            scrollToSection(id);
-          }
+  // Update active tab based on scroll position
+  useEffect(() => {
+    if (viewMode !== "overview") return;
+    const onScroll = () => {
+      const offset = 130;
+      let current = PRESCRIPTION_TABS[0].id;
+      for (const t of PRESCRIPTION_TABS) {
+        const el = document.getElementById(`section-${t.id}`);
+        if (el && el.getBoundingClientRect().top <= offset) current = t.id;
+      }
+      setActiveTab(current);
+    };
+    window.addEventListener("scroll", onScroll, {
+      passive: true
+    });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [viewMode]);
+  const EXTRA_TABS = [{
+    id: "manage-comms",
+    label: "Manage Communications"
+  }, {
+    id: "feedback",
+    label: "Share Feedback"
+  }];
+  const rx = _RX[selectedMed];
+  const tabCounts = {
+    "action-required": rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length,
+    "pending-patient": rx.pendingPatient.length,
+    "in-process": rx.inProcess.length,
+    "shipped": rx.shipped.length,
+    "transferred": rx.transferred.length,
+    "canceled": rx.canceled.length
+  };
+  return /*#__PURE__*/React.createElement("div", null, phoneModalPatient && /*#__PURE__*/React.createElement(EnterPhoneModal, {
+    patient: phoneModalPatient,
+    onClose: () => setPhoneModalPatient(null),
+    onSubmitted: () => {
+      markResolved(phoneModalPatient.name);
+      setPhoneModalPatient(null);
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "sticky-chrome"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "header"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "header-logo"
+  }, "PHIL", /*#__PURE__*/React.createElement("span", null, "Rx")), /*#__PURE__*/React.createElement("div", {
+    className: "header-title"
+  }, "MD Dashboard")), /*#__PURE__*/React.createElement("div", {
+    className: "filter-bar"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "filter-label"
+  }, "Filter by Medication:"), /*#__PURE__*/React.createElement("select", {
+    className: "filter-select",
+    value: selectedMed,
+    onChange: e => {
+      setSelectedMed(e.target.value);
+      setEduExpanded(true);
+    }
+  }, /*#__PURE__*/React.createElement("optgroup", {
+    label: "Ophthalmology"
+  }, /*#__PURE__*/React.createElement("option", null, "YUVEZZI\u2122"), /*#__PURE__*/React.createElement("option", null, "CEQUA\xAE"), /*#__PURE__*/React.createElement("option", null, "IYUZEH\u2122"), /*#__PURE__*/React.createElement("option", null, "Tyrvaya\xAE"), /*#__PURE__*/React.createElement("option", null, "VEVYE\xAE"), /*#__PURE__*/React.createElement("option", null, "Verkazia\xAE"), /*#__PURE__*/React.createElement("option", null, "Flarex\xAE"), /*#__PURE__*/React.createElement("option", null, "Ilevro\xAE"), /*#__PURE__*/React.createElement("option", null, "Maxidex\xAE"), /*#__PURE__*/React.createElement("option", null, "Maxitrol\xAE"), /*#__PURE__*/React.createElement("option", null, "Natacyn\xAE"), /*#__PURE__*/React.createElement("option", null, "Nevanac\xAE"), /*#__PURE__*/React.createElement("option", null, "Tobradex ST\xAE"), /*#__PURE__*/React.createElement("option", null, "Vigamox\xAE"), /*#__PURE__*/React.createElement("option", null, "Zerviate\xAE")), /*#__PURE__*/React.createElement("optgroup", {
+    label: "Neurology \u2014 Parkinson's"
+  }, /*#__PURE__*/React.createElement("option", null, "RYTARY\xAE"), /*#__PURE__*/React.createElement("option", null, "CREXONT\xAE")), /*#__PURE__*/React.createElement("optgroup", {
+    label: "Psychiatry / CNS"
+  }, /*#__PURE__*/React.createElement("option", null, "Auvelity\xAE"), /*#__PURE__*/React.createElement("option", null, "APLENZIN\xAE"), /*#__PURE__*/React.createElement("option", null, "Qelbree\xAE"), /*#__PURE__*/React.createElement("option", null, "WELLBUTRIN XL\xAE")), /*#__PURE__*/React.createElement("optgroup", {
+    label: "Neurology \u2014 Migraine"
+  }, /*#__PURE__*/React.createElement("option", null, "TRUDHESA\u2122")), /*#__PURE__*/React.createElement("optgroup", {
+    label: "Women's Health"
+  }, /*#__PURE__*/React.createElement("option", null, "Addyi\xAE"), /*#__PURE__*/React.createElement("option", null, "Bonjesta\xAE"), /*#__PURE__*/React.createElement("option", null, "Osphena\xAE"), /*#__PURE__*/React.createElement("option", null, "Winlevi\xAE")), /*#__PURE__*/React.createElement("option", {
+    value: "All Medications"
+  }, "All Medications"))), MED_INFO[selectedMed] && (() => {
+    const m = MED_INFO[selectedMed];
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: "#f0f7f7",
+        borderBottom: "1px solid #c8e0de",
+        fontSize: "12px",
+        color: "#333"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: "8px 16px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        cursor: "pointer"
+      },
+      onClick: () => setEduExpanded(e => !e)
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        flexWrap: "wrap"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 700,
+        color: "#2d7070"
+      }
+    }, selectedMed), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "#777",
+        fontSize: "11px"
+      }
+    }, "(", m.generic, ")"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        background: "#d0eeeb",
+        color: "#2d7070",
+        borderRadius: "3px",
+        padding: "1px 7px",
+        fontSize: "11px",
+        fontWeight: 600
+      }
+    }, m.indication)), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "#3a8a84",
+        fontSize: "11px",
+        fontWeight: 600,
+        flexShrink: 0,
+        marginLeft: "12px"
+      }
+    }, eduExpanded ? "▲ Hide" : "▼ Drug Info")), eduExpanded && /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: "0 16px 10px",
+        display: "flex",
+        gap: "20px",
+        flexWrap: "wrap"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        minWidth: "240px"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 600,
+        color: "#2d7070"
+      }
+    }, "Effectiveness: "), m.effectiveness), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        minWidth: "200px",
+        color: "#555"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 600
+      }
+    }, "\uD83D\uDCA1 Tip: "), m.tip)));
+  })(), /*#__PURE__*/React.createElement("div", {
+    className: "tabs-wrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tabs"
+  }, PRESCRIPTION_TABS.map(t => {
+    const count = tabCounts[t.id];
+    return /*#__PURE__*/React.createElement("div", {
+      key: t.id,
+      className: `tab ${activeTab === t.id ? "active" : ""}`,
+      onClick: () => handleTabClick(t.id)
+    }, t.label, count > 0 && /*#__PURE__*/React.createElement("span", {
+      className: "tab-badge"
+    }, count));
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "tab-divider",
+    "aria-hidden": "true"
+  }), EXTRA_TABS.map(t => /*#__PURE__*/React.createElement("div", {
+    key: t.id,
+    className: `tab tab-utility ${activeTab === t.id ? "active" : ""}`,
+    onClick: () => handleTabClick(t.id)
+  }, t.label))))), /*#__PURE__*/React.createElement("div", {
+    className: "page"
+  }, viewMode === "overview" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "summary-meta",
+    style: {
+      marginBottom: "10px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      flexWrap: "wrap",
+      gap: "8px"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      marginBottom: "2px"
+    }
+  }, "Weekly Prescription Overview"), /*#__PURE__*/React.createElement("div", {
+    className: "meta"
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Dr. Dora Weinstein")), /*#__PURE__*/React.createElement("span", null, "Practice: Jacqueline Lindsey2"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#aaa"
+    }
+  }, "Updated: ", lastUpdated.toLocaleDateString('en-US', {
+    month: 'numeric',
+    day: 'numeric',
+    year: 'numeric'
+  }), " ", lastUpdated.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit'
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "stats-row",
+    style: {
+      display: "flex",
+      gap: "12px",
+      flexWrap: "wrap"
+    }
+  }, [{
+    label: "Need Action",
+    count: rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length,
+    color: "#e05c5c",
+    tab: "action-required"
+  }, {
+    label: "Pending",
+    count: rx.pendingPatient.length,
+    color: "#f5a623",
+    tab: "pending-patient"
+  }, {
+    label: "In Process",
+    count: rx.inProcess.length,
+    color: "#5b9bd5",
+    tab: "in-process"
+  }, {
+    label: "Shipped",
+    count: rx.shipped.length,
+    color: "#3a8a84",
+    tab: "shipped"
+  }].map(s => /*#__PURE__*/React.createElement("div", {
+    key: s.label,
+    onClick: () => scrollToSection(s.tab),
+    style: {
+      textAlign: "center",
+      minWidth: "60px",
+      cursor: "pointer",
+      padding: "4px 6px",
+      borderRadius: "6px",
+      transition: "background 0.15s"
+    },
+    onMouseEnter: e => e.currentTarget.style.background = "#f5f5f5",
+    onMouseLeave: e => e.currentTarget.style.background = "transparent"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "22px",
+      fontWeight: 700,
+      color: s.color,
+      lineHeight: 1
+    }
+  }, s.count), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "11px",
+      color: "#777",
+      marginTop: "2px"
+    }
+  }, s.label))))), /*#__PURE__*/React.createElement("hr", {
+    className: "summary-divider"
+  }), !bannerDismissed && /*#__PURE__*/React.createElement("div", {
+    className: "info-banner",
+    style: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: "12px"
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "\u2726 COMING SOON: Take action on Rx Renewals in this view electronically. We'll continue to add new features and improvements here \u2014 check back for updates."), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setBannerDismissed(true),
+    style: {
+      background: "none",
+      border: "none",
+      color: "#3a8a84",
+      cursor: "pointer",
+      fontSize: "16px",
+      lineHeight: 1,
+      padding: "0",
+      flexShrink: 0
+    },
+    "aria-label": "Dismiss"
+  }, "\u2715"))), /*#__PURE__*/React.createElement(HcpSummaryDeliveryCard, {
+    pref: hcpSummaryPref,
+    onSave: setHcpSummaryPref
+  }), (() => {
+    const rx = _RX[selectedMed];
+    const medLabel = r => r.medOverride || (selectedMed !== "All Medications" ? selectedMed : rx.label);
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      id: "section-action-required",
+      className: "section"
+    }, /*#__PURE__*/React.createElement("h3", null, "Action Required. ", /*#__PURE__*/React.createElement("span", {
+      className: "section-subtitle"
+    }, "Resolve the items below to ensure the prescription is filled on time.")), (() => {
+      const visible = rx.actionRequired.filter(r => !resolvedPatients.has(r.name));
+      return visible.length === 0 ? /*#__PURE__*/React.createElement("p", {
+        className: "empty-text",
+        style: {
+          color: "#3a8a84"
         }
-      };
-
-      // Update active tab based on scroll position
-      useEffect(() => {
-        if (viewMode !== "overview") return;
-        const onScroll = () => {
-          const offset = 130;
-          let current = PRESCRIPTION_TABS[0].id;
-          for (const t of PRESCRIPTION_TABS) {
-            const el = document.getElementById(`section-${t.id}`);
-            if (el && el.getBoundingClientRect().top <= offset) current = t.id;
-          }
-          setActiveTab(current);
-        };
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-      }, [viewMode]);
-
-      const EXTRA_TABS = [
-        { id: "manage-comms", label: "Manage Communications" },
-        { id: "feedback",     label: "Share Feedback" },
-      ];
-
-      const rx = _RX[selectedMed];
-      const tabCounts = {
-        "action-required": rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length,
-        "pending-patient": rx.pendingPatient.length,
-        "in-process":      rx.inProcess.length,
-        "shipped":         rx.shipped.length,
-        "transferred":     rx.transferred.length,
-        "canceled":        rx.canceled.length,
-      };
-
-      return (
-        <div>
-          {phoneModalPatient && (
-            <EnterPhoneModal
-              patient={phoneModalPatient}
-              onClose={() => setPhoneModalPatient(null)}
-              onSubmitted={() => { markResolved(phoneModalPatient.name); setPhoneModalPatient(null); }}
-            />
-          )}
-          <div className="sticky-chrome">
-            <div className="header">
-              <div className="header-logo">PHIL<span>Rx</span></div>
-              <div className="header-title">MD Dashboard</div>
-            </div>
-            <div className="filter-bar">
-              <span className="filter-label">Filter by Medication:</span>
-              <select className="filter-select" value={selectedMed} onChange={e => { setSelectedMed(e.target.value); setEduExpanded(true); }}>
-                <optgroup label="Ophthalmology">
-                  <option>YUVEZZI™</option>
-                  <option>CEQUA®</option>
-                  <option>IYUZEH™</option>
-                  <option>Tyrvaya®</option>
-                  <option>VEVYE®</option>
-                  <option>Verkazia®</option>
-                  <option>Flarex®</option>
-                  <option>Ilevro®</option>
-                  <option>Maxidex®</option>
-                  <option>Maxitrol®</option>
-                  <option>Natacyn®</option>
-                  <option>Nevanac®</option>
-                  <option>Tobradex ST®</option>
-                  <option>Vigamox®</option>
-                  <option>Zerviate®</option>
-                </optgroup>
-                <optgroup label="Neurology — Parkinson's">
-                  <option>RYTARY®</option>
-                  <option>CREXONT®</option>
-                </optgroup>
-                <optgroup label="Psychiatry / CNS">
-                  <option>Auvelity®</option>
-                  <option>APLENZIN®</option>
-                  <option>Qelbree®</option>
-                  <option>WELLBUTRIN XL®</option>
-                </optgroup>
-                <optgroup label="Neurology — Migraine">
-                  <option>TRUDHESA™</option>
-                </optgroup>
-                <optgroup label="Women's Health">
-                  <option>Addyi®</option>
-                  <option>Bonjesta®</option>
-                  <option>Osphena®</option>
-                  <option>Winlevi®</option>
-                </optgroup>
-                <option value="All Medications">All Medications</option>
-              </select>
-            </div>
-            {MED_INFO[selectedMed] && (() => { const m = MED_INFO[selectedMed]; return (
-              <div style={{background:"#f0f7f7",borderBottom:"1px solid #c8e0de",fontSize:"12px",color:"#333"}}>
-                <div style={{padding:"8px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer"}} onClick={() => setEduExpanded(e => !e)}>
-                  <div style={{display:"flex",alignItems:"center",gap:"8px",flexWrap:"wrap"}}>
-                    <span style={{fontWeight:700,color:"#2d7070"}}>{selectedMed}</span>
-                    <span style={{color:"#777",fontSize:"11px"}}>({m.generic})</span>
-                    <span style={{background:"#d0eeeb",color:"#2d7070",borderRadius:"3px",padding:"1px 7px",fontSize:"11px",fontWeight:600}}>{m.indication}</span>
-                  </div>
-                  <span style={{color:"#3a8a84",fontSize:"11px",fontWeight:600,flexShrink:0,marginLeft:"12px"}}>{eduExpanded ? "▲ Hide" : "▼ Drug Info"}</span>
-                </div>
-                {eduExpanded && (
-                  <div style={{padding:"0 16px 10px",display:"flex",gap:"20px",flexWrap:"wrap"}}>
-                    <div style={{flex:1,minWidth:"240px"}}>
-                      <span style={{fontWeight:600,color:"#2d7070"}}>Effectiveness: </span>{m.effectiveness}
-                    </div>
-                    <div style={{flex:1,minWidth:"200px",color:"#555"}}>
-                      <span style={{fontWeight:600}}>💡 Tip: </span>{m.tip}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ); })()}
-            <div className="tabs-wrap">
-              <div className="tabs">
-                {PRESCRIPTION_TABS.map(t => {
-                  const count = tabCounts[t.id];
-                  return (
-                    <div key={t.id} className={`tab ${activeTab === t.id ? "active" : ""}`} onClick={() => handleTabClick(t.id)}>
-                      {t.label}
-                      {count > 0 && <span className="tab-badge">{count}</span>}
-                    </div>
-                  );
-                })}
-                <div className="tab-divider" aria-hidden="true" />
-                {EXTRA_TABS.map(t => (
-                  <div key={t.id} className={`tab tab-utility ${activeTab === t.id ? "active" : ""}`} onClick={() => handleTabClick(t.id)}>
-                    {t.label}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="page">
-
-            {viewMode === "overview" && (<>
-              <div className="summary-meta" style={{marginBottom:"10px"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexWrap:"wrap",gap:"8px"}}>
-                  <div>
-                    <h2 style={{marginBottom:"2px"}}>Weekly Prescription Overview</h2>
-                    <div className="meta"><span><strong>Dr. Dora Weinstein</strong></span><span>Practice: Jacqueline Lindsey2</span><span style={{color:"#aaa"}}>Updated: {lastUpdated.toLocaleDateString('en-US', {month:'numeric',day:'numeric',year:'numeric'})} {lastUpdated.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'})}</span></div>
-                  </div>
-                  <div className="stats-row" style={{display:"flex",gap:"12px",flexWrap:"wrap"}}>
-                    {[
-                      { label: "Need Action", count: rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length, color: "#e05c5c", tab: "action-required" },
-                      { label: "Pending",     count: rx.pendingPatient.length,  color: "#f5a623", tab: "pending-patient" },
-                      { label: "In Process",  count: rx.inProcess.length,       color: "#5b9bd5", tab: "in-process" },
-                      { label: "Shipped",     count: rx.shipped.length,         color: "#3a8a84", tab: "shipped" },
-                    ].map(s => (
-                      <div key={s.label} onClick={() => scrollToSection(s.tab)}
-                        style={{textAlign:"center",minWidth:"60px",cursor:"pointer",padding:"4px 6px",borderRadius:"6px",transition:"background 0.15s"}}
-                        onMouseEnter={e => e.currentTarget.style.background="#f5f5f5"}
-                        onMouseLeave={e => e.currentTarget.style.background="transparent"}>
-                        <div style={{fontSize:"22px",fontWeight:700,color:s.color,lineHeight:1}}>{s.count}</div>
-                        <div style={{fontSize:"11px",color:"#777",marginTop:"2px"}}>{s.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <hr className="summary-divider" />
-                {!bannerDismissed && (
-                  <div className="info-banner" style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:"12px"}}>
-                    <span>✦ COMING SOON: Take action on Rx Renewals in this view electronically. We'll continue to add new features and improvements here — check back for updates.</span>
-                    <button onClick={() => setBannerDismissed(true)} style={{background:"none",border:"none",color:"#3a8a84",cursor:"pointer",fontSize:"16px",lineHeight:1,padding:"0",flexShrink:0}} aria-label="Dismiss">✕</button>
-                  </div>
-                )}
-              </div>
-
-              <HcpSummaryDeliveryCard pref={hcpSummaryPref} onSave={setHcpSummaryPref} />
-
-              {(() => {
-                const rx = _RX[selectedMed];
-                const medLabel = r => r.medOverride || (selectedMed !== "All Medications" ? selectedMed : rx.label);
-                return (<>
-                  <div id="section-action-required" className="section">
-                    <h3>Action Required. <span className="section-subtitle">Resolve the items below to ensure the prescription is filled on time.</span></h3>
-                    {(() => {
-                      const visible = rx.actionRequired.filter(r => !resolvedPatients.has(r.name));
-                      return visible.length === 0
-                        ? <p className="empty-text" style={{color:"#3a8a84"}}>✓ All items resolved. No further action needed.</p>
-                        : (
-                        <table className="rx-table">
-                          <thead><tr><th>Status</th><th>Patient Info</th><th>Medication</th><th>Action</th></tr></thead>
-                          <tbody>
-                            {visible.map((r, i) => (
-                              <tr key={i}>
-                                <td data-label="Status"><div className="status-badge">{r.status}</div><div className="pending-text">Pending: {r.pending}</div></td>
-                                <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                                <td data-label="Medication">{medLabel(r)}</td>
-                                <td data-label="Action"><button className="enter-btn" onClick={() => setPhoneModalPatient(r)}>Update Number</button></td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      );
-                    })()}
-                  </div>
-
-                  <div id="section-pending-patient" className="section">
-                    <h3>Pending Patient Actions</h3>
-                    <p style={{fontSize:"12px",color:"#3a8a84",marginBottom:"12px"}}>We recommend reaching out to the patient for additional information.</p>
-                    {rx.pendingPatient.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
-                      <table className="rx-table">
-                        <thead><tr><th>Reason</th><th>Patient Info</th><th>Medication</th><th>Additional Details</th></tr></thead>
-                        <tbody>
-                          {rx.pendingPatient.map((r, i) => (
-                            <tr key={i}>
-                              <td data-label="Reason"><div className="cell-title">{r.reason}</div></td>
-                              <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                              <td data-label="Medication">{medLabel(r)}</td>
-                              <td data-label="Details"><div className="cell-title">{r.detail}</div>{r.sub && <div className="cell-detail">{r.sub}</div>}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-                  <div id="section-in-process" className="section">
-                    <h3>Prescriptions in Process</h3>
-                    {rx.inProcess.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
-                      <table className="rx-table">
-                        <thead><tr><th>Patient Info</th><th>Medication</th><th>Status</th><th>Additional Details</th></tr></thead>
-                        <tbody>
-                          {rx.inProcess.map((r, i) => (
-                            <tr key={i}>
-                              <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                              <td data-label="Medication">{medLabel(r)}</td>
-                              <td data-label="Status"><div className="status-badge">{r.status}</div></td>
-                              <td data-label="Details"><div className="cell-detail">{r.detail}</div></td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-                  <div id="section-shipped" className="section">
-                    <h3>Successfully Shipped Prescriptions</h3>
-                    {rx.shipped.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
-                      <table className="rx-table">
-                        <thead><tr><th>Patient Info</th><th>Medication</th><th>Processing Details</th><th>Details</th></tr></thead>
-                        <tbody>
-                          {rx.shipped.map((r, i) => (
-                            <tr key={i}>
-                              <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                              <td data-label="Medication">{medLabel(r)}</td>
-                              <td data-label="Processing"><div className="cell-title">{r.payType}</div>{r.insurance && <div className="cell-detail">Insurance: {r.insurance}</div>}</td>
-                              <td data-label="Details"><div className="cell-title">{r.detail}</div></td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-                  <div id="section-transferred" className="section">
-                    <h3>Transferred Prescriptions</h3>
-                    {rx.transferred.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
-                      <table className="rx-table">
-                        <thead><tr><th>Patient Info</th><th>Medication</th><th>Additional Details</th></tr></thead>
-                        <tbody>
-                          {rx.transferred.map((r, i) => (
-                            <tr key={i}>
-                              <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                              <td data-label="Medication">{medLabel(r)}</td>
-                              <td data-label="Details">{r.note}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-
-                  <div id="section-canceled" className="section">
-                    <h3>Canceled Prescriptions</h3>
-                    {rx.canceled.length === 0 ? <p className="empty-text">No prescriptions to display.</p> : (
-                      <table className="rx-table">
-                        <thead><tr><th>Patient Info</th><th>Medication</th><th>Reason</th><th>Date</th></tr></thead>
-                        <tbody>
-                          {rx.canceled.map((r, i) => (
-                            <tr key={i}>
-                              <td data-label="Patient"><div className="patient-name">{r.name}</div><div className="patient-dob">DOB: {r.dob}</div></td>
-                              <td data-label="Medication">{medLabel(r)}</td>
-                              <td data-label="Reason">{r.reason}</td>
-                              <td data-label="Date">{r.date}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    )}
-                  </div>
-                </>);
-              })()}
-
-              <FeedbackCard />
-              <button className="print-btn" onClick={() => { trackEvent("1234567890", "print", { url: window.location.href }); window.print(); }}>Print</button>
-            </>)}
-
-            {viewMode === "manage-comms" && <ManageCommsTab hcpSummaryPref={hcpSummaryPref} onUpdateHcpSummaryPref={setHcpSummaryPref} />}
-            {viewMode === "feedback" && <div style={{maxWidth:"680px"}}><FeedbackCard /></div>}
-          </div>
-        </div>
-      );
+      }, "\u2713 All items resolved. No further action needed.") : /*#__PURE__*/React.createElement("table", {
+        className: "rx-table"
+      }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Status"), /*#__PURE__*/React.createElement("th", null, "Patient Info"), /*#__PURE__*/React.createElement("th", null, "Medication"), /*#__PURE__*/React.createElement("th", null, "Action"))), /*#__PURE__*/React.createElement("tbody", null, visible.map((r, i) => /*#__PURE__*/React.createElement("tr", {
+        key: i
+      }, /*#__PURE__*/React.createElement("td", {
+        "data-label": "Status"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "status-badge"
+      }, r.status), /*#__PURE__*/React.createElement("div", {
+        className: "pending-text"
+      }, "Pending: ", r.pending)), /*#__PURE__*/React.createElement("td", {
+        "data-label": "Patient"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "patient-name"
+      }, r.name), /*#__PURE__*/React.createElement("div", {
+        className: "patient-dob"
+      }, "DOB: ", r.dob)), /*#__PURE__*/React.createElement("td", {
+        "data-label": "Medication"
+      }, medLabel(r)), /*#__PURE__*/React.createElement("td", {
+        "data-label": "Action"
+      }, /*#__PURE__*/React.createElement("button", {
+        className: "enter-btn",
+        onClick: () => setPhoneModalPatient(r)
+      }, "Update Number"))))));
+    })()), /*#__PURE__*/React.createElement("div", {
+      id: "section-pending-patient",
+      className: "section"
+    }, /*#__PURE__*/React.createElement("h3", null, "Pending Patient Actions"), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "12px",
+        color: "#3a8a84",
+        marginBottom: "12px"
+      }
+    }, "We recommend reaching out to the patient for additional information."), rx.pendingPatient.length === 0 ? /*#__PURE__*/React.createElement("p", {
+      className: "empty-text"
+    }, "No prescriptions to display.") : /*#__PURE__*/React.createElement("table", {
+      className: "rx-table"
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Reason"), /*#__PURE__*/React.createElement("th", null, "Patient Info"), /*#__PURE__*/React.createElement("th", null, "Medication"), /*#__PURE__*/React.createElement("th", null, "Additional Details"))), /*#__PURE__*/React.createElement("tbody", null, rx.pendingPatient.map((r, i) => /*#__PURE__*/React.createElement("tr", {
+      key: i
+    }, /*#__PURE__*/React.createElement("td", {
+      "data-label": "Reason"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cell-title"
+    }, r.reason)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Patient"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "patient-name"
+    }, r.name), /*#__PURE__*/React.createElement("div", {
+      className: "patient-dob"
+    }, "DOB: ", r.dob)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Medication"
+    }, medLabel(r)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Details"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cell-title"
+    }, r.detail), r.sub && /*#__PURE__*/React.createElement("div", {
+      className: "cell-detail"
+    }, r.sub))))))), /*#__PURE__*/React.createElement("div", {
+      id: "section-in-process",
+      className: "section"
+    }, /*#__PURE__*/React.createElement("h3", null, "Prescriptions in Process"), rx.inProcess.length === 0 ? /*#__PURE__*/React.createElement("p", {
+      className: "empty-text"
+    }, "No prescriptions to display.") : /*#__PURE__*/React.createElement("table", {
+      className: "rx-table"
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Patient Info"), /*#__PURE__*/React.createElement("th", null, "Medication"), /*#__PURE__*/React.createElement("th", null, "Status"), /*#__PURE__*/React.createElement("th", null, "Additional Details"))), /*#__PURE__*/React.createElement("tbody", null, rx.inProcess.map((r, i) => /*#__PURE__*/React.createElement("tr", {
+      key: i
+    }, /*#__PURE__*/React.createElement("td", {
+      "data-label": "Patient"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "patient-name"
+    }, r.name), /*#__PURE__*/React.createElement("div", {
+      className: "patient-dob"
+    }, "DOB: ", r.dob)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Medication"
+    }, medLabel(r)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Status"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "status-badge"
+    }, r.status)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Details"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cell-detail"
+    }, r.detail))))))), /*#__PURE__*/React.createElement("div", {
+      id: "section-shipped",
+      className: "section"
+    }, /*#__PURE__*/React.createElement("h3", null, "Successfully Shipped Prescriptions"), rx.shipped.length === 0 ? /*#__PURE__*/React.createElement("p", {
+      className: "empty-text"
+    }, "No prescriptions to display.") : /*#__PURE__*/React.createElement("table", {
+      className: "rx-table"
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Patient Info"), /*#__PURE__*/React.createElement("th", null, "Medication"), /*#__PURE__*/React.createElement("th", null, "Processing Details"), /*#__PURE__*/React.createElement("th", null, "Details"))), /*#__PURE__*/React.createElement("tbody", null, rx.shipped.map((r, i) => /*#__PURE__*/React.createElement("tr", {
+      key: i
+    }, /*#__PURE__*/React.createElement("td", {
+      "data-label": "Patient"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "patient-name"
+    }, r.name), /*#__PURE__*/React.createElement("div", {
+      className: "patient-dob"
+    }, "DOB: ", r.dob)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Medication"
+    }, medLabel(r)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Processing"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cell-title"
+    }, r.payType), r.insurance && /*#__PURE__*/React.createElement("div", {
+      className: "cell-detail"
+    }, "Insurance: ", r.insurance)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Details"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cell-title"
+    }, r.detail))))))), /*#__PURE__*/React.createElement("div", {
+      id: "section-transferred",
+      className: "section"
+    }, /*#__PURE__*/React.createElement("h3", null, "Transferred Prescriptions"), rx.transferred.length === 0 ? /*#__PURE__*/React.createElement("p", {
+      className: "empty-text"
+    }, "No prescriptions to display.") : /*#__PURE__*/React.createElement("table", {
+      className: "rx-table"
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Patient Info"), /*#__PURE__*/React.createElement("th", null, "Medication"), /*#__PURE__*/React.createElement("th", null, "Additional Details"))), /*#__PURE__*/React.createElement("tbody", null, rx.transferred.map((r, i) => /*#__PURE__*/React.createElement("tr", {
+      key: i
+    }, /*#__PURE__*/React.createElement("td", {
+      "data-label": "Patient"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "patient-name"
+    }, r.name), /*#__PURE__*/React.createElement("div", {
+      className: "patient-dob"
+    }, "DOB: ", r.dob)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Medication"
+    }, medLabel(r)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Details"
+    }, r.note)))))), /*#__PURE__*/React.createElement("div", {
+      id: "section-canceled",
+      className: "section"
+    }, /*#__PURE__*/React.createElement("h3", null, "Canceled Prescriptions"), rx.canceled.length === 0 ? /*#__PURE__*/React.createElement("p", {
+      className: "empty-text"
+    }, "No prescriptions to display.") : /*#__PURE__*/React.createElement("table", {
+      className: "rx-table"
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "Patient Info"), /*#__PURE__*/React.createElement("th", null, "Medication"), /*#__PURE__*/React.createElement("th", null, "Reason"), /*#__PURE__*/React.createElement("th", null, "Date"))), /*#__PURE__*/React.createElement("tbody", null, rx.canceled.map((r, i) => /*#__PURE__*/React.createElement("tr", {
+      key: i
+    }, /*#__PURE__*/React.createElement("td", {
+      "data-label": "Patient"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "patient-name"
+    }, r.name), /*#__PURE__*/React.createElement("div", {
+      className: "patient-dob"
+    }, "DOB: ", r.dob)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Medication"
+    }, medLabel(r)), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Reason"
+    }, r.reason), /*#__PURE__*/React.createElement("td", {
+      "data-label": "Date"
+    }, r.date)))))));
+  })(), /*#__PURE__*/React.createElement(FeedbackCard, null), /*#__PURE__*/React.createElement("button", {
+    className: "print-btn",
+    onClick: () => {
+      trackEvent("1234567890", "print", {
+        url: window.location.href
+      });
+      window.print();
     }
-
-    // ── Access gate ────────────────────────────────────────────────────────
-    const ACCESS_CODE = "PHIL2026";
-    const SESSION_KEY = "hcp_demo_auth"; // localStorage so iframes on same origin inherit it
-
-    function AccessGate({ onUnlock }) {
-      const [code, setCode] = useState("");
-      const [error, setError] = useState(false);
-      const submit = () => {
-        if (code.trim().toUpperCase() === ACCESS_CODE) {
-          localStorage.setItem(SESSION_KEY, "1");
-          onUnlock();
-        } else {
-          setError(true);
-          setCode("");
-        }
-      };
-      return (
-        <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#f0f0f0"}}>
-          <div style={{background:"white",borderRadius:"10px",padding:"40px 36px",width:"320px",boxShadow:"0 8px 32px rgba(0,0,0,0.12)",textAlign:"center"}}>
-            <div style={{fontSize:"28px",fontWeight:800,color:"#3a8a84",marginBottom:"4px"}}>PHIL<span style={{fontWeight:300}}>Rx</span></div>
-            <div style={{fontSize:"13px",color:"#777",marginBottom:"28px"}}>MD Dashboard · Demo Access</div>
-            <input
-              type="password"
-              placeholder="Enter access code"
-              value={code}
-              autoFocus
-              onChange={e => { setCode(e.target.value); setError(false); }}
-              onKeyDown={e => e.key === "Enter" && submit()}
-              style={{width:"100%",border:`1.5px solid ${error ? "#e05c5c" : "#d5d5d5"}`,borderRadius:"6px",padding:"10px 14px",fontSize:"14px",marginBottom:"8px",fontFamily:"inherit",outline:"none",background:error?"#fff5f5":"white"}}
-            />
-            {error && <p style={{fontSize:"12px",color:"#e05c5c",marginBottom:"8px"}}>Incorrect access code. Please try again.</p>}
-            <button onClick={submit} style={{width:"100%",background:"#3a8a84",color:"white",border:"none",borderRadius:"6px",padding:"11px",fontSize:"14px",fontWeight:600,cursor:"pointer"}}>
-              Access Demo
-            </button>
-            <p style={{fontSize:"11px",color:"#aaa",marginTop:"16px"}}>For authorized PHIL team members only.</p>
-          </div>
-        </div>
-      );
+  }, "Print")), viewMode === "manage-comms" && /*#__PURE__*/React.createElement(ManageCommsTab, {
+    hcpSummaryPref: hcpSummaryPref,
+    onUpdateHcpSummaryPref: setHcpSummaryPref
+  }), viewMode === "feedback" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: "680px"
     }
+  }, /*#__PURE__*/React.createElement(FeedbackCard, null))));
+}
 
-    // ── Device preview frame ────────────────────────────────────────────────
-    // URL param ?view=mobile|tablet wraps an iframe in a device bezel.
-    // The iframe is at 1:1 (no CSS scaling) so clicks and scroll work correctly.
-    // The outer dark page scrolls vertically if the device is taller than the screen.
-    function DeviceFrame({ children }) {
-      const params = new URLSearchParams(window.location.search);
-      const view = params.get("view");
-      if (!view) return children;
+// ── Access gate ────────────────────────────────────────────────────────
+const ACCESS_CODE = "PHIL2026";
+const SESSION_KEY = "hcp_demo_auth"; // localStorage so iframes on same origin inherit it
 
-      const frames = {
-        mobile: { w: 390, h: 844, label: "iPhone 14", radius: "44px", icon: "📱" },
-        tablet: { w: 768, h: 1024, label: "iPad",     radius: "20px", icon: "📲" },
-      };
-      const f = frames[view];
-      if (!f) return children;
-
-      const baseUrl = window.location.origin + window.location.pathname;
-
-      return (
-        <div style={{background:"#1a1a2e",minHeight:"100vh",padding:"24px 20px 40px",display:"flex",flexDirection:"column",alignItems:"center",gap:"16px"}}>
-          {/* Nav bar */}
-          <div style={{display:"flex",gap:"20px",alignItems:"center",flexShrink:0,flexWrap:"wrap",justifyContent:"center"}}>
-            <span style={{color:"white",fontWeight:700,fontSize:"14px"}}>{f.icon} {f.label}</span>
-            <a href={baseUrl} style={{color:"#888",textDecoration:"none",fontSize:"13px",border:"1px solid #444",borderRadius:"4px",padding:"4px 10px"}}>🖥 Desktop</a>
-            {view !== "mobile" && <a href={`${baseUrl}?view=mobile`} style={{color:"#888",textDecoration:"none",fontSize:"13px",border:"1px solid #444",borderRadius:"4px",padding:"4px 10px"}}>📱 Mobile</a>}
-            {view !== "tablet" && <a href={`${baseUrl}?view=tablet`} style={{color:"#888",textDecoration:"none",fontSize:"13px",border:"1px solid #444",borderRadius:"4px",padding:"4px 10px"}}>📲 Tablet</a>}
-          </div>
-          {/* Device bezel — iframe at native resolution, no scaling */}
-          <div style={{
-            width: f.w + 24,
-            border: "12px solid #2a2a2a",
-            borderRadius: f.radius,
-            boxShadow: "0 0 0 2px #444, 0 28px 72px rgba(0,0,0,0.75)",
-            overflow: "hidden",
-            background: "#000",
-            flexShrink: 0,
-          }}>
-            <iframe
-              src={baseUrl}
-              width={f.w}
-              height={f.h}
-              style={{display:"block",border:"none"}}
-              title={`${f.label} Preview`}
-            />
-          </div>
-        </div>
-      );
+function AccessGate({
+  onUnlock
+}) {
+  const [code, setCode] = useState("");
+  const [error, setError] = useState(false);
+  const submit = () => {
+    if (code.trim().toUpperCase() === ACCESS_CODE) {
+      localStorage.setItem(SESSION_KEY, "1");
+      onUnlock();
+    } else {
+      setError(true);
+      setCode("");
     }
-
-    function Root() {
-      return <DeviceFrame><App /></DeviceFrame>;
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "#f0f0f0"
     }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "white",
+      borderRadius: "10px",
+      padding: "40px 36px",
+      width: "320px",
+      boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "28px",
+      fontWeight: 800,
+      color: "#3a8a84",
+      marginBottom: "4px"
+    }
+  }, "PHIL", /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: 300
+    }
+  }, "Rx")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "13px",
+      color: "#777",
+      marginBottom: "28px"
+    }
+  }, "MD Dashboard \xB7 Demo Access"), /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    placeholder: "Enter access code",
+    value: code,
+    autoFocus: true,
+    onChange: e => {
+      setCode(e.target.value);
+      setError(false);
+    },
+    onKeyDown: e => e.key === "Enter" && submit(),
+    style: {
+      width: "100%",
+      border: `1.5px solid ${error ? "#e05c5c" : "#d5d5d5"}`,
+      borderRadius: "6px",
+      padding: "10px 14px",
+      fontSize: "14px",
+      marginBottom: "8px",
+      fontFamily: "inherit",
+      outline: "none",
+      background: error ? "#fff5f5" : "white"
+    }
+  }), error && /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "12px",
+      color: "#e05c5c",
+      marginBottom: "8px"
+    }
+  }, "Incorrect access code. Please try again."), /*#__PURE__*/React.createElement("button", {
+    onClick: submit,
+    style: {
+      width: "100%",
+      background: "#3a8a84",
+      color: "white",
+      border: "none",
+      borderRadius: "6px",
+      padding: "11px",
+      fontSize: "14px",
+      fontWeight: 600,
+      cursor: "pointer"
+    }
+  }, "Access Demo"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "11px",
+      color: "#aaa",
+      marginTop: "16px"
+    }
+  }, "For authorized PHIL team members only.")));
+}
 
-    ReactDOM.createRoot(document.getElementById("root")).render(<Root />);
+// ── Device preview frame ────────────────────────────────────────────────
+// URL param ?view=mobile|tablet wraps an iframe in a device bezel.
+// The iframe is at 1:1 (no CSS scaling) so clicks and scroll work correctly.
+// The outer dark page scrolls vertically if the device is taller than the screen.
+function DeviceFrame({
+  children
+}) {
+  const params = new URLSearchParams(window.location.search);
+  const view = params.get("view");
+  if (!view) return children;
+  const frames = {
+    mobile: {
+      w: 390,
+      h: 844,
+      label: "iPhone 14",
+      radius: "44px",
+      icon: "📱"
+    },
+    tablet: {
+      w: 768,
+      h: 1024,
+      label: "iPad",
+      radius: "20px",
+      icon: "📲"
+    }
+  };
+  const f = frames[view];
+  if (!f) return children;
+  const baseUrl = window.location.origin + window.location.pathname;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#1a1a2e",
+      minHeight: "100vh",
+      padding: "24px 20px 40px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "16px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "20px",
+      alignItems: "center",
+      flexShrink: 0,
+      flexWrap: "wrap",
+      justifyContent: "center"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "white",
+      fontWeight: 700,
+      fontSize: "14px"
+    }
+  }, f.icon, " ", f.label), /*#__PURE__*/React.createElement("a", {
+    href: baseUrl,
+    style: {
+      color: "#888",
+      textDecoration: "none",
+      fontSize: "13px",
+      border: "1px solid #444",
+      borderRadius: "4px",
+      padding: "4px 10px"
+    }
+  }, "\uD83D\uDDA5 Desktop"), view !== "mobile" && /*#__PURE__*/React.createElement("a", {
+    href: `${baseUrl}?view=mobile`,
+    style: {
+      color: "#888",
+      textDecoration: "none",
+      fontSize: "13px",
+      border: "1px solid #444",
+      borderRadius: "4px",
+      padding: "4px 10px"
+    }
+  }, "\uD83D\uDCF1 Mobile"), view !== "tablet" && /*#__PURE__*/React.createElement("a", {
+    href: `${baseUrl}?view=tablet`,
+    style: {
+      color: "#888",
+      textDecoration: "none",
+      fontSize: "13px",
+      border: "1px solid #444",
+      borderRadius: "4px",
+      padding: "4px 10px"
+    }
+  }, "\uD83D\uDCF2 Tablet")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: f.w + 24,
+      border: "12px solid #2a2a2a",
+      borderRadius: f.radius,
+      boxShadow: "0 0 0 2px #444, 0 28px 72px rgba(0,0,0,0.75)",
+      overflow: "hidden",
+      background: "#000",
+      flexShrink: 0
+    }
+  }, /*#__PURE__*/React.createElement("iframe", {
+    src: baseUrl,
+    width: f.w,
+    height: f.h,
+    style: {
+      display: "block",
+      border: "none"
+    },
+    title: `${f.label} Preview`
+  })));
+}
+function Root() {
+  return /*#__PURE__*/React.createElement(DeviceFrame, null, /*#__PURE__*/React.createElement(App, null));
+}
+ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(Root, null));
+
   </script>
 </body>
 </html>
