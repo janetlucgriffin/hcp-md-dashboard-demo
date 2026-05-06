@@ -28,6 +28,10 @@
     .tab { padding: 12px 14px; font-size: 13px; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; color: #666; display: flex; align-items: center; gap: 6px; }
     .tab:hover { color: #3a8a84; }
     .tab.active { color: #3a8a84; border-bottom-color: #3a8a84; font-weight: 500; }
+    .tab-badge { background: #e05c5c; color: white; border-radius: 10px; padding: 1px 6px; font-size: 11px; font-weight: 700; line-height: 1.4; }
+    .tab-divider { width: 1px; background: #e0e0e0; margin: 8px 6px; align-self: stretch; flex-shrink: 0; }
+    .tab.tab-utility { color: #666; font-size: 12px; border-left: none; }
+    .tab.tab-utility.active { color: #3a8a84; border-bottom-color: #3a8a84; }
 
     /* Page content */
     .page { max-width: 900px; margin: 0 auto; padding: 20px 16px 40px; }
@@ -660,6 +664,16 @@
       }, []);
 
       const rx = _RX[selectedMed];
+      const tabCounts = {
+        "action-required": rx.actionRequired.filter(r => !resolvedPatients.has(r.name)).length,
+        "pending-patient": rx.pendingPatient.length,
+        "in-process":      rx.inProcess.length,
+        "shipped":         rx.shipped.length,
+        "transferred":     rx.transferred.length,
+        "canceled":        rx.canceled.length,
+      };
+
+      const EXTRA_TABS = [];
 
       return (
         <div>
@@ -741,8 +755,18 @@
             ); })()}
             <div className="tabs-wrap">
               <div className="tabs">
-                {PRESCRIPTION_TABS.map(t => (
-                  <div key={t.id} className={`tab ${activeTab === t.id ? "active" : ""}`} onClick={() => handleTabClick(t.id)}>
+                {PRESCRIPTION_TABS.map(t => {
+                  const count = tabCounts[t.id];
+                  return (
+                    <div key={t.id} className={`tab ${activeTab === t.id ? "active" : ""}`} onClick={() => handleTabClick(t.id)}>
+                      {t.label}
+                      {count > 0 && <span className="tab-badge">{count}</span>}
+                    </div>
+                  );
+                })}
+                {EXTRA_TABS.length > 0 && <div className="tab-divider" aria-hidden="true" />}
+                {EXTRA_TABS.map(t => (
+                  <div key={t.id} className={`tab tab-utility ${activeTab === t.id ? "active" : ""}`} onClick={() => handleTabClick(t.id)}>
                     {t.label}
                   </div>
                 ))}
