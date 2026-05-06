@@ -280,6 +280,171 @@
       "Enrollment Process", "Other"
     ];
 
+    const MED_INFO = {
+      // ── Ophthalmology ──────────────────────────────────────────────────────
+      "YUVEZZI™": {
+        generic: "carbachol and brimonidine tartrate ophthalmic solution 2.75% / 0.1%",
+        indication: "Pharmacologically Induced Mydriasis Reversal",
+        effectiveness: "Clinical studies demonstrated rapid pupil constriction to near-normal diameter within 1 hour of pharmacologic dilation. Reduces patient discomfort and light sensitivity post-procedure.",
+        tip: "Instill two drops in each dilated eye immediately following the ophthalmic procedure. Effect onset typically within 30 minutes — counsel patients to avoid driving until vision normalizes.",
+      },
+      "CEQUA®": {
+        generic: "cyclosporine ophthalmic solution 0.09%",
+        indication: "Dry Eye Disease (DED)",
+        effectiveness: "Nanomicellar technology enhances corneal bioavailability. Pivotal trials showed significant improvement in total corneal fluorescein staining (TCFS) vs vehicle at 3 months.",
+        tip: "Instill one drop in each eye twice daily (approximately 12 hours apart). Patients may use artificial tears — allow at least 15 minutes between drops. Improvement may take 3–6 months.",
+      },
+      "IYUZEH™": {
+        generic: "latanoprost ophthalmic solution 0.005%",
+        indication: "Elevated Intraocular Pressure (IOP) — Ocular Hypertension / Open-Angle Glaucoma",
+        effectiveness: "Preservative-free formulation reduces IOP by approximately 25–32% from baseline. Single-use vials minimize preservative-related ocular surface toxicity in long-term use.",
+        tip: "Administer one drop in the affected eye(s) once daily in the evening. Preservative-free single-use vials — discard each unit dose immediately after use. May gradually darken iris pigmentation with long-term use.",
+      },
+      "Tyrvaya®": {
+        generic: "varenicline solution nasal spray 0.03 mg",
+        indication: "Dry Eye Disease (DED)",
+        effectiveness: "Clinical studies show meaningful improvement in tear production (Schirmer score) as early as 4 weeks, with the greatest benefit observed after 12 weeks of consistent twice-daily use.",
+        tip: "Encourage patients to use both nasal sprays as directed — consistent daily use is key to achieving full therapeutic benefit.",
+      },
+      "VEVYE®": {
+        generic: "cyclosporine ophthalmic solution 0.1%",
+        indication: "Dry Eye Disease (DED)",
+        effectiveness: "Highest concentration cyclosporine ophthalmic solution available. Pivotal ESSENCE trials demonstrated significant improvement in corneal and conjunctival staining and Schirmer scores vs vehicle.",
+        tip: "Instill one drop in each eye four times daily. Preservative-free formulation — suitable for patients with preservative sensitivity. Full effect may require up to 6 months of consistent use.",
+      },
+      "Verkazia®": {
+        generic: "cyclosporine ophthalmic emulsion 0.1%",
+        indication: "Vernal Keratoconjunctivitis (VKC)",
+        effectiveness: "Pivotal VEKTIS trial showed significant reduction in corneal and conjunctival inflammation scores (TOSS) vs vehicle at 4 months. Sustained long-term benefit in pediatric and adult patients.",
+        tip: "Instill one drop in each eye four times daily. Designed for chronic long-term management of VKC — do not discontinue abruptly during active inflammation. Shake well before use.",
+      },
+      "Flarex®": {
+        generic: "fluorometholone acetate ophthalmic suspension 0.1%",
+        indication: "Steroid-Responsive Inflammatory Ocular Conditions",
+        effectiveness: "Effective for anterior segment inflammation with a lower IOP-elevation risk profile compared to prednisolone acetate, due to reduced penetration into aqueous humor.",
+        tip: "Typical dosing: 1 drop 2–4 times daily. Shake well before use. Monitor IOP in patients using for more than 10 days — discontinue if significant IOP rise occurs.",
+      },
+      "Ilevro®": {
+        generic: "nepafenac ophthalmic suspension 0.3%",
+        indication: "Pain and Inflammation — Post-Cataract Surgery",
+        effectiveness: "Once-daily dosing demonstrated non-inferiority to nepafenac 0.1% TID for peri-operative pain and inflammation. Prodrug penetrates cornea and converts to amfenac in ocular tissues.",
+        tip: "Instill 1 drop once daily beginning 1 day prior to surgery, on the day of surgery, and through the first 14 days post-surgery. Shake well before use.",
+      },
+      "Maxidex®": {
+        generic: "dexamethasone ophthalmic suspension 0.1%",
+        indication: "Steroid-Responsive Inflammatory Ocular Conditions",
+        effectiveness: "Potent corticosteroid providing broad anti-inflammatory coverage for anterior and posterior segment conditions. Rapid symptom relief in inflammatory uveitis and post-operative cases.",
+        tip: "Dosing: 1–2 drops every 4–6 hours; taper gradually as inflammation resolves. Monitor IOP closely — dexamethasone carries higher IOP risk than fluorometholone. Shake well before use.",
+      },
+      "Maxitrol®": {
+        generic: "neomycin / polymyxin B sulfates / dexamethasone ophthalmic suspension",
+        indication: "Steroid-Responsive Inflammatory Ocular Conditions with Bacterial Infection Risk",
+        effectiveness: "Combination antibiotic/steroid addresses concurrent bacterial infection and inflammation. Effective against gram-positive and gram-negative organisms in the ocular surface.",
+        tip: "Not intended for long-term use. Monitor for secondary fungal or viral infections and IOP elevation. Instill 1–2 drops every 4–6 hours; reduce frequency as condition improves.",
+      },
+      "Natacyn®": {
+        generic: "natamycin ophthalmic suspension 5%",
+        indication: "Fungal Blepharitis, Conjunctivitis, and Keratitis",
+        effectiveness: "Only FDA-approved antifungal ophthalmic agent. Clinical evidence supports efficacy in Fusarium keratitis — most common cause of fungal corneal ulcer in contact lens wearers.",
+        tip: "Initial dosing: 1 drop every 1–2 hours for 3–4 days, then reduce to 6–8 times daily. Treatment typically 14–21 days. Shake well; suspension does not penetrate intact corneal epithelium well.",
+      },
+      "Nevanac®": {
+        generic: "nepafenac ophthalmic suspension 0.1%",
+        indication: "Pain and Inflammation — Post-Cataract Surgery",
+        effectiveness: "Three-times-daily NSAID for peri-operative pain and inflammation control. Prodrug mechanism provides targeted intraocular activity with minimal systemic absorption.",
+        tip: "Instill 1 drop three times daily beginning 1 day before surgery through 14 days post-surgery. Shake well before use. May be used in combination with a steroid per surgeon preference.",
+      },
+      "Tobradex ST®": {
+        generic: "tobramycin 0.3% / dexamethasone 0.05% ophthalmic suspension",
+        indication: "Steroid-Responsive Inflammatory Ocular Conditions with Bacterial Infection",
+        effectiveness: "Suspension Technology (ST) formulation achieves equivalent anti-inflammatory efficacy to original Tobradex with 50% less dexamethasone, potentially reducing IOP risk.",
+        tip: "Instill 1 drop 4 times daily; taper dexamethasone exposure by shortening treatment duration when possible. Monitor IOP. Shake well before use.",
+      },
+      "Vigamox®": {
+        generic: "moxifloxacin ophthalmic solution 0.5%",
+        indication: "Bacterial Conjunctivitis",
+        effectiveness: "Broad-spectrum 4th-generation fluoroquinolone. Clinical trials show bacterial eradication rates >85% at day 5; typically resolves symptoms within 3–5 days of treatment.",
+        tip: "Instill 1 drop in affected eye(s) three times daily for 7 days. Preservative-free formulation. Advise patients not to wear contact lenses while signs and symptoms are present.",
+      },
+      "Zerviate®": {
+        generic: "cetirizine ophthalmic solution 0.24%",
+        indication: "Ocular Itching Associated with Allergic Conjunctivitis",
+        effectiveness: "Significant reduction in ocular itch scores vs vehicle within 3 minutes in conjunctival allergen challenge (CAC) studies. Dual H1-antihistamine and mast cell stabilizing effect.",
+        tip: "Instill 1 drop in affected eye(s) twice daily. Approved for patients 2 years and older. Advise patients to remove contact lenses before instillation; may reinsert 10 minutes after dosing.",
+      },
+      // ── Neurology — Parkinson's ────────────────────────────────────────────
+      "RYTARY®": {
+        generic: "carbidopa and levodopa extended-release capsules",
+        indication: "Parkinson's Disease · Post-Encephalitic Parkinsonism",
+        effectiveness: "Extended-release formulation provides more continuous levodopa plasma concentrations, reducing OFF time and motor fluctuations compared to immediate-release carbidopa-levodopa.",
+        tip: "Capsules may be opened and contents sprinkled on applesauce. Do not substitute on a mg-per-mg basis with IR formulations — conversion ratios apply. Titrate dose based on clinical response.",
+      },
+      "CREXONT®": {
+        generic: "carbidopa and levodopa extended-release capsules",
+        indication: "Parkinson's Disease",
+        effectiveness: "Novel multilayer bead technology delivers biphasic levodopa release (rapid onset + sustained duration), targeting both OFF time reduction and peak-dose dyskinesia minimization.",
+        tip: "Do not substitute for other carbidopa-levodopa formulations on a mg-per-mg basis — initiation and titration protocols differ. Capsules may be opened; do not crush beads.",
+      },
+      // ── Psychiatry / CNS ───────────────────────────────────────────────────
+      "Auvelity®": {
+        generic: "dextromethorphan HBr 45 mg / bupropion HCl 105 mg tablet",
+        indication: "Major Depressive Disorder (MDD)",
+        effectiveness: "Rapid onset demonstrated in trials — statistically significant improvement in MADRS scores as early as week 1, with continued improvement through week 6.",
+        tip: "Start with one tablet daily for the first 3 days, then titrate to one tablet twice daily to minimize side effects such as dizziness and nausea.",
+      },
+      "APLENZIN®": {
+        generic: "bupropion hydrobromide extended-release tablets",
+        indication: "Major Depressive Disorder (MDD)",
+        effectiveness: "174 mg bupropion HBr is bioequivalent to 150 mg bupropion HCl. Once-daily dosing supports adherence; antidepressant response typically observed at 4 weeks.",
+        tip: "Do not crush or chew. Titrate to 348 mg/day after 4 weeks if needed. Lowers seizure threshold — avoid abrupt discontinuation and use with caution in patients with eating disorders.",
+      },
+      "Qelbree®": {
+        generic: "viloxazine extended-release capsules",
+        indication: "Attention-Deficit/Hyperactivity Disorder (ADHD) — Ages 6 and Older",
+        effectiveness: "Phase 3 trials showed statistically significant reduction in ADHD-RS-5 total scores vs placebo. Non-stimulant SNRI mechanism — no DEA scheduling, no abuse potential concerns.",
+        tip: "May be opened and contents sprinkled on a teaspoon of applesauce; do not crush. Take at the same time each day with or without food. Titrate based on response and tolerability.",
+      },
+      "WELLBUTRIN XL®": {
+        generic: "bupropion hydrochloride extended-release tablets",
+        indication: "Major Depressive Disorder (MDD) · Seasonal Affective Disorder (SAD)",
+        effectiveness: "Once-daily formulation with proven antidepressant efficacy; approximately 44% of patients achieve remission at 6 months. Favorable weight-neutral and sexual side-effect profile.",
+        tip: "Administer once daily in the morning to minimize insomnia. Titrate from 150 mg to 300 mg after at least 3 days. Do not exceed 450 mg/day. Do not crush or chew tablets.",
+      },
+      // ── Neurology — Migraine ───────────────────────────────────────────────
+      "TRUDHESA™": {
+        generic: "dihydroergotamine mesylate nasal spray",
+        indication: "Acute Treatment of Migraine With or Without Aura in Adults",
+        effectiveness: "Precision Olfactory Delivery (POD) technology achieves rapid, high plasma DHE levels via upper nasal mucosa. Comparable efficacy to subcutaneous sumatriptan with improved tolerability profile.",
+        tip: "One spray (0.725 mg) in each nostril; may repeat after 1 hour for a maximum of 4 sprays (2.9 mg) per attack. Do not use within 24 hours of triptans or other ergotamines.",
+      },
+      // ── Women's Health ─────────────────────────────────────────────────────
+      "Addyi®": {
+        generic: "flibanserin 100 mg tablet",
+        indication: "Hypoactive Sexual Desire Disorder (HSDD)",
+        effectiveness: "Improvement in satisfying sexual events (SSEs) and sexual desire typically observed at 4–8 weeks. Reassess at 8 weeks — if no meaningful benefit, discontinuation is recommended.",
+        tip: "Must be taken at bedtime to reduce risk of hypotension and syncope. Counsel patients to avoid alcohol throughout treatment.",
+      },
+      "Bonjesta®": {
+        generic: "doxylamine succinate 20 mg / pyridoxine hydrochloride 20 mg extended-release tablets",
+        indication: "Nausea and Vomiting of Pregnancy (NVP)",
+        effectiveness: "Only FDA-approved prescription treatment for NVP. Clinical trials demonstrated significant reduction in Pregnancy-Unique Quantification of Emesis (PUQE) scores vs placebo.",
+        tip: "Begin with 2 tablets at bedtime on day 1. If symptoms persist on day 3, add 1 tablet in the morning; by day 4 also add 1 tablet at midday. Take on an empty stomach with a glass of water.",
+      },
+      "Osphena®": {
+        generic: "ospemifene 60 mg tablets",
+        indication: "Dyspareunia and Dysuria Due to Vulvar & Vaginal Atrophy (VVA) of Menopause",
+        effectiveness: "SMART-1 trial demonstrated significant improvement in most bothersome symptom (MBS) severity and vaginal maturation index vs placebo. SERM mechanism avoids systemic estrogen exposure.",
+        tip: "Take with food to maximize absorption (2.7× higher Cmax with a meal). Does not require concomitant progestogen in women without a uterus. Screen for SERM contraindications before prescribing.",
+      },
+      "Winlevi®": {
+        generic: "clascoterone cream 1%",
+        indication: "Acne Vulgaris — Ages 12 and Older",
+        effectiveness: "First-in-class topical androgen receptor inhibitor. Phase 3 trials showed significant reduction in both inflammatory and non-inflammatory lesion counts vs vehicle at 12 weeks.",
+        tip: "Apply a thin layer twice daily to affected areas. Avoid eyes, lips, and mucous membranes. Unique mechanism targets sebaceous gland androgen receptors — suitable for combination regimens.",
+      },
+      "All Medications": null,
+    };
+
     const API_BASE = "https://gdex4sbesg.execute-api.us-east-1.amazonaws.com";
 
     const COMM_CATEGORIES = [
@@ -289,6 +454,216 @@
       { key: "scripts", label: "Scripts Communications", desc: "Enter the email or fax number(s) where this practice should receive script communications (e.g. Missing SIG, script clarifications)." },
       { key: "hcp_summary", label: "HCP Summary Communications", desc: "Enter the email or fax number(s) where this practice should receive summary communications (e.g. HCP Summary Fax)." },
     ];
+
+    const _RX = {
+      "Tyrvaya®": {
+        label: "Tyrvaya® (varenicline solution) nasal spray 0.03 MG Nasal Spray",
+        actionRequired: [
+          { name: "Ellis, Maria",    dob: "05/19/1973", pending: "30 days ago", status: "Incorrect Number" },
+          { name: "Flores, Evelyn",  dob: "03/16/1979", pending: "30 days ago", status: "Incorrect Number" },
+          { name: "Moreno, Frank",   dob: "09/17/1980", pending: "29 days ago", status: "Incorrect Number" },
+          { name: "Ellis, Susan",    dob: "02/06/1982", pending: "28 days ago", status: "Incorrect Number" },
+          { name: "Simmons, Joyce",  dob: "03/02/1972", pending: "28 days ago", status: "Incorrect Number" },
+        ],
+        pendingPatient: [
+          { reason: "Patient Has Not Enrolled", name: "Palmer, Robin",    dob: "04/17/1968", detail: "Date Prescribed: 03/30/2026", sub: "(27 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Mendoza, Joe",     dob: "04/26/1976", detail: "Date Prescribed: 03/30/2026", sub: "(27 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Cook, Margaret",   dob: "08/05/1948", detail: "Date Prescribed: 03/30/2026", sub: "(27 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Day, Denise",      dob: "04/28/1981", detail: "Date Prescribed: 04/20/2026", sub: "(7 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Medina, Charles",  dob: "11/03/1969", detail: "Date Prescribed: 04/22/2026", sub: "(6 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Flores, Jack",     dob: "10/24/1977", detail: "Date Prescribed: 04/22/2026", sub: "(6 days ago)" },
+          { reason: "Missing Payment Type",     name: "Gibson, Diane",    dob: "06/14/1970", detail: "30 days, $89", sub: "Patient saved $6" },
+          { reason: "Missing Payment Type",     name: "Hall, Sandra",     dob: "10/25/1980", detail: "30 days, $10", sub: "Patient saved $0" },
+        ],
+        inProcess: [],
+        shipped: [
+          { name: "Fox, Billy",       dob: "03/07/1981", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
+          { name: "Reed, Mildred",    dob: "11/28/1979", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
+          { name: "Moreno, Joyce",    dob: "09/14/1968", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
+          { name: "Howard, David",    dob: "07/26/1978", payType: "Insurance + Coupon", insurance: "Caremark", detail: "30 days, $0" },
+        ],
+        transferred: [
+          { name: "Wagner, Joseph",   dob: "01/13/1977", note: "Due to patient request, the prescription will be transferred for fulfillment to another pharmacy." },
+        ],
+        canceled: [],
+      },
+      "Addyi®": {
+        label: "Addyi® (flibanserin) 100 MG Tablet",
+        actionRequired: [
+          { name: "Torres, Linda",    dob: "07/22/1975", pending: "25 days ago", status: "Incorrect Number" },
+          { name: "Rivera, Angela",   dob: "05/30/1970", pending: "14 days ago", status: "Incorrect Number" },
+        ],
+        pendingPatient: [
+          { reason: "Patient Has Not Enrolled", name: "Bennett, Carol",   dob: "02/11/1979", detail: "Date Prescribed: 04/01/2026", sub: "(25 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Ward, Nancy",      dob: "09/03/1985", detail: "Date Prescribed: 04/08/2026", sub: "(18 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Ramirez, Lisa",    dob: "06/29/1978", detail: "Date Prescribed: 04/15/2026", sub: "(11 days ago)" },
+          { reason: "Missing Payment Type",     name: "Collins, Barbara", dob: "12/20/1967", detail: "30 days, $142", sub: "Patient saved $25" },
+          { reason: "Insurance Verification",   name: "Jenkins, Maria",   dob: "03/07/1980", detail: "Awaiting prior auth response", sub: "" },
+        ],
+        inProcess: [
+          { name: "Hernandez, Donna", dob: "08/18/1976", status: "Prior Auth Submitted", detail: "Submitted 04/24/2026 — awaiting insurer response" },
+          { name: "Carter, Helen",    dob: "01/25/1990", status: "Pharmacy Processing",  detail: "Expected ship date: 05/01/2026" },
+        ],
+        shipped: [
+          { name: "Scott, Alice",     dob: "04/09/1977", payType: "Insurance + Coupon", insurance: "Express Scripts", detail: "30 days, $10" },
+          { name: "Nelson, Ruth",     dob: "10/31/1982", payType: "Manufacturer Coupon", insurance: "", detail: "30 days, $35" },
+          { name: "Kelly, Dorothy",   dob: "06/16/1973", payType: "Insurance + Coupon", insurance: "CVS Caremark",   detail: "30 days, $0" },
+        ],
+        transferred: [],
+        canceled: [
+          { name: "Price, Sharon", dob: "02/27/1969", reason: "Patient requested cancellation", date: "04/18/2026" },
+        ],
+      },
+      "Auvelity®": {
+        label: "Auvelity® (dextromethorphan HBr/bupropion HCl) 45 mg/105 mg Tablet",
+        actionRequired: [
+          { name: "Cooper, Betty",    dob: "12/05/1965", pending: "10 days ago", status: "Incorrect Number" },
+        ],
+        pendingPatient: [
+          { reason: "Patient Has Not Enrolled", name: "Bailey, Cynthia",  dob: "03/19/1987", detail: "Date Prescribed: 04/05/2026", sub: "(21 days ago)" },
+          { reason: "Patient Has Not Enrolled", name: "Flores, Frances",  dob: "07/08/1972", detail: "Date Prescribed: 04/12/2026", sub: "(14 days ago)" },
+          { reason: "Missing Payment Type",     name: "James, Evelyn",    dob: "09/22/1980", detail: "30 days, $55", sub: "Patient saved $30" },
+          { reason: "Prior Auth Required",      name: "Stewart, Martha",  dob: "05/16/1975", detail: "PA initiated 04/20/2026", sub: "" },
+        ],
+        inProcess: [
+          { name: "Adams, Gloria",    dob: "11/30/1983", status: "Prior Auth Submitted", detail: "Submitted 04/22/2026 — response expected within 3 business days" },
+        ],
+        shipped: [
+          { name: "Baker, Patricia",  dob: "08/04/1971", payType: "Insurance + Coupon", insurance: "Anthem BCBS",    detail: "30 days, $15" },
+          { name: "Gonzalez, Sandra", dob: "02/13/1984", payType: "Insurance + Coupon", insurance: "UnitedHealth",   detail: "30 days, $0" },
+          { name: "Nelson, Donna",    dob: "06/27/1969", payType: "Manufacturer Coupon", insurance: "",              detail: "30 days, $50" },
+          { name: "Carter, Maria",    dob: "10/10/1979", payType: "Insurance + Coupon", insurance: "Cigna",          detail: "30 days, $0" },
+          { name: "Mitchell, Helen",  dob: "01/08/1993", payType: "Insurance Only",     insurance: "Aetna",          detail: "30 days, $20" },
+        ],
+        transferred: [
+          { name: "Perez, Kathleen",  dob: "04/21/1976", note: "Patient requested transfer to local specialty pharmacy." },
+        ],
+        canceled: [
+          { name: "Roberts, Helen",   dob: "07/03/1971", reason: "Prescriber voided prescription", date: "04/17/2026" },
+          { name: "Turner, Christine",dob: "11/19/1988", reason: "Patient no longer interested",    date: "04/23/2026" },
+        ],
+      },
+      // ── Additional PHIL Rx portfolio (live data populated by real API) ─────
+      "YUVEZZI™": {
+        label: "YUVEZZI™ (carbachol and brimonidine tartrate) 2.75%/0.1% Ophthalmic Solution",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "CEQUA®": {
+        label: "CEQUA® (cyclosporine) 0.09% Ophthalmic Solution",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "IYUZEH™": {
+        label: "IYUZEH™ (latanoprost) 0.005% Ophthalmic Solution",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "VEVYE®": {
+        label: "VEVYE® (cyclosporine) 0.1% Ophthalmic Solution",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Verkazia®": {
+        label: "Verkazia® (cyclosporine) 0.1% Ophthalmic Emulsion",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Flarex®": {
+        label: "Flarex® (fluorometholone acetate) 0.1% Ophthalmic Suspension",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Ilevro®": {
+        label: "Ilevro® (nepafenac) 0.3% Ophthalmic Suspension",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Maxidex®": {
+        label: "Maxidex® (dexamethasone) 0.1% Ophthalmic Suspension",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Maxitrol®": {
+        label: "Maxitrol® (neomycin / polymyxin B / dexamethasone) Ophthalmic Suspension",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Natacyn®": {
+        label: "Natacyn® (natamycin) 5% Ophthalmic Suspension",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Nevanac®": {
+        label: "Nevanac® (nepafenac) 0.1% Ophthalmic Suspension",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Tobradex ST®": {
+        label: "Tobradex ST® (tobramycin 0.3% / dexamethasone 0.05%) Ophthalmic Suspension",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Vigamox®": {
+        label: "Vigamox® (moxifloxacin) 0.5% Ophthalmic Solution",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Zerviate®": {
+        label: "Zerviate® (cetirizine) 0.24% Ophthalmic Solution",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "RYTARY®": {
+        label: "RYTARY® (carbidopa and levodopa) Extended-Release Capsules",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "CREXONT®": {
+        label: "CREXONT® (carbidopa and levodopa) Extended-Release Capsules",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "APLENZIN®": {
+        label: "APLENZIN® (bupropion hydrobromide) Extended-Release Tablets",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Qelbree®": {
+        label: "Qelbree® (viloxazine) Extended-Release Capsules",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "WELLBUTRIN XL®": {
+        label: "WELLBUTRIN XL® (bupropion hydrochloride) 300 mg Extended-Release Tablets",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "TRUDHESA™": {
+        label: "TRUDHESA™ (dihydroergotamine mesylate) Nasal Spray",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Bonjesta®": {
+        label: "Bonjesta® (doxylamine succinate / pyridoxine HCl) 20 mg/20 mg Extended-Release Tablets",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Osphena®": {
+        label: "Osphena® (ospemifene) 60 mg Tablets",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+      "Winlevi®": {
+        label: "Winlevi® (clascoterone) 1% Cream",
+        actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [],
+      },
+    };
+
+    // "All Medications" merges all active medications
+    const ALL_MEDS = [
+      // Ophthalmology
+      "YUVEZZI™","CEQUA®","IYUZEH™","Tyrvaya®","VEVYE®","Verkazia®",
+      "Flarex®","Ilevro®","Maxidex®","Maxitrol®","Natacyn®","Nevanac®",
+      "Tobradex ST®","Vigamox®","Zerviate®",
+      // Neurology — Parkinson's
+      "RYTARY®","CREXONT®",
+      // Psychiatry / CNS
+      "Auvelity®","APLENZIN®","Qelbree®","WELLBUTRIN XL®",
+      // Neurology — Migraine
+      "TRUDHESA™",
+      // Women's Health
+      "Addyi®","Bonjesta®","Osphena®","Winlevi®",
+    ];
+    _RX["All Medications"] = ALL_MEDS.reduce((acc, med) => {
+      const d = _RX[med];
+      const tag = r => ({ ...r, medOverride: d.label });
+      acc.actionRequired.push(...d.actionRequired.map(tag));
+      acc.pendingPatient.push(...d.pendingPatient.map(tag));
+      acc.inProcess.push(...d.inProcess.map(tag));
+      acc.shipped.push(...d.shipped.map(tag));
+      acc.transferred.push(...d.transferred.map(tag));
+      acc.canceled.push(...d.canceled.map(tag));
+      return acc;
+    }, { label: "", actionRequired: [], pendingPatient: [], inProcess: [], shipped: [], transferred: [], canceled: [] });
 
     const emptyMethods = () => [{ method: "fax", value: "" }];
 
@@ -1002,10 +1377,43 @@
             <div className="filter-bar">
               <span className="filter-label">Filter by Medication:</span>
               <select className="filter-select" value={selectedMed} onChange={e => { setSelectedMed(e.target.value); setEduExpanded(true); }}>
-                <option>Tyrvaya®</option>
-                <option>Addyi®</option>
-                <option>Auvelity®</option>
-                <option>All Medications</option>
+                <optgroup label="Ophthalmology">
+                  <option>YUVEZZI™</option>
+                  <option>CEQUA®</option>
+                  <option>IYUZEH™</option>
+                  <option>Tyrvaya®</option>
+                  <option>VEVYE®</option>
+                  <option>Verkazia®</option>
+                  <option>Flarex®</option>
+                  <option>Ilevro®</option>
+                  <option>Maxidex®</option>
+                  <option>Maxitrol®</option>
+                  <option>Natacyn®</option>
+                  <option>Nevanac®</option>
+                  <option>Tobradex ST®</option>
+                  <option>Vigamox®</option>
+                  <option>Zerviate®</option>
+                </optgroup>
+                <optgroup label="Neurology — Parkinson's">
+                  <option>RYTARY®</option>
+                  <option>CREXONT®</option>
+                </optgroup>
+                <optgroup label="Psychiatry / CNS">
+                  <option>Auvelity®</option>
+                  <option>APLENZIN®</option>
+                  <option>Qelbree®</option>
+                  <option>WELLBUTRIN XL®</option>
+                </optgroup>
+                <optgroup label="Neurology — Migraine">
+                  <option>TRUDHESA™</option>
+                </optgroup>
+                <optgroup label="Women's Health">
+                  <option>Addyi®</option>
+                  <option>Bonjesta®</option>
+                  <option>Osphena®</option>
+                  <option>Winlevi®</option>
+                </optgroup>
+                <option value="All Medications">All Medications</option>
               </select>
             </div>
             {MED_INFO[selectedMed] && (() => { const m = MED_INFO[selectedMed]; return (
