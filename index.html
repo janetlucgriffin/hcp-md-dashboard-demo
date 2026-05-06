@@ -152,6 +152,28 @@
 
     const API_BASE = "https://gdex4sbesg.execute-api.us-east-1.amazonaws.com";
 
+    const MED_INFO = {
+      "Tyrvaya®": {
+        generic: "varenicline solution nasal spray 0.03 mg",
+        indication: "Dry Eye Disease (DED)",
+        effectiveness: "Clinical studies show meaningful improvement in tear production (Schirmer score) as early as 4 weeks, with the greatest benefit observed after 12 weeks of consistent twice-daily use.",
+        tip: "Encourage patients to use both nasal sprays as directed — consistent daily use is key to achieving full therapeutic benefit.",
+      },
+      "Addyi®": {
+        generic: "flibanserin 100 mg tablet",
+        indication: "Hypoactive Sexual Desire Disorder (HSDD)",
+        effectiveness: "Improvement in satisfying sexual events (SSEs) and sexual desire typically observed at 4–8 weeks. Reassess at 8 weeks — if no meaningful benefit, discontinuation is recommended.",
+        tip: "Must be taken at bedtime to reduce risk of hypotension and syncope. Counsel patients to avoid alcohol throughout treatment.",
+      },
+      "Auvelity®": {
+        generic: "dextromethorphan HBr 45 mg / bupropion HCl 105 mg tablet",
+        indication: "Major Depressive Disorder (MDD)",
+        effectiveness: "Rapid onset demonstrated in trials — statistically significant improvement in MADRS scores as early as week 1, with continued improvement through week 6.",
+        tip: "Start with one tablet daily for the first 3 days, then titrate to one tablet twice daily to minimize side effects such as dizziness and nausea.",
+      },
+      "All Medications": null,
+    };
+
     function trackEvent(npi, eventType, eventData) {
       fetch(`${API_BASE}/events`, {
         method: "POST",
@@ -355,6 +377,7 @@
         const t = setInterval(() => setLastUpdated(new Date()), 60000);
         return () => clearInterval(t);
       }, []);
+      const [eduExpanded, setEduExpanded] = useState(true);
       const [phoneModalPatient, setPhoneModalPatient] = useState(null);
       const [resolvedPatients, setResolvedPatients] = useState(new Set());
       const markResolved = (name) => setResolvedPatients(prev => new Set([...prev, name]));
@@ -404,13 +427,35 @@
             </div>
             <div className="filter-bar">
               <span className="filter-label">Filter by Medication:</span>
-              <select className="filter-select" value={selectedMed} onChange={e => setSelectedMed(e.target.value)}>
+              <select className="filter-select" value={selectedMed} onChange={e => { setSelectedMed(e.target.value); setEduExpanded(true); }}>
                 <option>Tyrvaya®</option>
                 <option>Addyi®</option>
                 <option>Auvelity®</option>
                 <option>All Medications</option>
               </select>
             </div>
+            {MED_INFO[selectedMed] && (() => { const m = MED_INFO[selectedMed]; return (
+              <div style={{background:"#f0f7f7",borderBottom:"1px solid #c8e0de",fontSize:"12px",color:"#333"}}>
+                <div style={{padding:"8px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer"}} onClick={() => setEduExpanded(e => !e)}>
+                  <div style={{display:"flex",alignItems:"center",gap:"8px",flexWrap:"wrap"}}>
+                    <span style={{fontWeight:700,color:"#2d7070"}}>{selectedMed}</span>
+                    <span style={{color:"#777",fontSize:"11px"}}>({m.generic})</span>
+                    <span style={{background:"#d0eeeb",color:"#2d7070",borderRadius:"3px",padding:"1px 7px",fontSize:"11px",fontWeight:600}}>{m.indication}</span>
+                  </div>
+                  <span style={{color:"#3a8a84",fontSize:"11px",fontWeight:600,flexShrink:0,marginLeft:"12px"}}>{eduExpanded ? "▲ Hide" : "▼ Drug Info"}</span>
+                </div>
+                {eduExpanded && (
+                  <div style={{padding:"0 16px 10px",display:"flex",gap:"20px",flexWrap:"wrap"}}>
+                    <div style={{flex:1,minWidth:"240px"}}>
+                      <span style={{fontWeight:600,color:"#2d7070"}}>Effectiveness: </span>{m.effectiveness}
+                    </div>
+                    <div style={{flex:1,minWidth:"200px",color:"#555"}}>
+                      <span style={{fontWeight:600}}>💡 Tip: </span>{m.tip}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ); })()}
             <div className="tabs-wrap">
               <div className="tabs">
                 {PRESCRIPTION_TABS.map(t => (
