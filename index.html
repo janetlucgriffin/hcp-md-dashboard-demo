@@ -126,6 +126,37 @@
       .modal-box { width: 460px; }
     }
 
+    /* Comm prefs card */
+    .prefs-card { background: white; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 12px; overflow: hidden; }
+    .prefs-header { padding: 16px 24px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+    .prefs-header h3 { font-size: 14px; font-weight: 700; }
+    .prefs-header p { font-size: 12px; color: #777; margin-top: 2px; }
+    .prefs-body { padding: 20px 24px; }
+    .radio-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .radio-option { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+    .radio-option input[type="radio"] { margin-top: 2px; accent-color: #3a8a84; width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+    .radio-label { font-size: 13px; color: #333; }
+    .radio-label strong { display: block; font-weight: 600; }
+    .radio-label span { color: #777; font-size: 12px; }
+    .email-input-row { display: flex; gap: 8px; align-items: center; margin-top: 4px; margin-left: 25px; }
+    .email-input { border: 1.5px solid #d5d5d5; border-radius: 4px; padding: 8px 12px; font-size: 13px; width: 280px; font-family: inherit; }
+    .email-input:focus { outline: none; border-color: #3a8a84; }
+    .email-input.error { border-color: #e05; }
+    .save-prefs-btn { background: #3a8a84; color: white; border: none; border-radius: 4px; padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .save-prefs-btn:hover { background: #2d7070; }
+    .save-prefs-btn:disabled { background: #bbb; cursor: default; }
+    .prefs-saved { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #3a8a84; font-weight: 500; margin-top: 0; }
+    .error-msg { font-size: 11px; color: #e05; margin-top: 4px; margin-left: 25px; }
+
+    @media print {
+      .prefs-card { display: none; }
+    }
+
+    /* HCP delivery bar */
+    @media (max-width: 640px) {
+      .delivery-bar { flex-wrap: wrap; gap: 4px; }
+    }
+
     /* Modal */
     .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; display: flex; align-items: center; justify-content: center; }
     .modal-box { background: white; border-radius: 8px; width: 360px; max-width: calc(100vw - 32px); padding: 28px 28px 24px; position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
@@ -627,6 +658,99 @@
       );
     }
 
+    // Focused card: manage HCP Summary delivery methods (fax and/or email).
+    function HcpSummaryDeliveryCard({ pref, onSave }) {
+      const [expanded, setExpanded] = useState(false);
+      const [wantFax, setWantFax]     = useState(pref.fax);
+      const [wantEmail, setWantEmail] = useState(pref.wantEmail);
+      const [email, setEmail]         = useState(pref.email);
+      const [error, setError]   = useState("");
+
+      const isValidEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+      const currentLabel = () => {
+        const parts = [];
+        if (pref.fax) parts.push("fax");
+        if (pref.wantEmail && pref.email) parts.push(`email (${pref.email})`);
+        else if (pref.wantEmail) parts.push("email");
+        return parts.join(" & ") || "fax";
+      };
+
+      const handleSave = async () => {
+        if (!wantFax && !wantEmail) { setError("Please select at least one delivery method."); return; }
+        if (wantEmail && !isValidEmail(email)) { setError("Please enter a valid email address."); return; }
+        setError("");
+        const methods = [
+          ...(wantFax   ? [{ type: "fax",   value: "" }] : []),
+          ...(wantEmail ? [{ type: "email", value: email.trim() }] : []),
+        ];
+        try {
+          const token = localStorage.getItem("HCP_ACCESS_TOKEN") || "";
+          await fetch(`${API_BASE}/comm-prefs`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json", ...(token ? { "Authorization": `Bearer ${token}` } : {}) },
+            body: JSON.stringify({ npi: "1234567890", preferences: { hcp_summary: { optOut: false, methods } } })
+          });
+        } catch (_) {}
+        const saved_pref = { fax: wantFax, wantEmail, email: wantEmail ? email.trim() : "" };
+        trackEvent("1234567890", "save_delivery_pref", saved_pref);
+        onSave(saved_pref);
+        setExpanded(false);
+      };
+
+      const toggle = (setter, val) => { setter(!val); setError(""); };
+
+      if (!expanded) {
+        return (
+          <div style={{background:"#f9fefe",border:"1px solid #d0e8e6",borderRadius:"4px",padding:"10px 16px",marginBottom:"12px",display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:"13px"}}>
+            <span style={{color:"#555"}}>
+              <span style={{fontWeight:600,color:"#2d7070"}}>Weekly summary sent via:</span> {currentLabel()}
+            </span>
+            <button onClick={() => setExpanded(true)} style={{background:"none",border:"none",color:"#3a8a84",fontWeight:600,fontSize:"13px",cursor:"pointer",padding:"0",textDecoration:"underline"}}>Edit</button>
+          </div>
+        );
+      }
+
+      return (
+        <div className="prefs-card" style={{marginBottom:"12px"}}>
+          <div className="prefs-header" style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div>
+              <h3>HCP Summary — Delivery Preference</h3>
+              <p style={{fontSize:"12px",color:"#888",margin:0}}>Choose how you'd like to receive this Weekly Prescription Summary.</p>
+            </div>
+            <button onClick={() => { setExpanded(false); setError(""); }} style={{background:"none",border:"none",color:"#aaa",fontSize:"18px",cursor:"pointer",lineHeight:1}}>✕</button>
+          </div>
+          <div className="prefs-body">
+            <div style={{display:"flex",flexDirection:"column",gap:"10px",marginBottom:"12px"}}>
+              <label style={{display:"flex",alignItems:"center",gap:"10px",cursor:"pointer"}}>
+                <input type="checkbox" checked={wantFax} onChange={() => toggle(setWantFax, wantFax)}
+                  style={{accentColor:"#3a8a84",width:"15px",height:"15px",flexShrink:0,cursor:"pointer"}} />
+                <span style={{fontSize:"13px",fontWeight:600}}>Fax</span>
+              </label>
+              <label style={{display:"flex",alignItems:"flex-start",gap:"10px",cursor:"pointer"}}>
+                <input type="checkbox" checked={wantEmail} onChange={() => toggle(setWantEmail, wantEmail)}
+                  style={{marginTop:"2px",accentColor:"#3a8a84",width:"15px",height:"15px",flexShrink:0,cursor:"pointer"}} />
+                <div style={{flex:1}}>
+                  <span style={{fontSize:"13px",fontWeight:600}}>Email</span>
+                  {wantEmail && (
+                    <input className={`email-input ${error && !isValidEmail(email) ? "error" : ""}`}
+                      type="email" placeholder="your@practice.com" value={email} autoFocus
+                      style={{display:"block",marginTop:"6px"}}
+                      onChange={e => { setEmail(e.target.value); setError(""); }} />
+                  )}
+                </div>
+              </label>
+            </div>
+            {error && <p className="error-msg" style={{marginBottom:"8px"}}>{error}</p>}
+            <div style={{display:"flex",gap:"8px"}}>
+              <button className="save-prefs-btn" onClick={handleSave}>Save</button>
+              <button onClick={() => { setExpanded(false); setError(""); }} style={{background:"none",border:"1px solid #ccc",borderRadius:"4px",padding:"7px 16px",fontSize:"13px",cursor:"pointer",color:"#555"}}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     function App() {
       const [activeTab, setActiveTab] = useState("action-required");
       const [viewMode] = useState("overview");
@@ -636,6 +760,7 @@
         const t = setInterval(() => setLastUpdated(new Date()), 60000);
         return () => clearInterval(t);
       }, []);
+      const [hcpSummaryPref, setHcpSummaryPref] = useState({ fax: true, wantEmail: false, email: "" });
       const [eduExpanded, setEduExpanded] = useState(true);
       const [bannerDismissed, setBannerDismissed] = useState(false);
       const [phoneModalPatient, setPhoneModalPatient] = useState(null);
@@ -812,6 +937,8 @@
                 </div>
               )}
             </div>
+
+            <HcpSummaryDeliveryCard pref={hcpSummaryPref} onSave={setHcpSummaryPref} />
 
             {(() => {
               const medLabel = r => r.medOverride || (selectedMed !== "All Medications" ? selectedMed : rx.label);
